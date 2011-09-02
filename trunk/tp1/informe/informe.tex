@@ -11,15 +11,6 @@
 
 \usepackage[normalem]{ulem}
 \usepackage{ulem}
-\usepackage{tikz}
-
-\newcommand{\udot}[1]{%
-    \tikz[baseline=(todotted.base)]{
-        \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
-        \draw[dotted] (todotted.south west) -- (todotted.south east);
-    }%
-}%
-
 
 %\usepackage{color}
 
@@ -117,9 +108,5 @@
 \entidadCK{idControl, (nroDocumento, codViaje)}
 \entidadFK{nroDocumento, codViaje}
 \end{mr}
-
-
-\uline{\dashuline{dashing}}
-
 
 \end{document}
