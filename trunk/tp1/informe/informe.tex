@@ -1,0 +1,112 @@
+\documentclass[a4paper, 10pt, notitlepage]{article}
+
+\usepackage{moreverb} %para importar codigo
+
+\usepackage{pepotina} %paquete personal para la caratula del DC
+
+\usepackage[spanish,activeacute]{babel}
+\usepackage{babel} %paquete de idioma
+
+\usepackage[latin1]{inputenc}
+
+\usepackage[normalem]{ulem}
+
+%\usepackage{color}
+
+\usepackage{hyperref}
+%\usepackage[all]{hypcap}
+
+\usepackage{caeycaeBD}
+
+\usepackage{fancyhdr} %linea sup con comentarios
+
+\usepackage{lscape} %para hoja apaisada
+
+\usepackage{framed} %para crear cajas de texto
+
+\usepackage{lastpage} %ultima pagina
+
+%\usepackage{pstricks}
+%\usepackage{uml} %UML
+
+\usepackage{listings}
+%\lstset{
+%  breaklines=true,                                     % line wrapping on
+%  language=ocl,
+%  frame=ltrb,
+%  framesep=5pt,
+%  basicstyle=\normalsize,
+%  keywordstyle=\ttfamily\color{OliveGreen},
+%  identifierstyle=\ttfamily\color{CadetBlue}\bfseries,
+%  commentstyle=\color{Brown},
+%  stringstyle=\ttfamily,
+%  showstringspaces=ture
+%}
+
+\addtolength{\topmargin}{-50pt} 
+\addtolength{\textwidth}{145pt}
+\addtolength{\textheight}{120pt}
+\addtolength{\oddsidemargin}{-70pt}
+
+%\newcommand{\minix}{\textsl{minix }}
+
+%%% Encabezado y pie de p'agina
+\pagestyle{fancy}
+\fancyhead[LO]{Base de Datos}
+\fancyhead[C]{}
+\fancyhead[RO]{P\'agina \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot{}
+
+\newcommand{\FALTA}{{\bf FALTA FALTA FALTA FALTA FALTA FALTA FALTA FALTA }}
+
+\begin{document}
+
+\universidad{Universidad de Buenos Aires}
+\facultad{Facultad de ciencias exactas y naturales}
+\departamento{Departamento de Computacion}
+\materia{Base de Datos}
+\resumen{Tp1}
+\keys{MER, MR}
+\titulo{Tp1}
+\subtitulo{Tp 1: Empresa de Transportes}
+\grupo{Numero de grupo: 1}
+\fecha{2do Cuatrimeste 2011}
+\footspace{1cm}
+\integrante{Piotrkowski, Kevin}{204/06}{marcoskevin@gmail.com}
+\integrante{Rugnone, Martin}{666/04 -- MAL}{mrugnone@hotmail.com}
+\integrante{Alvarez, Maria de los Angeles}{264/05}{mdelosaalvarez@hotmail.com}
+\integrante{Engler, Christian}{314/05}{caeycae@gmail.com}
+
+\maketitle{}
+
+\tableofcontents
+
+\newpage
+
+\section{MR}
+
+\begin{mr}{Agencia de Viajes}
+
+\entidad{Licencia}{\pk{nroLicencia}, fechObtencion, fechVencimiento, observaciones}
+\entidadPK{nroLicencia}
+\entidadCK{nroLicencia}
+
+\entidad{Chofer}{\pk{nroDocumento}, fechNac, nomApe, domicilio, telefono, fk{nroLicencia}}
+\entidadPK{nroDocumento}
+\entidadCK{nroDocumento}
+\entidadFK{nroLicencia}
+
+\entidad{Conduce}{\pfk{nroDocumento}, \pfk{codViaje}}
+\entidadPK{nroDocumento, codViaje}
+\entidadCK{nroDocumento, codViaje}
+\entidadFK{nroDocumento, codViaje}
+
+\entidad{Control}{\pk{idControl}, \pfk{nroDocumento}, \pfk{codViaje}, resultadoTest, fecha}
+\entidadPK{idControl, (nroDocumento, codViaje)}
+\entidadCK{idControl, (nroDocumento, codViaje)}
+\entidadFK{nroDocumento, codViaje}
+
+\end{mr}
+
+\end{document}
