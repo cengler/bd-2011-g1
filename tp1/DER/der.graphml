@@ -15,66 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d7"/>
     <node id="n0" yfiles.foldertype="group">
-      <data key="d6">
-        <y:ProxyAutoBoundsNode>
-          <y:Realizers active="0">
-            <y:GroupNode>
-              <y:Geometry height="70.0" width="496.3363223234227" x="356.2308446395115" y="590.7205915779316"/>
-              <y:Fill hasColor="false" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasText="false" height="4.0" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#000000" visible="false" width="496.3363223234227" x="0.0" y="0.0"/>
-              <y:Shape type="rectangle"/>
-              <y:State closed="false" innerGraphDisplayEnabled="false"/>
-              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-            </y:GroupNode>
-            <y:GroupNode>
-              <y:Geometry height="80.0" width="100.0" x="356.2308446395115" y="590.7205915779316"/>
-              <y:Fill color="#CAECFF84" transparent="false"/>
-              <y:BorderStyle color="#666699" type="dotted" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#99CCFF" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="100.0" x="0.0" y="0.0">Folder 1</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-              <y:State closed="true" innerGraphDisplayEnabled="false"/>
-              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-            </y:GroupNode>
-          </y:Realizers>
-        </y:ProxyAutoBoundsNode>
-      </data>
-      <graph edgedefault="directed" id="n0:">
-        <node id="n0::n0">
-          <data key="d6">
-            <y:GenericNode configuration="com.yworks.flowchart.process">
-              <y:Geometry height="40.0" width="80.0" x="371.2308446395115" y="605.7205915779316"/>
-              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.017578125" x="19.9912109375" y="10.6494140625">Chofer</y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-        <node id="n0::n1">
-          <data key="d6">
-            <y:GenericNode configuration="com.yworks.flowchart.decision">
-              <y:Geometry height="40.0" width="80.0" x="563.2772223617321" y="605.7205915779316"/>
-              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="49.369140625" x="15.3154296875" y="10.6494140625">conduce</y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-        <node id="n0::n2">
-          <data key="d6">
-            <y:GenericNode configuration="com.yworks.flowchart.process">
-              <y:Geometry height="40.0" width="108.75" x="728.8171669629342" y="605.7205915779316"/>
-              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="30.68359375" x="39.033203125" y="10.6494140625">Viaje</y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-      </graph>
-    </node>
-    <node id="n1" yfiles.foldertype="group">
       <data key="d4"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
@@ -102,8 +42,8 @@
           </y:Realizers>
         </y:ProxyAutoBoundsNode>
       </data>
-      <graph edgedefault="directed" id="n1:">
-        <node id="n1::n0">
+      <graph edgedefault="directed" id="n0:">
+        <node id="n0::n0">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="80.0" x="1620.515455102919" y="1450.540357695952"/>
@@ -113,7 +53,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n1">
+        <node id="n0::n1">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1803.327955102919" y="1397.1536665386848"/>
@@ -123,7 +63,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n2">
+        <node id="n0::n2">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="131.5625" x="1803.327955102919" y="1450.540357695952"/>
@@ -133,7 +73,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n3">
+        <node id="n0::n3">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1803.327955102919" y="1507.884107695952"/>
@@ -143,7 +83,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n4">
+        <node id="n0::n4">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="131.5625" x="1803.327955102919" y="1565.2278576959523"/>
@@ -153,7 +93,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n5">
+        <node id="n0::n5">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.process">
               <y:Geometry height="40.0" width="131.5625" x="1595.4103412357308" y="1639.417310820952"/>
@@ -163,7 +103,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n6">
+        <node id="n0::n6">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.decision">
               <y:Geometry height="63.28125000000023" width="105.78125" x="1607.624830102919" y="1541.946607695952"/>
@@ -173,7 +113,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n7">
+        <node id="n0::n7">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1803.3279551029188" y="1343.7669753814175"/>
@@ -183,7 +123,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n8">
+        <node id="n0::n8">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1543.6638920317089" y="1702.6204346448144"/>
@@ -193,7 +133,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n9">
+        <node id="n0::n9">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="131.5625" x="1664.913892031709" y="1702.6204346448144"/>
@@ -203,7 +143,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n10">
+        <node id="n0::n10">
           <data key="d6">
             <y:GenericNode configuration="EntityRelationship_Entity">
               <y:Geometry height="40.0" width="80.0" x="1480.0926071520994" y="1553.587232695952"/>
@@ -216,7 +156,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n11">
+        <node id="n0::n11">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1355.6038809205" y="1513.587232695952"/>
@@ -226,7 +166,7 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n12">
+        <node id="n0::n12">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1355.6038809205" y="1565.2278576959523"/>
@@ -236,13 +176,73 @@
             </y:GenericNode>
           </data>
         </node>
-        <node id="n1::n13">
+        <node id="n0::n13">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.flowchart.start1">
               <y:Geometry height="40.0" width="106.97302050420171" x="1355.6038809204997" y="1623.587232695952"/>
               <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="64.703125" x="21.134947752100743" y="10.6494140625">fechaHasta</y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+      </graph>
+    </node>
+    <node id="n1" yfiles.foldertype="group">
+      <data key="d6">
+        <y:ProxyAutoBoundsNode>
+          <y:Realizers active="0">
+            <y:GroupNode>
+              <y:Geometry height="70.0" width="496.3363223234227" x="356.2308446395115" y="590.7205915779316"/>
+              <y:Fill hasColor="false" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasText="false" height="4.0" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#000000" visible="false" width="496.3363223234227" x="0.0" y="0.0"/>
+              <y:Shape type="rectangle"/>
+              <y:State closed="false" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+            <y:GroupNode>
+              <y:Geometry height="80.0" width="100.0" x="356.2308446395115" y="590.7205915779316"/>
+              <y:Fill color="#CAECFF84" transparent="false"/>
+              <y:BorderStyle color="#666699" type="dotted" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#99CCFF" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="100.0" x="0.0" y="0.0">Folder 1</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="true" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+          </y:Realizers>
+        </y:ProxyAutoBoundsNode>
+      </data>
+      <graph edgedefault="directed" id="n1:">
+        <node id="n1::n0">
+          <data key="d6">
+            <y:GenericNode configuration="com.yworks.flowchart.process">
+              <y:Geometry height="40.0" width="80.0" x="371.2308446395115" y="605.7205915779316"/>
+              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.017578125" x="19.9912109375" y="10.6494140625">Chofer</y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n1::n1">
+          <data key="d6">
+            <y:GenericNode configuration="com.yworks.flowchart.decision">
+              <y:Geometry height="40.0" width="80.0" x="563.2772223617321" y="605.7205915779316"/>
+              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="49.369140625" x="15.3154296875" y="10.6494140625">conduce</y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n1::n2">
+          <data key="d6">
+            <y:GenericNode configuration="com.yworks.flowchart.process">
+              <y:Geometry height="40.0" width="108.75" x="728.8171669629342" y="605.7205915779316"/>
+              <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="30.68359375" x="39.033203125" y="10.6494140625">Viaje</y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
@@ -284,7 +284,7 @@
           <y:Geometry height="40.0" width="126.3744168067227" x="142.71340766472156" y="303.23859694902575"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="81.384765625" x="22.494825590861353" y="10.6494140625">fechObtención</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="88.05859375" x="19.157911528361353" y="10.6494140625">fechaObtención</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -294,7 +294,7 @@
           <y:Geometry height="40.0" width="126.3744168067227" x="142.71340766472156" y="358.23859694902575"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="92.716796875" x="16.828809965861353" y="10.6494140625">fechVencimiento</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="99.390625" x="13.491895903361353" y="10.6494140625">fechaVencimiento</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -324,7 +324,7 @@
           <y:Geometry height="40.0" width="108.75" x="128.33840766472156" y="551.9705915779316"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="48.021484375" x="30.3642578125" y="10.6494140625">fechNac</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="54.6953125" x="27.02734375" y="10.6494140625">fechaNac</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -534,7 +534,7 @@
           <y:Geometry height="40.0" width="172.1874999999999" x="928.8926376387326" y="816.1276333662992"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="112.73828125" x="29.724609375" y="10.6494140625">fechHoraLlegadaEst</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="119.412109375" x="26.3876953125" y="10.6494140625">fechaHoraLlegadaEst</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -730,7 +730,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="30.0" width="30.0" x="912.3306538078873" y="918.8377876144041"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.029296875" x="-5.0146484375" y="5.6494140625">estado</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="52.697265625" x="-11.3486328125" y="5.6494140625">realizado</y:NodeLabel>
           <y:Shape type="rectangle3d"/>
         </y:ShapeNode>
       </data>
@@ -741,7 +741,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="49.375" width="121.71372100840324" x="714.6554389222414" y="832.6063791840891"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="33.35546875" x="44.17912612920156" y="15.3369140625">fecha</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="72.0390625" x="24.837329254201563" y="15.3369140625">fechaControl</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -788,10 +788,10 @@ en Reparación</y:NodeLabel>
     <node id="n55">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="30.0" x="769.6720051015443" y="256.3856073342341"/>
+          <y:Geometry height="30.0" width="30.0" x="799.6720051015443" y="277.5591871661669"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.029296875" x="-5.0146484375" y="5.6494140625">estado</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="38.6875" x="-4.34375" y="5.6494140625">enUso</y:NodeLabel>
           <y:Shape type="rectangle3d"/>
         </y:ShapeNode>
       </data>
@@ -836,7 +836,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="40.0" width="101.91678571428565" x="1870.9794797411023" y="592.4761307606451"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="23.34765625" x="39.284564732142826" y="10.6494140625">cod</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="61.375" x="20.270892857142826" y="10.6494140625">codCiudad</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -856,7 +856,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="40.0" width="80.0" x="1617.2967329769808" y="603.4504472282152"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="57.373046875" x="11.3134765625" y="10.6494140625">pertenece</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="62.716796875" x="8.6416015625" y="10.6494140625">ubicada en</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -876,7 +876,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="40.0" width="101.91678571428565" x="1357.3850896677586" y="678.4247636957854"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="23.34765625" x="39.284564732142826" y="10.6494140625">cod</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="38.67578125" x="31.620502232142826" y="10.6494140625">codDir</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -906,7 +906,7 @@ en Reparación</y:NodeLabel>
           <y:Geometry height="40.0" width="158.3499999999999" x="928.8926376387326" y="755.6611126663637"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="90.712890625" x="33.818554687499955" y="10.6494140625">fechHoraPartida</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="97.38671875" x="30.481640624999955" y="10.6494140625">fechaHoraPartida</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -976,7 +976,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e3" source="n7" target="n0::n0">
+    <edge id="e3" source="n7" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0">
@@ -1001,7 +1001,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e5" source="n9" target="n0::n0">
+    <edge id="e5" source="n9" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0"/>
@@ -1011,7 +1011,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e6" source="n8" target="n0::n0">
+    <edge id="e6" source="n8" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0"/>
@@ -1021,7 +1021,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e7" source="n10" target="n0::n0">
+    <edge id="e7" source="n10" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0"/>
@@ -1031,7 +1031,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e8" source="n11" target="n0::n0">
+    <edge id="e8" source="n11" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0"/>
@@ -1041,7 +1041,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e9" source="n12" target="n0::n0">
+    <edge id="e9" source="n12" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-5.6843418860808015E-14" ty="0.0"/>
@@ -1101,7 +1101,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e15" source="n0::n2" target="n21">
+    <edge id="e15" source="n1::n2" target="n21">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1185,7 +1185,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e23" source="n0::n2" target="n29">
+    <edge id="e23" source="n1::n2" target="n29">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="1.1368683772161603E-13" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1207,7 +1207,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e25" source="n30" target="n0::n2">
+    <edge id="e25" source="n30" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-25.872310681355657" sy="-2.3784427033729116" tx="1.1368683772161603E-13" ty="0.0"/>
@@ -1217,7 +1217,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e26" source="n66" target="n0::n2">
+    <edge id="e26" source="n66" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="1.1368683772161603E-13" ty="0.0"/>
@@ -1244,7 +1244,7 @@ en Reparación</y:NodeLabel>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="none"/>
-          <y:EdgeLabel alignment="center" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="six_pos" modelPosition="ttail" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" visible="true" width="12.666015625" x="2.0000004891858225" y="-24.357469656794365">N</y:EdgeLabel>
+          <y:EdgeLabel alignment="center" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="six_pos" modelPosition="ttail" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" visible="true" width="10.673828125" x="2.0000004891858225" y="-24.357469656794365">1</y:EdgeLabel>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
@@ -1281,7 +1281,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e32" source="n35" target="n0::n2">
+    <edge id="e32" source="n35" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="1.1368683772161603E-13" ty="0.0"/>
@@ -1312,7 +1312,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e35" source="n37" target="n0::n2">
+    <edge id="e35" source="n37" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="1.1368683772161603E-13" ty="0.0"/>
@@ -1343,7 +1343,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e38" source="n40" target="n0::n2">
+    <edge id="e38" source="n40" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="1.1368683772161603E-13" ty="0.0"/>
@@ -1413,7 +1413,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e45" source="n33" target="n0">
+    <edge id="e45" source="n33" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1549,7 +1549,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n0::e0" source="n0::n1" target="n0::n2">
+    <edge id="n1::e0" source="n1::n1" target="n1::n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1560,7 +1560,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n0::e1" source="n0::n1" target="n0::n0">
+    <edge id="n1::e1" source="n1::n1" target="n1::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1613,7 +1613,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e62" source="n0::n2" target="n62">
+    <edge id="e62" source="n1::n2" target="n62">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1665,7 +1665,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e0" source="n1::n1" target="n1::n0">
+    <edge id="n0::e0" source="n0::n1" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1675,7 +1675,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e1" source="n1::n3" target="n1::n0">
+    <edge id="n0::e1" source="n0::n3" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1685,7 +1685,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e2" source="n1::n2" target="n1::n0">
+    <edge id="n0::e2" source="n0::n2" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1695,7 +1695,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e3" source="n1::n4" target="n1::n0">
+    <edge id="n0::e3" source="n0::n4" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1705,7 +1705,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e4" source="n1::n6" target="n1::n5">
+    <edge id="n0::e4" source="n0::n6" target="n0::n5">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1716,7 +1716,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e5" source="n1::n6" target="n1::n0">
+    <edge id="n0::e5" source="n0::n6" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1727,7 +1727,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e6" source="n1::n7" target="n1::n0">
+    <edge id="n0::e6" source="n0::n7" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1737,7 +1737,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e7" source="n1::n10" target="n1::n6">
+    <edge id="n0::e7" source="n0::n10" target="n0::n6">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1748,7 +1748,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e8" source="n1::n8" target="n1::n5">
+    <edge id="n0::e8" source="n0::n8" target="n0::n5">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1758,7 +1758,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e9" source="n1::n5" target="n1::n9">
+    <edge id="n0::e9" source="n0::n5" target="n0::n9">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1778,7 +1778,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e10" source="n1::n11" target="n1::n10">
+    <edge id="n0::e10" source="n0::n11" target="n0::n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1788,7 +1788,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e11" source="n1::n12" target="n1::n10">
+    <edge id="n0::e11" source="n0::n12" target="n0::n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1798,7 +1798,7 @@ en Reparación</y:NodeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n1::e12" source="n1::n13" target="n1::n10">
+    <edge id="n0::e12" source="n0::n13" target="n0::n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

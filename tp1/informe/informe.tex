@@ -89,11 +89,11 @@
 
 \begin{mr}{Agencia de Viajes}
 
-\entidad{Licencia}{\pk{nroLicencia}, fechObtencion, fechVencimiento, observaciones}
+\entidad{Licencia}{\pk{nroLicencia}, fechaObtencion, fechaVencimiento, observaciones}
 \entidadPK{nroLicencia}
 \entidadCK{nroLicencia}
 
-\entidad{Chofer}{\pk{nroDocumento}, fechNac, nomApe, domicilio, telefono, \fk{nroLicencia}}
+\entidad{Chofer}{\pk{nroDocumento}, fechaNac, nomApe, domicilio, telefono, \fk{nroLicencia}}
 \entidadPK{nroDocumento}
 \entidadCK{nroDocumento}
 \entidadFK{nroLicencia}
@@ -103,10 +103,73 @@
 \entidadCK{nroDocumento, codViaje}
 \entidadFK{nroDocumento, codViaje}
 
-\entidad{Control}{\pk{idControl}, \pfk{nroDocumento}, \pfk{codViaje}, resultadoTest, fecha}
+\entidad{Control}{\pk{idControl}, \pfk{nroDocumento}, \pfk{codViaje}, \fk{codTest}, resultadoTest, fechaControl}
 \entidadPK{idControl, (nroDocumento, codViaje)}
 \entidadCK{idControl, (nroDocumento, codViaje)}
-\entidadFK{nroDocumento, codViaje}
+\entidadFK{nroDocumento, codViaje, codTest}
+
+\entidad{Test}{\pk{codTest}, descripcion}
+\entidadPK{codTest}
+\entidadCK{codTest}
+
+\entidad{Contingencia}{\pk{codContingencia}, \pfk{codViaje}, descripcion}
+\entidadPK{codContingencia, codViaje}
+\entidadCK{codContingencia, codViaje}
+\entidadFK{codViaje}
+
+\entidad{Direccion}{\pk{codDir}, nombre, altura, \fk{codCiudad}}
+\entidadPK{codDir}
+\entidadCK{codDir}
+\entidadFK{codCiudad}
+
+\entidad{Ciudad}{\pk{codCiudad}, nombre}
+\entidadPK{codCiudad}
+\entidadCK{codCiudad}
+
+\entidad{Ruta}{\pk{codRuta}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
+\entidadPK{codRuta}
+\entidadCK{codRuta}
+
+\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, enUsoDesde, estado, fechaIngreso}
+\entidadPK{nroPatente}
+\entidadCK{nroPatente}
+
+
+\entidad{Viaje}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codOrigen}, \fk{codDestino}, realizado}
+\entidadPK{codViaje}
+\entidadCK{codViaje}
+\entidadFK{nroPatente,codOrigen.codDestino}
+
+\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{codRuta}}
+\entidadPK{codViaje}
+\entidadCK{codViaje}
+\entidadFK{codViaje, codRuta}
+
+\entidad{Emplea}{\pfk{codViaje}, \pfk{codRuta}}
+\entidadPK{(codViaje, codRuta)}
+\entidadCK{(codViaje, codRuta)}
+\entidadFK{codViaje, codRuta}
+
+\begin{enumerate}
+\item $\forall v \in Vehiculo, v.enUso=true \Rightarrow v.fechaIngreso = NULL$
+\item $\forall v \in Vehiculo, v.enUso=false \Rightarrow v.fechaIngreso \neq NULL$
+\end{enumerate}
+
 \end{mr}
+
+\begin{verbatim}
+(paraTodo v pertenece Viaje)
+	1 <= #(v.conduce) <= 3
+	v.fechaHoraLlegadaEst > v.fechaHoraPartida
+
+(paraTodo v pertenece ViajePlanificado)
+	v.realiza es de tipo vehículoEnUso
+
+(paraTodo v pertenece ViajeRealizado)
+	v.fechaHoraLlegada > v.fechaHoraPartida
+	
+
+\end{verbatim}	
+
 
 \end{document}
