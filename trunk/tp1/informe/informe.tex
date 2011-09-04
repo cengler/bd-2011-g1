@@ -60,6 +60,7 @@
 \fancyfoot{}
 
 \newcommand{\FALTA}{{\bf FALTA FALTA FALTA FALTA FALTA FALTA FALTA FALTA }}
+\def\var#1{\textsl{#1}}
 
 \begin{document}
 
@@ -75,8 +76,8 @@
 \fecha{2do Cuatrimeste 2011}
 \footspace{1cm}
 \integrante{Piotrkowski, Kevin}{204/06}{marcoskevin@gmail.com}
-\integrante{Rugnone, Martin}{666/04 -- MAL}{mrugnone@hotmail.com}
-\integrante{Alvarez, Maria de los Angeles}{264/05}{mdelosaalvarez@hotmail.com}
+\integrante{Rugnone, Martín}{665/04}{mrugnone@hotmail.com}
+\integrante{Alvarez, María de los Angeles}{264/05}{mdelosaalvarez@hotmail.com}
 \integrante{Engler, Christian}{314/05}{caeycae@gmail.com}
 
 \maketitle{}
@@ -84,6 +85,28 @@
 \tableofcontents
 
 \newpage
+
+\section{MER}
+
+\FALTA GRAFICO
+
+\subsection{Restricciones}
+
+\begin{enumerate}
+	\item Para todo recorrido \var{r1}, no existe recorrido \var{r2} tal que r2 es distinto de \var{r1}, el destino de \var{r2} es distinto al de \var{r1} y el origen de \var{r2} es distinto al de \var{r1}.
+	\item Para todo recorrido, el origen no puede ser igual al destino
+	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido de ese viaje.
+	\item Para todo recorrido que tiene un viaje asociado, existe una ruta.
+	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.
+	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.
+	\item Para todo viaje planificado el vehiculo utilizado debe estar en uso.	
+	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.
+	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento
+	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
+	\item Para toda ruta, hay un único clima para todo período definido
+	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  
+\end{enumerate}
+
 
 \section{MR}
 
@@ -99,77 +122,116 @@
 \entidadFK{nroLicencia}
 
 \entidad{Conduce}{\pfk{nroDocumento}, \pfk{codViaje}}
-\entidadPK{nroDocumento, codViaje}
-\entidadCK{nroDocumento, codViaje}
+\entidadPK{(nroDocumento, codViaje)}
+\entidadCK{(nroDocumento, codViaje)}
 \entidadFK{nroDocumento, codViaje}
 
-\entidad{Control}{\pk{idControl}, \pfk{nroDocumento}, \pfk{codViaje}, \fk{codTest}, resultadoTest, fechaControl}
-\entidadPK{idControl, (nroDocumento, codViaje)}
-\entidadCK{idControl, (nroDocumento, codViaje)}
-\entidadFK{nroDocumento, codViaje, codTest}
+\entidad{Control}{\pk{codControl}, \fk{nroDocumento}, \fk{codViaje}, \fk{codTipo}, resultadoTest, fechaControl}
+\entidadPK{codControl}
+\entidadCK{codControl}
+\entidadFK{(nroDocumento, codViaje), codTipo}
 
-\entidad{Test}{\pk{codTest}, descripcion}
-\entidadPK{codTest}
-\entidadCK{codTest}
+\entidad{TipoTest}{\pk{codTipo}, descripcion}
+\entidadPK{codTipo}
+\entidadCK{codTipo}
 
 \entidad{Contingencia}{\pk{codContingencia}, \pfk{codViaje}, descripcion}
-\entidadPK{codContingencia, codViaje}
-\entidadCK{codContingencia, codViaje}
+\entidadPK{(codContingencia, codViaje)}
+\entidadCK{(codContingencia, codViaje)}
 \entidadFK{codViaje}
 
-\entidad{Direccion}{\pk{codDir}, nombre, altura, \fk{codCiudad}}
-\entidadPK{codDir}
-\entidadCK{codDir}
+\entidad{Direccion}{\pk{calle}, \pk{altura}, \pfk{codCiudad}}
+\entidadPK{(calle, altura, codCiudad)}
+\entidadCK{(calle, altura, codCiudad)}
 \entidadFK{codCiudad}
 
 \entidad{Ciudad}{\pk{codCiudad}, nombre}
 \entidadPK{codCiudad}
 \entidadCK{codCiudad}
 
-\entidad{Ruta}{\pk{codRuta}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
+\entidad{Recorrido}{\pk{codRecorrido}, nombre, \fk{calleOrig}, \fk{alturaOrig}, \fk{codCiudadOrig}, \fk{calleDest}, \fk{alturaDest}, \fk{codCiudadDest}}
+\entidadPK{codRecorrido}
+\entidadCK{codRecorrido}
+\entidadFK{(calleOrig, alturaOrig, codCiudadOrig), (calleDest, alturaDest, codCiudadDest)}
+
+\entidad{Ruta}{\pk{codRuta}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado, \fk{codRecorrido}}
 \entidadPK{codRuta}
 \entidadCK{codRuta}
+\entidadFK{codRecorrido}
 
-\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, enUsoDesde, estado, fechaIngreso}
+\entidad{Estado}{\pk{codEstado}, descripcion}
+\entidadPK{codEstado}
+\entidadCK{codEstado}
+
+\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, fechaAlta, \fk{codEstado}, enUso, fechaIngresoReparacion}
 \entidadPK{nroPatente}
 \entidadCK{nroPatente}
+\entidadFK{codEstado}
 
-
-\entidad{Viaje}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codOrigen}, \fk{codDestino}, realizado}
+\entidad{Viaje}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codRecorrido}, realizado}
 \entidadPK{codViaje}
 \entidadCK{codViaje}
-\entidadFK{nroPatente,codOrigen.codDestino}
+\entidadFK{nroPatente,codRecorrido}
 
-\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{codRuta}}
+\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{codRuta}, \fk{codRutaRecorrido}}
 \entidadPK{codViaje}
 \entidadCK{codViaje}
-\entidadFK{codViaje, codRuta}
+\entidadFK{codViaje, (codRuta, codRutaRecorrido)}
 
-\entidad{Emplea}{\pfk{codViaje}, \pfk{codRuta}}
-\entidadPK{(codViaje, codRuta)}
-\entidadCK{(codViaje, codRuta)}
-\entidadFK{codViaje, codRuta}
+\entidad{Participa}{\pfk{codRecorrido}, \pfk{codRuta}, \pfk{nombreEstacion}, \fk{codClima}}
+\entidadPK{((codRecorrido, codRuta), nombreEstacion)}
+\entidadCK{((codRecorrido, codRuta), nombreEstacion)}
+\entidadFK{(codRecorrido, codRuta), nombreEstacion, codClima}
+
+\entidad{Estacion}{\pk{nombreEstacion}}
+\entidadPK{nombreEstacion}
+\entidadCK{nombreEstacion}
+
+\entidad{Clima}{\pk{codClima}, descripcion}
+\entidadPK{codClima}
+\entidadCK{codClima}
+
+\paragraph{Nota: a menos que explícitamente se mencione que un valor debe estar en otra entidad y viceversa, no vale la vuelta}
 
 \begin{enumerate}
-\item $\forall v \in Vehiculo, v.enUso=true \Rightarrow v.fechaIngreso = NULL$
-\item $\forall v \in Vehiculo, v.enUso=false \Rightarrow v.fechaIngreso \neq NULL$
+	\item $Chofer.nroLicencia$ debe estar en $Licencia.nroLicencia$ y viceversa
+	\item $Conduce.codViaje$ debe estar en $Viaje.codViaje$ y viceversa
+	\item $Conduce.nroDocumento$ debe estar en $Chofer.nroDocumento$
+	\item $Control.nroDoumento$ debe estar en $Chofer.nroDocumento$
+	\item $Control.codViaje$ debe estar en $Viaje.codViaje$
+	\item $Control.codTipo$ debe estar en $TipoTest.codTipo$
+	\item $Contingencia.codViaje$ debe estar en $ViajeRealizado.codViaje$
+	\item $Direccion.codCiudad$ debe estar en $Ciudad.codCiudad$
+	\item $Recorrido.calleOrig$ debe estar en $Direccion.calle$
+	\item $Recorrido.alturaOrig$ debe estar en $Direccion.altura$
+	\item $Recorrido.calleDest$ debe estar en $Direccion.calle$
+	\item $Recorrido.alturaDest$ debe estar en $Direccion.altura$
+	\item $Ruta.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $Vehiculo.fechaReparacion$ debe ser NULL si y solo si $Vehiculo.enUso$ es cierto
+	\item $Vehiculo.codEstado$ debe estar en $Estado.codEstado$
+	\item $Viaje.nroPatente$ debe estar en $Vehiculo.nroPatente$
+	\item $Viaje.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $ViajeRealizado.codRuta$ debe estar en $Ruta.codRuta$
+	\item $ViajeRealizado.codRutaRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $Participa.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $Participa.nombreEstacion$ debe estar en $Estacion.nombreEstacion$
+	\item $Participa.codClima$ debe estar en $Clima.codClima$
+	\item $Licencia.fechaObtencion$ es anterior a $Licencia.fechaVencimiento$
+	\item Para todo recorrido \var{r1}, no existe recorrido \var{r2} tal que r2 es distinto de \var{r1}, el destino de \var{r2} es distinto al de \var{r1} y el origen de \var{r2} es distinto al de \var{r1}.
+	\item Para todo recorrido, el origen no puede ser igual al destino
+	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido de ese viaje.
+	\item Para todo recorrido que tiene un viaje asociado, existe una ruta.
+	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.
+	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.
+	\item Para todo viaje planificado el vehiculo utilizado debe estar en uso.	
+	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.
+	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento
+	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
+	\item Para toda ruta, hay un único clima para todo período definido
+	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando
 \end{enumerate}
 
 \end{mr}
-
-\begin{verbatim}
-(paraTodo v pertenece Viaje)
-	1 <= #(v.conduce) <= 3
-	v.fechaHoraLlegadaEst > v.fechaHoraPartida
-
-(paraTodo v pertenece ViajePlanificado)
-	v.realiza es de tipo vehículoEnUso
-
-(paraTodo v pertenece ViajeRealizado)
-	v.fechaHoraLlegada > v.fechaHoraPartida
-	
-
-\end{verbatim}	
 
 
 \end{document}
