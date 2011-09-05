@@ -3,4 +3,4 @@ use BDtp1Grupo1
 declare @filtroAntiguedad int
 -- Setear aca la antiguedad por la cual se quiere filtrar.
 set @filtroAntiguedad = 2
-select(DATEDIFF(yyyy, fechaAlta , GETDATE())) as Antigueadad, * from gr1_vehiculo  where    (DATEDIFF(yyyy, fechaAlta , GETDATE()))>=@filtroAntiguedad 
+select(DATEDIFF(yyyy, fechaAlta , GETDATE())) as Antigueadad, * from vehiculo  where    (DATEDIFF(yyyy, fechaAlta , GETDATE()))>=@filtroAntiguedad 
