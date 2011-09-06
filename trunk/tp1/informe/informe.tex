@@ -86,6 +86,14 @@
 
 \newpage
 
+\section{Hipótesis}
+\begin{enumerate}
+	\item Una ruta es un camino posible para ir desde un punto a otro
+	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino
+	\item Contingencia es una entidad débil porque puede haber una cantidad arbitraria de ellas por cada viaje realizado(en contraposición a una lista de contingencias predefinidas ej:choque, bloqueo de ruta, control policial, etc) y las mismas no tienen sentido sin su viaje relacionado
+	\item Consideramos que estado del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos entre ``en uso'' y ``en reparación''
+\end{enumerate}
+
 \section{MER}
 
 \FALTA GRAFICO
@@ -105,6 +113,7 @@
 	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
 	\item Para toda ruta, hay un único clima para todo período definido
 	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  
+	\item Consideramos período como estación del año, osea: verano, invierno, otoño y primavera.
 \end{enumerate}
 
 
@@ -154,9 +163,9 @@
 \entidadCK{codRecorrido}
 \entidadFK{(calleOrig, alturaOrig, codCiudadOrig), (calleDest, alturaDest, codCiudadDest)}
 
-\entidad{Ruta}{\pk{codRuta}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado, \fk{codRecorrido}}
-\entidadPK{codRuta}
-\entidadCK{codRuta}
+\entidad{Ruta}{\pk{codRuta}, \pfk{codRecorrido}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
+\entidadPK{(codRuta, codRecorrido)}
+\entidadCK{(codRuta, codRecorrido)}
 \entidadFK{codRecorrido}
 
 \entidad{Estado}{\pk{codEstado}, descripcion}
