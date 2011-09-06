@@ -10,6 +10,11 @@ alter table vehiculo add constraint verificacionEnUso check ((enUso = 1 and fech
 -- Restringe que un recorrido tenga igual direccion de origen y destino
 alter table recorrido add constraint direccionesDistintas check (not (calleOrig = calleDest and alturaOrig = alturaDest and codCiudadOrig = codCiudadDest))
 
+-- Si vehiculo enUno = 0, entonces en reparacion
+
+-- Viaje si realizado = 1, entonces existe en la tabla de viajeRealiza
+-- Viaje si realizado = 0, entonces existe en la tabla de viajePlanificado
+
 /*
 -- Restringe que la fecha del control sea posterior a la fecha de partida del viaje.
 -- Ver si se puede y como agregar una constraint que referencia 
