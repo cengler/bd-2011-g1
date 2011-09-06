@@ -19,3 +19,5 @@ alter table control add constraint verificacionControlAntesdePartir check (fecha
 -- Los viajes programados deben estar asociados a vehiculos en uso y no en reparacion
 alter table viaje add constraint viajePlanConAutoEnUso check (nroPatente )
 */
+
+-- Toda contingencia debe tener su viaje correspondiente.

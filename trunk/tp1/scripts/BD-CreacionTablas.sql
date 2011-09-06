@@ -14,7 +14,7 @@ create table control (codControl int not null , nroDocumento int not null, codVi
 
 create table tipoTest (codTipo int not null, descripcion char(30) not null)
 
-create table contingencia (codContingencia int not null, codViaje int not null, descripcion char(30) not null)
+create table contingencia (nroContingencia int not null, codViaje int not null, descripcion char(30) not null)
 
 create table direccion (calle char(30) not null, altura int not null, codCiudad int not null)
 
@@ -50,7 +50,7 @@ alter table control add primary key (codControl)
 
 alter table tipoTest add primary key (codTipo)
 
-alter table contingencia add primary key (codContingencia , codViaje)
+alter table contingencia add primary key (nroContingencia , codViaje)
 
 alter table direccion add primary key (calle , altura , codCiudad)
 

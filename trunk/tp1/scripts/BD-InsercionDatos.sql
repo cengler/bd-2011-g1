@@ -1,4 +1,5 @@
 use BDtp1Grupo1
+
 -- Se insetan 6 licencias
 insert into licencia values (1 , '2007-01-01' , '2012-01-01' , 'Debe usar lentes')
 insert into licencia values (2 , '2007-01-01' , '2012-01-01' , '')
@@ -15,7 +16,6 @@ insert into chofer values (30450673 , '1980-09-25' , 'Fredderic Bruselas' , 'Bal
 insert into chofer values (30450674 , '1979-07-15' , 'Brian May' , 'Laprida 4563' , 47875544, 5 )
 insert into chofer values (30450675 , '1975-02-10' , 'Roger Taylor' , 'Santa fe 345' , 48384475, 6 )
 insert into chofer values (30450672 , '1983-06-12' , 'John Deacon' , 'Cordoba 2345' , 45458875 , 3 )
-
 
 -- Se insertan datos en la tabla Estado
 insert into estado values (1 , 'Nuevo')
