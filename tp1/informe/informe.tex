@@ -92,6 +92,7 @@
 	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino
 	\item Contingencia es una entidad débil porque puede haber una cantidad arbitraria de ellas por cada viaje realizado(en contraposición a una lista de contingencias predefinidas ej:choque, bloqueo de ruta, control policial, etc) y las mismas no tienen sentido sin su viaje relacionado
 	\item Consideramos que estado del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos entre ``en uso'' y ``en reparación''
+	\item Con lo que respecta a las condiciones del año según el periodo, este último se tomo como las estaciones del año. Es decir invierno, otoño, primavera y verano.
 \end{enumerate}
 
 \section{MER}
@@ -241,6 +242,16 @@
 \end{enumerate}
 
 \end{mr}
+\subsection{Aclaraciones del modelo relacional}
 
+Vehiculo en reparación no se pone con un esquema relación sino que se pone la restricción del tipo de vehiculo en función de la fecha de ingreso a reparación. 
+
+\section{Aclaraciones Diseño Físico}
+\begin{itemize}
+	\item En la tabla \textbf{control} el campo \textit{resultadoTest} es de tipo bit ya que los test pueden estar aprobados o desaprobador. Es decir toma los valores $0$ y $1$, donde $1$ significa aprobado y $0$ significa desaprobado.
+	\item Los vehiculos pueden estar \textbf{en uso} o \textbf{en reparación}. En la tabla \textbf{vehiculo} se tiene un campo llamado \textit{EnUso}. Este campo es de tipo bit ya que toma solo dos valores: $1$ significa en uso y $0$ significa en reparación.
+	\item Del mismo modo que en \textbf{vehiculo}, la tabla \textbf{Viaje} cuenta con un atributo \textit{viajeRealizado} para reflejar si el viaje es realizado o planificado. Este campo es de tipo bit, donde $1$ significa viajeRealizado y $0$ significa viajePlanificado.
+	\item En todos los campos de tipo char, estos se tomaron de longitud 30.   
+\end{itemize}
 
 \end{document}
