@@ -54,6 +54,7 @@ insert into conduce values (30450671 ,2)
 
 -- Se insertan datos en la tabla ruta
 insert into ruta values (1 , 350 , 'Asfaltado muy bueno' , 2 , 7 , 2)
+insert into ruta values (3 , 400 , 'Empedrado' , 0 , 2 , 2)
 insert into ruta values (2 , 350 , 'Asfaltado muy bueno' , 2 , 7 , 1)
 
 -- Se insertan los datos de los viajes realizados

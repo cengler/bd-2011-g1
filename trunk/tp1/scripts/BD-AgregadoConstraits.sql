@@ -19,10 +19,15 @@ alter table recorrido add constraint direccionesDistintas check (not (calleOrig 
 -- Restringe que la fecha del control sea posterior a la fecha de partida del viaje.
 -- Ver si se puede y como agregar una constraint que referencia 
 -- creo que no se pueden crear constraint que hagan referencias a campos de otras tablas
-alter table control add constraint verificacionControlAntesdePartir check (fechaControl < (select top(1) viaje.fechahorapartida from viaje where viaje.codviaje = control.codViaje))
+
+alter table control add constraint verificacionControlAntesdePartir check 
+(fechaControl < all (select top(1) viaje.fechahorapartida from viaje,control where viaje.codviaje = control.codViaje))
+
 
 -- Los viajes programados deben estar asociados a vehiculos en uso y no en reparacion
 alter table viaje add constraint viajePlanConAutoEnUso check (nroPatente )
 */
 
 -- Toda contingencia debe tener su viaje correspondiente.
+
+
