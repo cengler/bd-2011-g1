@@ -145,9 +145,9 @@
 \entidadPK{codTipo}
 \entidadCK{codTipo}
 
-\entidad{Contingencia}{\pk{codContingencia}, \pfk{codViaje}, descripcion}
-\entidadPK{(codContingencia, codViaje)}
-\entidadCK{(codContingencia, codViaje)}
+\entidad{Contingencia}{\pk{nroContingencia}, \pfk{codViaje}, descripcion}
+\entidadPK{(nroContingencia, codViaje)}
+\entidadCK{(nroContingencia, codViaje)}
 \entidadFK{codViaje}
 
 \entidad{Direccion}{\pk{calle}, \pk{altura}, \pfk{codCiudad}}
@@ -227,7 +227,7 @@
 	\item $Participa.nombreEstacion$ debe estar en $Estacion.nombreEstacion$
 	\item $Participa.codClima$ debe estar en $Clima.codClima$
 	\item $Licencia.fechaObtencion$ es anterior a $Licencia.fechaVencimiento$
-	
+	\item $Contingencia.codViaje$ debe estar en $Viaje.codViaje$
 	\item Si $Vehiculo.enUso$ es false, entonces debe existir $VehiculoEnReparacion$
 	\item Si $Viaje.realizado$ es true, entonces debe existir $ViajeRealizado$ 
 	\item Si $Vehiculo.enUso$ toma valores booleanos
