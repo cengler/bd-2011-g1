@@ -204,7 +204,7 @@
 \paragraph{Nota: a menos que explícitamente se mencione que un valor debe estar en otra entidad y viceversa, no vale la vuelta}
 
 \begin{enumerate}
-	\item $Chofer.nroLicencia$ debe estar en $Licencia.nroLicencia$ y viceversa
+	\item $Chofer.nroLicencia$ debe estar en $Licencia.nroLicencia$
 	\item $Conduce.codViaje$ debe estar en $Viaje.codViaje$ y viceversa
 	\item $Conduce.nroDocumento$ debe estar en $Chofer.nroDocumento$
 	\item $Control.nroDoumento$ debe estar en $Chofer.nroDocumento$
@@ -227,6 +227,12 @@
 	\item $Participa.nombreEstacion$ debe estar en $Estacion.nombreEstacion$
 	\item $Participa.codClima$ debe estar en $Clima.codClima$
 	\item $Licencia.fechaObtencion$ es anterior a $Licencia.fechaVencimiento$
+	
+	\item Si $Vehiculo.enUso$ es false, entonces debe existir $VehiculoEnReparacion$
+	\item Si $Viaje.realizado$ es true, entonces debe existir $ViajeRealizado$ 
+	\item Si $Vehiculo.enUso$ toma valores booleanos
+	\item $Viaje.realizado$ toma valores booleanos
+	
 	\item Para todo recorrido \var{r1}, no existe recorrido \var{r2} tal que r2 es distinto de \var{r1}, el destino de \var{r2} es distinto al de \var{r1} y el origen de \var{r2} es distinto al de \var{r1}.
 	\item Para todo recorrido, el origen no puede ser igual al destino
 	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido de ese viaje.
