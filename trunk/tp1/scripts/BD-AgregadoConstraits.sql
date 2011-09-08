@@ -29,5 +29,3 @@ alter table viaje add constraint viajePlanConAutoEnUso check (nroPatente )
 */
 
 -- Toda contingencia debe tener su viaje correspondiente.
-
-

@@ -46,7 +46,8 @@ insert into recorrido values (2 , 'Colon ER - Capital Federal' , 'Moreno' , 457 
 -- Se insetan viajes
 insert into viaje values (1, '2011-10-20 10:00:000' , '2011-10-20 20:00:000' , '555555' , 1 , 0)
 insert into viaje values (2, '2011-05-10 10:00:000' , '2011-05-10 20:00:000' , '555555' , 2 , 1)
-
+insert into viaje values (3, '2011-05-10 10:00:000' , '2011-05-10 20:00:000' , '555555' , 2 , 1)
+insert into viaje values (4, '2011-05-10 10:00:000' , '2011-05-10 20:00:000' , '555555' , 2 , 1)
 
 -- Se insertan datos en la tabla Conduce
 insert into conduce values (30450670 ,1)
@@ -59,6 +60,8 @@ insert into ruta values (2 , 350 , 'Asfaltado muy bueno' , 2 , 7 , 1)
 
 -- Se insertan los datos de los viajes realizados
 insert into viajeRealizado values (2 , '2011-05-10 22:00:000' , 1 , 2)
+insert into viajeRealizado values (3 , '2011-05-10 22:00:000' , 3, 2)
+insert into viajeRealizado values (4 , '2011-05-10 22:00:000' , 3, 2)
 
 -- Se insertan tipos de test
 insert into tipoTest values (1 , 'Alcoholemia')
