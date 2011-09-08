@@ -4,11 +4,10 @@ use BDtp1Grupo1
 Se crea la vista cantRutasVR devuelve el nombre del recorrido, el codigo y la cantidad de rutas asociadas
 */
 
-exec ('create view cantRutasVR as (select count(*) as cantRutasVR  , codRecorrido as RecorridoRT  from 
-(select distinct r.codRuta, codRecorrido from viajeRealizado vr,ruta r where (year(GETDATE())-1)= year(fechaHoraLlegada) and 
-(vr.codRuta = r.codRuta)) as rutasTransitadasXRec
-group by codRecorrido)')
-
+exec ('create view cantRutasRecorridasAnioAnterior as (select count(*) as rutasRecorridasAnioAnt , codRUtaRecorrido from 
+(select distinct r.codRuta , vr.codRutaRecorrido   from ruta r, viajeRealizado vr 
+where (year(GETDATE())-1)= year(fechaHoraLlegada) and r.codRecorrido = vr.codRutaRecorrido and r.codRuta = vr.codRuta)
+as rutasTransitadasXRec  group by codRUtaRecorrido)')
 
 
 /*

@@ -12,4 +12,6 @@ para viajes realizados el año pasado y recorridos asociados a mas de una ruta.
 Utiliza las vistas "cantRutasVR" y "cantRutasXRecorrido"
 
 */
-select recorridoRutas,nombre from cantRutasXRecorrido join cantrutasVR on cantRutasXRecorrido.recorridorutas = cantRutasVR.recorridoRT
+select * from cantRutasXRecorrido crxr join cantRutasRecorridasAnioAnterior crraa
+on crxr.recorridoRutas = crraa.codRutaRecorrido where cantRutasRec = rutasRecorridasAnioAnt
+
