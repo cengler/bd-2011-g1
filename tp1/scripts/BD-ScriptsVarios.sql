@@ -9,14 +9,7 @@ select(DATEDIFF(yyyy, fechaAlta , GETDATE())) as Antigueadad, * from vehiculo  w
 /* 
 Los recorridos para los cuales se usaron todas las rutas posibles registradas para ese recorrido, 
 para viajes realizados el año pasado y recorridos asociados a mas de una ruta.
+Utiliza las vistas "cantRutasVR" y "cantRutasXRecorrido"
+
 */
--- Cantidad de rutas de cada recorrido y el codigo de recorrido
-(select count(*) as cantRutasRec,rec.codRecorrido as RecorridoRutas,rec.nombre from recorrido rec join ruta on rec.codRecorrido = ruta.codRecorrido 
-group by rec.codRecorrido,rec.nombre having count(*) > 1)
-
-
--- Las rutas y recorridos realizados el años pasado sin repetidos
-(select count(*) as cantRutasVR  , codRecorrido as RecorridoRT  from 
-(select distinct r.codRuta, codRecorrido from viajeRealizado vr,ruta r where (year(GETDATE())-1)= year(fechaHoraLlegada) and 
-(vr.codRuta = r.codRuta)) as rutasTransitadasXRec
-group by codRecorrido)
+select recorridoRutas,nombre from cantRutasXRecorrido join cantrutasVR on cantRutasXRecorrido.recorridorutas = cantRutasVR.recorridoRT
