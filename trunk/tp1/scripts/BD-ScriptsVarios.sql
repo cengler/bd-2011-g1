@@ -15,3 +15,19 @@ Utiliza las vistas "cantRutasVR" y "cantRutasXRecorrido"
 select * from cantRutasXRecorrido crxr join cantRutasRecorridasAnioAnterior crraa
 on crxr.recorridoRutas = crraa.codRutaRecorrido where cantRutasRec = rutasRecorridasAnioAnt
 
+
+/*
+El promedio de viajes realizados por vehículo por año y el estado en que este se encuentra. Usa la vista "cantViajesXVehiculoXAnio"
+*/
+
+select auxQuery.nroPatente, auxQuery.promedioXAnio, estado.descripcion
+from (
+	-- Este subquery devuelve el promedio de viajes x anio para cada vehiculo
+	select auxView.nroPatente, AVG(auxView.viajesXAnio) as promedioXAnio
+	from cantViajesXVehiculoXAnio as auxView
+	group by auxView.nroPatente
+) as auxQuery
+-- Agrego la información del estado actual del vehiculo
+join vehiculo on auxQuery.nroPatente = vehiculo.nroPatente
+join estado on vehiculo.codEstado = estado.codEstado
+

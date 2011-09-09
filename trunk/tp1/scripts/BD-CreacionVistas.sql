@@ -18,3 +18,13 @@ exec ('create view cantRutasXRecorrido as
 (select count(*) as cantRutasRec,rec.codRecorrido as RecorridoRutas,rec.nombre from recorrido rec join ruta on rec.codRecorrido = ruta.codRecorrido 
 group by rec.codRecorrido,rec.nombre having count(*) > 1)')
 
+/*
+Se crea la vista cantViajesXVehiculoXAnio que devuelve para cada vehiculo, la cantidad de viajes ya realizados
+por cada año
+*/
+exec ('
+CREATE view cantViajesXVehiculoXAnio as 
+(select vehiculo.nroPatente, DATEPART(year, viaje.fechaHoraPartida) as anio, count(vehiculo.nroPatente) as viajesXAnio
+	from vehiculo join viaje on viaje.nroPatente = vehiculo.nroPatente
+	where viaje.realizado=1
+	group by vehiculo.nroPatente, DATEPART(year, viaje.fechaHoraPartida))')
