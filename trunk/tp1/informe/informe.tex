@@ -193,6 +193,8 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 
 \section{MR}
 
+\subsection{Esquema Relación}
+
 \begin{mr}{Agencia de Viajes}
 
 \entidad{Licencia}{\pk{nroLicencia}, fechaObtencion, fechaVencimiento, observaciones}
@@ -223,9 +225,9 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \entidadCK{(nroContingencia, codViaje)}
 \entidadFK{codViaje}
 
-\entidad{Direccion}{\pk{codDireccion}, calle, altura, \fk{codCiudad}}
-\entidadPK{codDireccion}
-\entidadCK{codDireccion}
+\entidad{Direccion}{\pk{codDir}, calle, altura, \fk{codCiudad}}
+\entidadPK{codDir}
+\entidadCK{codDir}
 \entidadFK{codCiudad}
 
 \entidad{Ciudad}{\pk{codCiudad}, nombre}
@@ -246,10 +248,15 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \entidadPK{codEstado}
 \entidadCK{codEstado}
 
-\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, fechaAlta, \fk{codEstado}, enUso, fechaIngresoReparacion}
+\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, fechaAlta, \fk{codEstado}, enUso}
 \entidadPK{nroPatente}
 \entidadCK{nroPatente}
 \entidadFK{codEstado}
+
+\entidad{VehiculoEnReparacion}{\pfk{nroPatente}, fechaIngresoReparacion}
+\entidadPK{nroPatente}
+\entidadCK{nroPatente}
+\entidadFK{nroPatente}
 
 \entidad{ViajePlanificado}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codRecorrido}, realizado}
 \entidadPK{codViaje}
@@ -274,21 +281,25 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \entidadPK{codClima}
 \entidadCK{codClima}
 
+\end{mr}
+
+\subsection{Restricciones}
+
 \paragraph{Nota: a menos que explícitamente se mencione que un valor debe estar en otra entidad y viceversa, no vale la vuelta}
 
 \begin{enumerate}
 	\item $Chofer.nroLicencia$ debe estar en $Licencia.nroLicencia$
-	\item $Conduce.codViaje$ debe estar en $Viaje.codViaje$ y viceversa
+	\item $Conduce.codViaje$ debe estar en $ViajePlanificado.codViaje$ y viceversa
 	\item $Conduce.nroDocumento$ debe estar en $Chofer.nroDocumento$
 	\item $Control.nroDoumento$ debe estar en $Chofer.nroDocumento$
-	\item $Control.codViaje$ debe estar en $Viaje.codViaje$
+	\item $Control.codViaje$ debe estar en $ViajePlanificado.codViaje$
 	\item $Control.codTipo$ debe estar en $TipoTest.codTipo$
 	\item $Contingencia.codViaje$ debe estar en $ViajeRealizado.codViaje$
 	\item $Direccion.codCiudad$ debe estar en $Ciudad.codCiudad$
-	\item $Recorrido.calleOrig$ debe estar en $Direccion.calle$
-	\item $Recorrido.alturaOrig$ debe estar en $Direccion.altura$
-	\item $Recorrido.calleDest$ debe estar en $Direccion.calle$
-	\item $Recorrido.alturaDest$ debe estar en $Direccion.altura$
+	\item $Recorrido.codDirOrigen$ debe estar en $Direccion.codDir$
+	\item $Recorrfio.codDirDestino$ debe estar en $Direccion.codDir$
+	
+	
 	\item $Ruta.codRecorrido$ debe estar en $Recorrido.codRecorrido$
 	\item $Vehiculo.fechaReparacion$ debe ser NULL si y solo si $Vehiculo.enUso$ es cierto
 	\item $Vehiculo.codEstado$ debe estar en $Estado.codEstado$
@@ -306,57 +317,25 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 	\item Si $Vehiculo.enUso$ toma valores booleanos
 	\item $Viaje.realizado$ toma valores booleanos
 	
-	\item Para todo recorrido \var{r1}, no existe recorrido \var{r2} tal que r2 es distinto de \var{r1}, el destino de \var{r2} es distinto al de \var{r1} y el origen de \var{r2} es distinto al de \var{r1}.
-	\item Para todo recorrido, el origen no puede ser igual al destino
-	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido de ese viaje.
-	\item Para todo recorrido que tiene un viaje asociado, existe una ruta.
-	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.
-	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.
-	\item Para todo viaje planificado el vehiculo utilizado debe estar en uso.	
-	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.
-	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento
+	\item $\forall Recorrido1 (\not\exists Recorrido2 (Recorrido1.codRecorrido \neq Recorrido2.codRecorrido$  $\wedge$ \\
+	$Recorrido2.codDirDestino \neq Recorrido1.codDirDestino$ $\wedge$   \\
+	$Recorrido2.codDirOrigen \neq Recorrido1.codDirOrigen))$
+	\item $recorrido.CodDirOrigen \neq Recorrido.codDirDestino$
+	\item $ViajeRealizado.recorrio.tuvo =  ViejaRealizado.tiene$ 
+	\item $\forall rec1 \in recorrido ( rec1.tiene \neq NULL \Rightarrow \exists r1 \in ruta (Recorrido.ruta = r1))$
+	\item $\forall v \in ViajePlanificado ( 1 \leq cantidad(v.conduce) \leq 3 \wedge v.fechaHoraLlegadaEst > v.fechaHoraPartida )$ 
+	\item $\forall vr \in ViajeRealizado ( \exists vp \in ViajePlanificado (vr.codViaje = vp.codViaje \wedge vr.fechaHoraLlegada > vp.fechaHoraPartida))$
+	\item $\forall vp \in ViajePlanificado ( vp.realiza.vehiculoEnUso = true  \wedge (\not\exists vr \in ViajeRealizado ( vp.codViaje = vr.codViaje)))$  
+	\item $\forall veh \in Vehiculo (veh.enUso = FALSE \Rightarrow veh.fechaIngresoReparacion > veh.fechaAlta)$
+	\item $\forall lic \in Licencia (lic.fechaObtencion < lic.fechaVencimiento)$
 	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
 	\item Para toda ruta, hay un único clima para todo período definido
 	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando
 \end{enumerate}
 
-\end{mr}
-\subsection{Aclaraciones del modelo relacional}
-
-Vehiculo en reparación no se pone con un esquema relación sino que se pone la restricción del tipo de vehiculo en función de la fecha de ingreso a reparación. 
-
 \newpage
 
-\section{Diseño Físico}
-\subsection{Aclaraciones}
-\begin{itemize}
-	\item En la tabla \textbf{control} el campo \textit{resultadoTest} es de tipo bit ya que los test pueden estar aprobados o desaprobador. Es decir toma los valores $0$ y $1$, donde $1$ significa aprobado y $0$ significa desaprobado.
-	\item Los vehiculos pueden estar \textbf{en uso} o \textbf{en reparación}. En la tabla \textbf{vehiculo} se tiene un campo llamado \textit{EnUso}. Este campo es de tipo bit ya que toma solo dos valores: $1$ significa en uso y $0$ significa en reparación.
-	\item En todos los campos de tipo char, estos se tomaron de longitud 30.   
-\end{itemize}
-
-\subsection{Implementación}
-
-Para el presente trabajo se decidió utilizar el motor de base de datos SQL Server 2005. El mismo se encuentra disponible en las computadores de los laboratorios del departamento de computación por lo que en los mismos se podrá regenerar los scripts de creación, inserción y consultas entregados en el cd adjunto a este documento.
-
-\subsubsection{Consultas}
-// tipear con negrita las consultas y decir como se resolvieron
-
-\begin{enumerate}
-\item \textbf{Los recorridos para los cuales se usaron todas las rutas posibles registradas para ese recorrido, para viajes realizados el año pasado y recorridos asociados a más de una ruta}
-\item \textbf{El promedio de los viajes realizados por vehículo por año y el estado en que éste se encuentra}
-\item \textbf{Los choferes que han utilizado todos los vehículos de menos de dos años de antigüedad, en viajes del mismo semestre. }
-\end{enumerate}
-
-
-
-\subsubsection{Triggers}
-// decidir que triggers se implementaron y cómo se hicieron 
-
-\begin{itemize}
-\item \FALTA
-\end{itemize}
-
+\input{disenioFisico.tex}
 
 \end{document}
 

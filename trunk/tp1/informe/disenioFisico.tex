@@ -1,0 +1,30 @@
+\section{Diseño Físico}
+\subsection{Aclaraciones}
+\begin{itemize}
+	\item Vehiculo en reparación no se pone con un esquema relación sino que se pone la restricción del tipo de vehiculo en función de la fecha de ingreso a reparación. 
+	\item En la tabla \textbf{control} el campo \textit{resultadoTest} es de tipo bit ya que los test pueden estar aprobados o desaprobador. Es decir toma los valores $0$ y $1$, donde $1$ significa aprobado y $0$ significa desaprobado.
+	\item Los vehiculos pueden estar \textbf{en uso} o \textbf{en reparación}. En la tabla \textbf{vehiculo} se tiene un campo llamado \textit{EnUso}. Este campo es de tipo bit ya que toma solo dos valores: $1$ significa en uso y $0$ significa en reparación.
+	\item En todos los campos de tipo char, estos se tomaron de longitud 30.   
+\end{itemize}
+
+\subsection{Implementación}
+
+Para el presente trabajo se decidió utilizar el motor de base de datos SQL Server 2005. El mismo se encuentra disponible en las computadores de los laboratorios del departamento de computación por lo que en los mismos se podrá regenerar los scripts de creación, inserción y consultas entregados en el cd adjunto a este documento.
+
+\subsubsection{Consultas}
+// tipear con negrita las consultas y decir como se resolvieron
+
+\begin{enumerate}
+\item \textbf{Los recorridos para los cuales se usaron todas las rutas posibles registradas para ese recorrido, para viajes realizados el año pasado y recorridos asociados a más de una ruta}
+\item \textbf{El promedio de los viajes realizados por vehículo por año y el estado en que éste se encuentra}
+\item \textbf{Los choferes que han utilizado todos los vehículos de menos de dos años de antigüedad, en viajes del mismo semestre. }
+\end{enumerate}
+
+
+
+\subsubsection{Triggers}
+// decidir que triggers se implementaron y cómo se hicieron 
+
+\begin{itemize}
+\item \FALTA
+\end{itemize}
