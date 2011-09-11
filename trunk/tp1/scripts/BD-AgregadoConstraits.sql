@@ -8,7 +8,7 @@ alter table licencia add constraint fechaVencimientoMayorAFechaObtencion check (
 alter table vehiculo add constraint verificacionEnUso check ((enUso = 1 and fechaIngresoReparacion is null) or (enUso = 0 and fechaIngresoReparacion is not null))
 
 -- Restringe que un recorrido tenga igual direccion de origen y destino
-alter table recorrido add constraint direccionesDistintas check (not (calleOrig = calleDest and alturaOrig = alturaDest and codCiudadOrig = codCiudadDest))
+alter table recorrido add constraint direccionesDistintas check (not (codDirOrigen = codDirDestino))
 
 -- Si vehiculo enUno = 0, entonces en reparacion
 
