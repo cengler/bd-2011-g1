@@ -70,7 +70,7 @@
 \departamento{Departamento de Computacion}
 \materia{Base de Datos}
 \resumen{Tp1}
-\keys{MER, MR}
+\keys{MER, DER, MR, SQL, Base de Datos, Base de Datos Relacional}
 \titulo{Tp1}
 \subtitulo{Tp 1: Empresa de Transportes}
 \grupo{Numero de grupo: 1}
@@ -87,6 +87,19 @@
 
 \newpage
 
+\section{Introducción}
+Este trabajo presenta la solucion al Trabajo Practico ``Bases de Datos, Segundo Cuatrimestre de 2011''\footnote{Enunciado del Trabajo Practico \textit{TP Primera Parte-2c2011.pdf}}. En este documento presentamos las hipotesis, decisiones de diseño, y diseño fisico de la solución propuesta.
+
+La solucion se encuenta desarrollada con las siguientes metodologias y herramientas.
+
+\begin{itemize}
+\item Modelo de Entidad Relación y Modelo Relacional derivado.
+\item Detalle de los supuestos asumidos para la resolución del problema. (Hipotesis)
+\item Diseño físico correspondiente a la solución implementada. (En SQL Server 2005)
+\item Restricciones adicionales al modelo
+\item Código correspondiente a los stored procedures, triggers que se hayan implementado en la solución.
+\end{itemize}
+
 \section{Hipótesis}
 \begin{enumerate}
 	\item Una ruta es un camino posible para ir desde un punto a otro.
@@ -95,7 +108,9 @@
 	\item Consideramos que \textbf{estado} del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos en: ``en uso'' y ``en reparación''.
 \end{enumerate}
 
-\section{Decisiones de Diseño}
+\section{MER}
+
+\subsection{Decisiones de Diseño}
 
 \begin{enumerate}
 	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino.
@@ -147,16 +162,13 @@ Nos pareció mejor considerar los viajes realizados como una especialización de l
 \item $(Chofer/Viaje Planificado)/Control$ es una agregación pues no toda relacion $Chofer/Viaje Planificado$ tiene controles asociados.
 Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planificado$ y $Control$ y no a una de ellas en particular.
 
-
-
-
-
-
 \end{enumerate}
 
-\section{MER}
+\subsection{DER}
 
-\FALTA GRAFICO
+\begin{center}
+\includegraphics[height=0.95\textheight]{img/der.png}
+\end{center}
 
 \subsection{Restricciones}
 
