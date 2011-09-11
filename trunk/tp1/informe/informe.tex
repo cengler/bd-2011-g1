@@ -261,3 +261,17 @@ Vehiculo en reparación no se pone con un esquema relación sino que se pone la re
 \end{itemize}
 
 \end{document}
+
+
+justificacion de la ternaria:
+
+\item La ruta tiene asociado un clima por cada periodo del año. Como se menciono en las hipotesis el periodo son las estaciones del año.
+Para ello contamos con tres entidades: ruta, clima y estación. Estas tres siempres están vinculadas juntas. Es decir, para cada (ruta,clima) existe
+una instancia de estación, por cada (clima, estación) se vincula a una ruta y por cada par (ruta, estacion) hay un clima asociado. Por tal motivo
+es que decidimos modelarlo como una ternaria.
+
+\item Con lo que respecta al chofer y la licencia, nos pareció más acorde separarlas en dos entidad pese a que en los requerimientos no queda clara
+dicha separación. Lo realizamos así para mayor claridad.
+
+
+
