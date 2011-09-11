@@ -62,6 +62,7 @@
 \newcommand{\FALTA}{{\bf FALTA FALTA FALTA FALTA FALTA FALTA FALTA FALTA }}
 \def\var#1{\textsl{#1}}
 
+
 \begin{document}
 
 \universidad{Universidad de Buenos Aires}
@@ -88,11 +89,69 @@
 
 \section{Hipótesis}
 \begin{enumerate}
-	\item Una ruta es un camino posible para ir desde un punto a otro
-	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino
-	\item Contingencia es una entidad débil porque puede haber una cantidad arbitraria de ellas por cada viaje realizado(en contraposición a una lista de contingencias predefinidas ej:choque, bloqueo de ruta, control policial, etc) y las mismas no tienen sentido sin su viaje relacionado
-	\item Consideramos que estado del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos entre ``en uso'' y ``en reparación''
-	\item Con lo que respecta a las condiciones del año según el periodo, este último se tomo como las estaciones del año. Es decir invierno, otoño, primavera y verano.
+	\item Una ruta es un camino posible para ir desde un punto a otro.
+	\item Con lo que respecta a las condiciones del año según el periodo, este último se tomó como las estaciones del año. Es decir: invierno, otoño, primavera y verano.
+	\item No nos interesa discriminar el nombre del apellido de un chofer, pues no se cuenta con ningún requerimiento para realizar dicha separación(ej: alguna consulta para filtrar viajes por apellido del chofer).		
+	\item Consideramos que \textbf{estado} del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos en: ``en uso'' y ``en reparación''.
+\end{enumerate}
+
+\section{Decisiones de Diseño}
+
+\begin{enumerate}
+	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino.
+	\item Contingencia es una entidad débil porque puede haber una cantidad arbitraria de ellas por cada viaje realizado(en contraposición a una lista de contingencias predefinidas ej:choque, bloqueo de ruta, control policial, etc) y las mismas no tienen sentido sin su viaje relacionado.
+	\item La ruta tiene asociado un clima por cada periodo del año. Como se menciono en las hipotesis el periodo son las estaciones del año.\\ Para ello contamos con tres entidades: ruta, clima y estación. Estas tres siempres están vinculadas juntas. Es decir, para cada (ruta,clima) existe una instancia de estación, por cada (clima, estación) se vincula a una ruta y por cada par (ruta, estacion) hay un clima asociado. Por tal motivo es que decidimos modelarlo como una ternaria.
+	\item Con lo que respecta al chofer y la licencia, nos pareció más acorde separarlas en dos entidad pese a que en los requerimientos no queda clara dicha separación. Lo realizamos así para mayor claridad.
+	\item Con respecto al diseño de la entidad \textbf{Dirección} primero se optó por hacerla débil de la ciudad.			
+	
+\begin{center}
+\includegraphics[scale=0.50]{img/RecorridoDirDebil.png}
+\end{center}
+
+Al poner como clave primaria de \textbf{Direccion} su altura y nombre junto a la clave primaria de la ciudad, propagábamos estas tres claves como foráneas en otras entidad vinculadas.
+
+Luego optamos por dejar \textbf{Dirección} como una entidad fuerte con una clave primaria \textbf{codDir} para así evitar la propagación de claves y obtener un diseño más sencillo.
+
+\begin{center}
+\includegraphics[scale=0.50]{img/RecorridoDirFuerte.png}
+\end{center}
+
+Vale aclarar que este diseño admite tuplas duplicados con el mismo codDir, altura, nombre y código de ciudad, sin embargo podemos impedir dicha situación agregando una restricción adicional al DER.
+  
+\item Decidimos no guardar la historia de las reparaciones. Hubieramos podido hacerla de esta manera.
+
+\begin{center}
+\includegraphics[scale=0.50]{img/ReparacionConHistoria.png}
+\end{center}
+
+En este diseño hubieramos necesitado agregar restricciones para asegurar que para toda fecha posterior a $Vehiculo.fechaAlta$ el $Vehiculo$ debe tener \textbf{solo y exactamente una} $Situacion$
+
+Pero como no hay requerimientos explícitos por los cuales necesitemos guardar la historia, decidimos simplificar el diseño de la siguiente manera:
+
+\begin{center}
+\includegraphics[scale=0.50]{img/ReparacionSinHistoria.png}
+\end{center}
+
+\item Consideramos originalmente particionar los viajes en planificados y realizados, como se muestra en el siguiente diagrama:
+
+\begin{center}
+\includegraphics[scale=0.50]{img/viajePlanificado-Realizado.png}
+\end{center}
+
+Nos pareció mejor considerar los viajes realizados como una especialización de los planificados(todos los viajes son planificados y algunos de ellos además pueden ser realizados). Esto lo diseñamos como una relación de overlapping con una sola entidad llamada \textbf{Viaje Realizado}, describiendo que todos los viajes realizados heredan los mismos atributos que un viaje planificado, pero solo algunos viajes planificados tienen su correspondiente realizado.
+
+\begin{center}
+\includegraphics[scale=0.55]{img/viaje-Planificado-Realizado.png}
+\end{center}
+
+\item $(Chofer/Viaje Planificado)/Control$ es una agregación pues no toda relacion $Chofer/Viaje Planificado$ tiene controles asociados.
+Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planificado$ y $Control$ y no a una de ellas en particular.
+
+
+
+
+
+
 \end{enumerate}
 
 \section{MER}
@@ -262,16 +321,6 @@ Vehiculo en reparación no se pone con un esquema relación sino que se pone la re
 
 \end{document}
 
-
-justificacion de la ternaria:
-
-\item La ruta tiene asociado un clima por cada periodo del año. Como se menciono en las hipotesis el periodo son las estaciones del año.
-Para ello contamos con tres entidades: ruta, clima y estación. Estas tres siempres están vinculadas juntas. Es decir, para cada (ruta,clima) existe
-una instancia de estación, por cada (clima, estación) se vincula a una ruta y por cada par (ruta, estacion) hay un clima asociado. Por tal motivo
-es que decidimos modelarlo como una ternaria.
-
-\item Con lo que respecta al chofer y la licencia, nos pareció más acorde separarlas en dos entidad pese a que en los requerimientos no queda clara
-dicha separación. Lo realizamos así para mayor claridad.
 
 
 
