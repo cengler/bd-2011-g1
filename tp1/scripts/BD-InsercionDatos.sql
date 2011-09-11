@@ -41,28 +41,28 @@ insert into ciudad values (2, 'Colon - Pcia Entre Rios')
 insert into ciudad values (3, 'La Plata')
 
 -- Se insertan direcciones
---			    (calle , altura , codCiudad)
-insert into direccion values ('Echeverria' , 1234 , 1)
-insert into direccion values ('Moreno' , 457 , 2)
-insert into direccion values ('Cabildo' , 600, 1)
-insert into direccion values ('Juramento' , 750 , 3)
+--			    (codDireccion, calle , altura , codCiudad)
+insert into direccion values (1,'Echeverria' , 1234 , 1)
+insert into direccion values (2,'Moreno' , 457 , 2)
+insert into direccion values (3,'Cabildo' , 600, 1)
+insert into direccion values (4,'Juramento' , 750 , 3)
 
 -- Se insertan recorridos
---			(codRecorrido, nombre , calleOrig, alturaOrig, ciudadOrig, , calleDest, alturaDest, ciudadDest)
-insert into recorrido values (1 , 'Capital Federal - Colon ER' , 'Echeverria' , 1234 , 1 , 'Moreno' , 457 , 2)
-insert into recorrido values (2 , 'Colon ER - Capital Federal' , 'Moreno' , 457 , 2 , 'Echeverria' , 1234 , 1 )
-insert into recorrido values (3 , 'Buenos Aires - La Plata' , 'Cabildo' , 600 ,1 , 'Juramento' , 750 , 3 )
-insert into recorrido values (4 , 'La Plata - Buenos Aires' , 'Juramento' , 750 , 3 , 'Cabildo' , 600 , 1 )
+--			(codRecorrido, nombre , direccionOrig, direcctionDest)
+insert into recorrido values (1 , 'Capital Federal - Colon ER' , 1, 2 )
+insert into recorrido values (2 , 'Colon ER - Capital Federal' , 2, 3 )
+insert into recorrido values (3 , 'Buenos Aires - La Plata' , 4, 3 )
+insert into recorrido values (4 , 'La Plata - Buenos Aires' , 2, 1 )
 
 
 -- Se insetan viajes
---			(codViaje , fechaHoraPartida , fechaHoraLlegadaEst, nroPatente , codRecorrido, realizado)
-insert into viaje values (1, '2011-10-20 10:00:000' , '2011-10-20 20:00:000' , '555555' , 1 , 0)
-insert into viaje values (2, '2011-05-10 10:00:000' , '2011-05-10 20:00:000' , '555555' , 2 , 1)
-insert into viaje values (3, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 , 1)
-insert into viaje values (4, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 , 1)
-insert into viaje values (5, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 , 1)
-insert into viaje values (6, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 , 0)
+--			(codViaje , fechaHoraPartida , fechaHoraLlegadaEst, nroPatente , codRecorrido)
+insert into viajePlanificado values (1, '2011-10-20 10:00:000' , '2011-10-20 20:00:000' , '555555' , 1 )
+insert into viajePlanificado values (2, '2011-05-10 10:00:000' , '2011-05-10 20:00:000' , '555555' , 2 )
+insert into viajePlanificado values (3, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
+insert into viajePlanificado values (4, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
+insert into viajePlanificado values (5, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
+insert into viajePlanificado values (6, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
 
 
 
@@ -87,6 +87,7 @@ insert into viajeRealizado values (2 , '2011-05-10 22:00:000' , 1 , 2)
 insert into viajeRealizado values (3 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (4 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (5 , '2010-05-11 22:00:000' , 1, 3)
+insert into viajeRealizado values (6 , '2010-05-11 22:00:000' , 2, 3)
 
 
 
