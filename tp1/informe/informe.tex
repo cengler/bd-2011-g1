@@ -103,6 +103,7 @@ La solucion se encuenta desarrollada con las siguientes metodologias y herramien
 \section{Hipótesis}
 \begin{enumerate}
 	\item Una ruta es un camino posible para ir desde un punto a otro.
+	\item Un recorrido no puede comenzar y finalizar en el mismo lugar.
 	\item Con lo que respecta a las condiciones del año según el periodo, este último se tomó como las estaciones del año. Es decir: invierno, otoño, primavera y verano.
 	\item No nos interesa discriminar el nombre del apellido de un chofer, pues no se cuenta con ningún requerimiento para realizar dicha separación(ej: alguna consulta para filtrar viajes por apellido del chofer).		
 	\item Consideramos que \textbf{estado} del vehículo se refiere a una descripción general del mismo(ej:buen estado, averiado, abollado,...) en vez de referirse al discriminante que separa a los vehículos en: ``en uso'' y ``en reparación''.
@@ -173,21 +174,22 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \subsection{Restricciones}
 
 \begin{enumerate}
-	\item Para todo recorrido \var{r1}, no existe recorrido \var{r2} tal que r2 es distinto de \var{r1}, el destino de \var{r2} es distinto al de \var{r1} y el origen de \var{r2} es distinto al de \var{r1}.
+	\item Dado 2 recorridos con distinto codigo, su origen y destino no pueden ser los mismos. Es decir, no puede haber dos recorridos con distinto codigo.
 	\item Para todo recorrido, el origen no puede ser igual al destino
-	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido de ese viaje.
-	\item Para todo recorrido que tiene un viaje asociado, existe una ruta.
+	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido del viaje planificado.
+	\item Para todo recorrido que tiene un viaje planificado asociado, existe una ruta.
 	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.
 	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.
-	\item Para todo viaje planificado el vehiculo utilizado debe estar en uso.	
+	\item Para todo viaje planificado que no esta realizado el vehiculo utilizado debe estar en uso.	
 	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.
 	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento
 	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
 	\item Para toda ruta, hay un único clima para todo período definido
 	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  
-	\item Consideramos período como estación del año, osea: verano, invierno, otoño y primavera.
+	\item La entidad Esación puede tomar los valores, \textit{verano}, \textit{invierno}, \textit{otoño} y \textit{primavera}
 \end{enumerate}
 
+\newpage
 
 \section{MR}
 
@@ -221,23 +223,23 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \entidadCK{(nroContingencia, codViaje)}
 \entidadFK{codViaje}
 
-\entidad{Direccion}{\pk{calle}, \pk{altura}, \pfk{codCiudad}}
-\entidadPK{(calle, altura, codCiudad)}
-\entidadCK{(calle, altura, codCiudad)}
+\entidad{Direccion}{\pk{codDireccion}, calle, altura, \fk{codCiudad}}
+\entidadPK{codDireccion}
+\entidadCK{codDireccion}
 \entidadFK{codCiudad}
 
 \entidad{Ciudad}{\pk{codCiudad}, nombre}
 \entidadPK{codCiudad}
 \entidadCK{codCiudad}
 
-\entidad{Recorrido}{\pk{codRecorrido}, nombre, \fk{calleOrig}, \fk{alturaOrig}, \fk{codCiudadOrig}, \fk{calleDest}, \fk{alturaDest}, \fk{codCiudadDest}}
+\entidad{Recorrido}{\pk{codRecorrido}, nombre, \fk{codDirOrigien}, \fk{codDirDestino}}
 \entidadPK{codRecorrido}
 \entidadCK{codRecorrido}
-\entidadFK{(calleOrig, alturaOrig, codCiudadOrig), (calleDest, alturaDest, codCiudadDest)}
+\entidadFK{codDirOrigien, codDirDestino}
 
-\entidad{Ruta}{\pk{codRuta}, \pfk{codRecorrido}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
-\entidadPK{(codRuta, codRecorrido)}
-\entidadCK{(codRuta, codRecorrido)}
+\entidad{Ruta}{\pk{numRuta}, \pfk{codRecorrido}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
+\entidadPK{(numRuta, codRecorrido)}
+\entidadCK{(numRuta, codRecorrido)}
 \entidadFK{codRecorrido}
 
 \entidad{Estado}{\pk{codEstado}, descripcion}
@@ -249,15 +251,15 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \entidadCK{nroPatente}
 \entidadFK{codEstado}
 
-\entidad{Viaje}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codRecorrido}, realizado}
+\entidad{ViajePlanificado}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codRecorrido}, realizado}
 \entidadPK{codViaje}
 \entidadCK{codViaje}
 \entidadFK{nroPatente,codRecorrido}
 
-\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{codRuta}, \fk{codRutaRecorrido}}
+\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{numRuta}, \fk{codRutaRecorrido}}
 \entidadPK{codViaje}
 \entidadCK{codViaje}
-\entidadFK{codViaje, (codRuta, codRutaRecorrido)}
+\entidadFK{codViaje, (numRuta, codRutaRecorrido)}
 
 \entidad{Participa}{\pfk{codRecorrido}, \pfk{codRuta}, \pfk{nombreEstacion}, \fk{codClima}}
 \entidadPK{((codRecorrido, codRuta), nombreEstacion)}
@@ -323,6 +325,7 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 
 Vehiculo en reparación no se pone con un esquema relación sino que se pone la restricción del tipo de vehiculo en función de la fecha de ingreso a reparación. 
 
+\newpage
 
 \section{Diseño Físico}
 \subsection{Aclaraciones}
