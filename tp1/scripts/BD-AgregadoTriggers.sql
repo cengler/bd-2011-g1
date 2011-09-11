@@ -11,7 +11,7 @@ AS
 /* Chequeamos que enUso del vehiculo asociado al viaje sea distinto a 0, para que sea una insercion valida. */
 DECLARE @enUso bit
 SELECT @enUso = v.enUso
-FROM vehiculo v INNER JOIN viajePlanificado vp ON v.nroPatente = vp.nroPatente
+FROM vehiculo v INNER JOIN inserted vp ON v.nroPatente = vp.nroPatente
 IF @enUso = 0 
 BEGIN
    RAISERROR (''No se puede insertar un viaje planificado asociado a un vehiculo en reparacion.'', 16, 1)
@@ -28,7 +28,7 @@ FOR update
 AS
 /* Chequeamos si existe un viaje realizado para el viaje planificado. Si es así, no permitimos la actualización.*/
 
-if exists (select * from viajeRealizado vr inner join viajePlanificado vp on vr.codViaje = vp.codViaje)
+if exists (select * from viajeRealizado vr inner join inserted vp on vr.codViaje = vp.codViaje)
 BEGIN
    RAISERROR (''No se puede modificar el viaje realizado.'', 16, 1)
    ROLLBACK TRANSACTION
@@ -42,7 +42,7 @@ ON vehiculo
 FOR update
 AS
 /* Chequeamos si el vehiculo tiene un viaje planificado asociado y no un viaje realizado. Si es así, no permitimos la actualizacion.*/
-if	exists (select * from vehiculo v where enUso=0 and
+if	exists (select * from inserted v where enUso=0 and
 		exists(	select * from viajePlanificado vp 
 				where vp.nroPatente = v.nroPatente and 
 				not

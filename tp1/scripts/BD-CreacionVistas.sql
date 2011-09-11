@@ -27,10 +27,50 @@ join vehiculo on auxQuery.nroPatente = vehiculo.nroPatente
 join estado on vehiculo.codEstado = estado.codEstado)')
 
 
+/*
+	Los choferes que han utilizado todos los vehículos de menos de dos años de antigüedad, en viajes del último semestre.
+*/
+
+exec ('CREATE view chofer6MVehiculo2A as
+select v.nroDocumento, v.nomApe from viajesChoferesUltimos6Meses v where exists
+(select 1 from antiguedadXVehiculo where antiguedadXVehiculo.antiguedad<2 having count(*)=v.cantVehiculos)')
+
+/*
+	Lista los choferes y cantidad de vehiculos distintos que manejó cada chofer en los ultimos 6 meses.
+*/
+exec ('create view viajesChoferesUltimos6Meses as
+select nroDocumento, nomApe, count(*) as cantVehiculos from
+	(	select distinct c.nroDocumento, c.nomApe, vp.nroPatente
+		from chofer c join conduce co on co.nroDocumento=c.nroDocumento join viajePlanificado vp on vp.codViaje=co.codViaje 
+		where exists (select 1 from viajesUltimos6Meses v6m where v6m.codViaje=vp.codViaje)
+	) as auxQuery
+group by nroDocumento, nomApe')
+
+
+/*
+	Todos los vehiculos usados por cada chofer en los ultimos 6 meses.
+*/
+
+
+exec ('create view viajesUltimos6Meses as
+select * from patenteXviajesRealizados where dateadd(month, 6, fechaHoraLlegada) > getdate() ')
+
+/*
+	Viajes planificados y realizados y patente del vehiculo que realizó el viaje
+*/
+
+exec ('create view patenteXviajesRealizados as (select vr.codViaje,vr.fechaHoraLlegada, vp.nroPatente as patente 
+from viajePlanificado vp inner join viajeRealizado vr on vp.codViaje = vr.codviaje)')
 
 
 
-
+/*
+	Creamos una vista que devuelve el numero de patente y la antiguedad de los vehiculos
+*/
+exec ('create view antiguedadXVehiculo as select nroPatente , (DATEDIFF(yy, fechaAlta, GETDATE()) -
+CASE WHEN MONTH(fechaAlta) > MONTH(GETDATE()) OR (MONTH(fechaAlta) =
+MONTH(GETDATE()) AND DAY(fechaAlta) > DAY(GETDATE()))
+THEN 1 ELSE 0 END) as antigueadad from vehiculo')
 
 /*
 Se crea la vista cantRutasVR devuelve el nombre del recorrido, el codigo y la cantidad de rutas asociadas
@@ -61,3 +101,6 @@ CREATE view cantViajesXVehiculoXAnio as
 	from viajeRealizado vR join viajePlanificado vP on vR.codViaje = vP.codViaje
 	join vehiculo on vP.nroPatente = vehiculo.nroPatente
 	group by vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida))')
+
+
+
