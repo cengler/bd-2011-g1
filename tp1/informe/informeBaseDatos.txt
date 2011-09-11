@@ -1,0 +1,11 @@
+Diseño físico de la base de datos 
+Basándonos en el Modelo Relacional confeccionado se armaron scripts en SQL Server 2005 para la creación de la base de datos BDtp1Grupo1 y sus objetos necesarios para cumplir con los requerimientos del enunciado.
+En la entrega digital del trabajo práctico se incluyen los siguientes scripts:
+BD-CreacionBase: Solamente crea la base de datos.
+BD-CreacionTablas: Crea las tablas, las primary key y foreign key de cada una de las tablas.
+BD-AgregadoConstraits: Crea las constraints necesarias entre campos de la misma tabla.
+BD-AgregadoTriggers: Crea los triggers para evitar inconsistencias debido al modelo realizado.
+BD-CreacionVistas: Crea vistas para resolver requerimientos.
+BD-InsercionDatos: Inserta datos iniciales para testear la integridad de estructura de la base de datos.
+
+
