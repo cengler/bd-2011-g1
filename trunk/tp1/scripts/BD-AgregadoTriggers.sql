@@ -50,6 +50,6 @@ if	exists (select * from inserted v where enUso=0 and
 				)
 	)
 BEGIN
-   RAISERROR (''No se puede modificar el viaje realizado.'', 16, 1)
+   RAISERROR (''No se puede configurar un vehiculo como en reparacion que está asignado a un viaje planificado.'', 16, 1)
    ROLLBACK TRANSACTION
 END')
