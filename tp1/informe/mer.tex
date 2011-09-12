@@ -63,17 +63,17 @@ Además $Control$ es una Entidad asociada a la interrelacion entra $Vaje Planific
 \subsection{Restricciones}
 
 \begin{enumerate}
-	\item Dado 2 recorridos con distinto codigo, su origen y destino no pueden ser los mismos. Es decir, no puede haber dos recorridos ``iguales''con distinto código.
-	\item Para todo recorrido, el origen no puede ser igual al destino
-	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido del viaje planificado.
-	\item Para todo recorrido que tiene un viaje planificado asociado, existe una ruta.
-	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.
-	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.
-	\item Para todo viaje planificado que no esta realizado el vehiculo utilizado debe estar en uso.	
-	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.
-	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento
-	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia
-	\item Para toda ruta, hay un único clima para todo período definido
-	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  
-	\item La entidad Esación puede tomar los valores, \textit{verano}, \textit{invierno}, \textit{otoño} y \textit{primavera}
+	\item Dado 2 recorridos con distinto codigo, su origen y destino no pueden ser los mismos. Es decir, no puede haber dos recorridos ``iguales''con distinto código. \label{MER1}
+	\item Para todo recorrido, el origen no puede ser igual al destino \label{MER2}
+	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido del viaje planificado.\label{MER3}
+	\item Para todo recorrido que tiene un viaje planificado asociado, existe una ruta.\label{MER4}
+	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3 y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.\label{MER5}
+	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.\label{MER6}
+	\item Para todo viaje planificado que no esta realizado el vehiculo utilizado debe estar en uso.\label{MER7}	
+	\item Para todo vehiculo en reparacion la fecha de ingreso es mayor a la fecha de alta.\label{MER8}
+	\item Para toda licencia, la fecha de obtencion es menor a la fecha de vencimiento \label{MER9}
+	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia \label{MER10}
+	\item Para toda ruta, hay un único clima para todo período definido \label{MER11}
+	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  \label{MER12}
+	\item La entidad Esación puede tomar los valores, \textit{verano}, \textit{invierno}, \textit{otoño} y \textit{primavera} \label{MER13}
 \end{enumerate}

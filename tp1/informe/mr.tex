@@ -121,27 +121,32 @@
 	\item $Vehiculo.enUso$ toma valores booleanos (solo enUso o noEnUso)
 	\item $\forall r1, r1 \in Recorrido (\not\exists r2, r2 \in Recorrido (r1.codRecorrido \neq r2.codRecorrido$  $\wedge$ \\
 	$r2.codDirDestino = r1.codDirDestino$ $\wedge$   \\
-	$r2.codDirOrigen = r1.codDirOrigen))$
+	$r2.codDirOrigen = r1.codDirOrigen))$ \footnote{Ver restricción \ref{MER1} del MER} 
 	\item $Recorrido.codDirOrigen \neq Recorrido.codDirDestino$	
-	\item $\forall v1, v1 \in ViajeRealizado(\exists rut1, rut1 \in Ruta(rut1.codRuta = v1.codRuta \wedge v1.codRecorrido = rut1.codRecorrido))$
+	\footnote{Ver restricción \ref{MER2} del MER}
+	\item $\forall v1, v1 \in ViajeRealizado(\exists rut1, rut1 \in Ruta(rut1.codRuta = v1.codRuta \wedge v1.codRecorrido = rut1.codRecorrido))$ 
+	\footnote{Ver restricción \ref{MER3} del MER}
 	\item $\forall rec, vp( rec \in Recorrido \wedge vp \in ViajePlanificado \wedge vp.codRecorrido = rec.codRecorrido \Rightarrow \exists rut,rut \in Ruta \wedge rut.codRecorrido = rec.codRecorrido)$
-	
+\footnote{Ver restricción \ref{MER4} del MER}	
 	% vincular los dos siguientes a la restrccion 5 del MER
 	\item 	$\not\exists c1,c2,c3,c4 (c1,c2,c3,c4 \in Conduce \wedge 	c1.codViaje = c2.codViaje = c3.codViaje = c4.codViaje )$
+	\footnote{Ver restricción \ref{MER5} del MER}
 	\item 	$\forall v ( v \in ViajePlanificado \wedge v.fechaHoraLlegadaEst > v.fechaHoraPartida )$
-	 
+	\footnote{Ver restricción \ref{MER5} del MER}
 	\item $\forall vr \in ViajeRealizado ( \exists vp \in ViajePlanificado (vr.codViaje = vp.codViaje \wedge vr.fechaHoraLlegada > vp.fechaHoraPartida))$
-
+	\footnote{Ver restricción \ref{MER6} del MER}
 	\item $(\forall vp \in ViajePlanificado \wedge \not\exists vr \in ViajeRealizado vr.codViaje=vp.codViaje) \Rightarrow \exists veh \in Vehiculo \wedge veh.nroPatente = vp.nroPatente \wedge veh.enUso = true$ 
-
+	\footnote{Ver restricción \ref{MER7} del MER}
 	\item $\forall veh \in VehiculoEnReparacion \wedge veh.fechaIngresoReparacion > veh.fechaAlta$
-
+\footnote{Ver restricción \ref{MER8} del MER}
 	\item $\forall lic \in Licencia (lic.fechaObtencion < lic.fechaVencimiento)$
+	\footnote{Ver restricción \ref{MER9} del MER}
 	\item $\forall cho,lic ( cho \in Chofer \wedge lic \in Licencia \wedge cho.nroLicencia = lic.nroLicencia \wedge cho.fechaNac < lic.fechaObtencion)$
-	
+	\footnote{Ver restricción \ref{MER10} del MER}
 	\item $\forall r1,est , r1 \in Ruta \wedge est \in Estacion (\exists p \in Participa \wedge p.nroRuta = r1.nroRuta \wedge p.codRecorrido = r1.codRecorrido \wedge est.nombreEstacion = p.nombreEstacion )$	
-	
+	\footnote{Ver restricción \ref{MER11} del MER}
 	\item $\forall c \in Control \exists vp,cond  vp \in ViajePlanificado  \wedge cond \in Conduce \wedge cond.codViaje = vp.codViaje \wedge cond.codControl = c.codControl \wedge vp.fechaHoraPartida  < c.fechaControl$
-
+\footnote{Ver restricción \ref{MER12} del MER}
 \item $\forall est \in Estacion (est.nombreEstacion ='Verano' \vee est.nombreEstacion ='Invierno' \vee est.nombreEstacion ='Otonio' \vee est.nombreEstacion ='Primavera')$
+\footnote{Ver restricción \ref{MER13} del MER}
 \end{enumerate}
