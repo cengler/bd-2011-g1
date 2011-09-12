@@ -17,7 +17,7 @@ insert into chofer values (30450671 , '1984-05-30' , 'Armando Estaban Kito' , 'U
 insert into chofer values (30450673 , '1980-09-25' , 'Fredderic Bruselas' , 'Balcarce 765' , 43256787 , 4 )
 insert into chofer values (30450674 , '1979-07-15' , 'Brian May' , 'Laprida 4563' , 47875544, 5 )
 insert into chofer values (30450675 , '1975-02-10' , 'Roger Taylor' , 'Santa fe 345' , 48384475, 6 )
-insert into chofer values (30450672 , '1983-06-12' , 'John Deacon' , 'Cordoba 2345' , 45458875 , 3 )
+insert into chofer values (30450672 , '1983-06-12' , 'John Carretera' , 'Cordoba 2345' , 45458875 , 3 )
 
 -- Se insertan datos en la tabla Estado
 --			(codEstado, descripcion)
@@ -30,9 +30,11 @@ insert into estado values (6 , 'Malo')
 insert into estado values (7 , 'Muy Malo')
 
 -- Se insertan datos de Vehiculos
---			(nroPatente, marca, modelo, capacidad, fechaAlta, codEstado , enUso , fechaIngresoReparacion)
-insert into vehiculo values (333333 , 'Mercedes Benz' , 'MB 1328' ,  80 , '2009-01-15' , 1 , 0 , '2011-06-10')
-insert into vehiculo values (555555 , 'Mercedes Benz' , 'MB 1328' ,  80 , '2011-01-15' , 1 , 1 , null)
+--			(nroPatente, modelo, marca, capacidad, fechaAlta, codEstado , enUso , fechaIngresoReparacion)
+insert into vehiculo values (222222 , 'Ka' , 'Ford' ,  4 , '2011-01-15' , 1 , 0 , '2011-09-11')
+insert into vehiculo values (333333 , 'MB 1328' , 'Mercedes Benz' ,  80 , '2009-01-15' , 1 , 0 , '2011-06-10')
+insert into vehiculo values (555555 , '458' , 'Ferrari' ,  2 , '2011-01-15' , 1 , 1 , null)
+
 
 -- Se insertan ciudades
 --			(codCiudad , nombre)
@@ -46,6 +48,7 @@ insert into direccion values (1,'Echeverria' , 1234 , 1)
 insert into direccion values (2,'Moreno' , 457 , 2)
 insert into direccion values (3,'Cabildo' , 600, 1)
 insert into direccion values (4,'Juramento' , 750 , 3)
+
 
 -- Se insertan recorridos
 --			(codRecorrido, nombre , direccionOrig, direcctionDest)
@@ -63,14 +66,22 @@ insert into viajePlanificado values (3, '2010-05-10 10:00:000' , '2010-05-11 20:
 insert into viajePlanificado values (4, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
 insert into viajePlanificado values (5, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
 insert into viajePlanificado values (6, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
-
+insert into viajePlanificado values (7, '2011-09-08 10:00:000' , '2011-09-11 20:00:000' , '222222' , 3 )
+insert into viajePlanificado values (8, '2011-09-09 10:00:000' , '2011-09-10 20:00:000' , '222222' , 3 )
 
 
 -- Se insertan datos en la tabla Conduce
 --			(nroDocumento, codViaje)
 insert into conduce values (30450670 ,1)
 insert into conduce values (30450671 ,2)
-
+insert into conduce values (30450670 ,3)
+insert into conduce values (30450670 ,4)
+insert into conduce values (30450670 ,5)
+insert into conduce values (30450670 ,6)
+insert into conduce values (30450671 ,8)
+insert into conduce values (30450672 ,2)
+insert into conduce values (30450672 ,3)
+insert into conduce values (30450672 ,7)
 
 
 -- Se insertan datos en la tabla ruta
@@ -88,7 +99,8 @@ insert into viajeRealizado values (3 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (4 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (5 , '2010-05-11 22:00:000' , 1, 3)
 insert into viajeRealizado values (6 , '2010-05-11 22:00:000' , 2, 3)
-
+insert into viajeRealizado values (7 , '2011-09-11 22:00:000' , 2, 3)
+insert into viajeRealizado values (8 , '2011-09-11 22:00:000' , 2, 3)
 
 
 

@@ -48,9 +48,9 @@ por cada año
 */
 exec ('
 CREATE view cantViajesXVehiculoXAnio as 
-(select vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida) as anio, count(vehiculo.nroPatente) as viajesXAnio
+(select vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida) as anio, count(vP.codViaje) as viajesXAnio
 	from viajeRealizado vR join viajePlanificado vP on vR.codViaje = vP.codViaje
-	join vehiculo on vP.nroPatente = vehiculo.nroPatente
+	right join vehiculo on vP.nroPatente = vehiculo.nroPatente
 	group by vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida))')
 
 
@@ -73,7 +73,7 @@ El promedio de viajes realizados por vehículo por año y el estado en que este se
 exec ('create view promedioEstadoXVehiculo as (select auxQuery.nroPatente, auxQuery.promedioXAnio, estado.descripcion
 from (
 	-- Este subquery devuelve el promedio de viajes x anio para cada vehiculo
-	select auxView.nroPatente, AVG(auxView.viajesXAnio) as promedioXAnio
+	select auxView.nroPatente, AVG(cast(auxView.viajesXAnio as money)) as promedioXAnio
 	from cantViajesXVehiculoXAnio as auxView
 	group by auxView.nroPatente
 ) as auxQuery
