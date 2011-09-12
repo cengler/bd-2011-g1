@@ -33,25 +33,25 @@ ViajePlanificado: Representa un viaje planificado que pudo o no haber sido reali
 Conduce: Relaciona un viaje con N choferes.
 Control: Representa el control realizado a un chofer en particular para un determinado viaje y su resultado, es decir, si fue aprobado o no. 
 TipoTest: Representa los tipos de test que se le puede hacer a los choferes asignados a un viaje previo a la fecha de partida del mismo. Por ejemplo: alcoholemia, vista, etc.
-Contingencia: Representa los posibles eventos que pueda surgir un viaje qe ya llegó a destino.
+Contingencia: Representa los posibles eventos que pueda surgir un viaje que ya llegó a destino.
 Direccion: Representa una calle y una altura, va a representar una punto de partida y de llegada para la tabla recorrido.
-Ciudad: Representa una ciudad para la cual se defiriniran N registros en la tabla direccion.
+Ciudad: Representa una ciudad para la cual se definirán N registros en la tabla direccion.
 Recorrido: Es una tabla que vincula dos direcciones, una de origen y otra de destino.
 Ruta: Esta tabla contiene un registro por cada ruta posible para un recorrido.
 Estado: Refleja los posibles estados de un vehiculo.
 Vehiculo: Esta tabla representa todos los vehiculos, tanto en uso como en reparación.
 ViajeRealizado: Tabla relacionada con la tabla ViajePlanificado, contiene los datos propios de un viaje que ya fue realizado.
-Participa: Realciona las tablas Clima, Estacion y Ruta. Para cada Ruta y cada Estacion debe haber un registro con el Clima de dicha Ruta en dicha Estacion.
+Participa: Relaciona las tablas Clima, Estacion y Ruta. Para cada Ruta y cada Estacion debe haber un registro con el Clima de dicha Ruta en dicha Estacion.
 Estacion: Representa las 4 estaciones del año.
 Clima: Representa los posibles climas.
 
 Se decidió crear una sola tabla para representar todos los vehículos (tabla vehiculo), tanto los que estén en reparación como los que estén en uso, ya que la única diferencia entre ellos es un campo de tipo fecha.
 En este caso, como la herencia de vehiculo a vehiculoEnUso y vehiculoEnReparacion es dijunta se utiliza un campo, cuyo nombre es enUso, que admite 2 valores (0 si el vehiculo está en reparación y 1 si el vehiculo esta en uso).
-Luego, a traves de una constraint en la tabla, restringimos que si un vehiculo tiene un 0 en el campo enUso entonces debe tener fecha de ingreso a reparacion (campo fechaIngresoReparacion) y esta fecha debe ser posterior a la fecha de alta del vehiculo (fechaAlta). 
+Luego, a través de un constraint en la tabla, restringimos que si un vehiculo tiene un 0 en el campo enUso entonces debe tener fecha de ingreso a reparacion (campo fechaIngresoReparacion) y esta fecha debe ser posterior a la fecha de alta del vehiculo (fechaAlta). 
 
 2- BD-AgregadoConstraits: 
 Se agregaron constraints en las tablas de licencia, en la de vehiculo y la tabla recorrido que restringe el ingreso de datos comparando datos en campos de la misma tabla.
-Las constraints que se incluyeron en las tablas con las sigueintes:
+Las constraints que se incluyeron en las tablas son las sigueintes:
 A- alter table licencia add constraint fechaVencimientoMayorAFechaObtencion check (fechaVencimiento > fechaObtencion)
 	Evita tener licencias con fecha de vencimiento menor a la fecha de obtencion
 
@@ -63,11 +63,11 @@ C- alter table recorrido add constraint direccionesDistintas check (not (codDirO
 	
 	
 3- BD-AgregadoTriggers:
-Se agregaron los siguientes triggers para validar la insersión y actualización de datos en viajePlanificado y la actualizacion de vehiculos. 
+Se agregaron los siguientes triggers para validar la inserción y actualización de datos en viajePlanificado y la actualización de vehiculos. 
 Estos triggers cumplen con el requerimiento de "Implementación de alguna restricción adicional que surja del diseño."
-Las siguientes son algunas de las restricciones que se podrían hacer en la estructura de base de datos mediante triggers.
-Hay otras, por ejemplo que no se hicieron como verificar que cada vez que se asocia un chofer a un viaje planificado a traves de la tabla Conduce no haya 3 choferes ya asociados a ese viaje, que no fueron implementadas.
-Con el siguiente script se valida que el viaje que se esté insertando se esté asociando a un vehiculo que esté en uso y no en reparación.
+Hay otras restricciones(ej: que al asociar un chofer a un viaje planificado a través de la tabla Conduce no haya 3 choferes ya asociados a ese viaje) que no fueron implementadas.
+
+Con el siguiente script se valida que el viaje que se esté insertando esté asociado a un vehiculo que en uso.
 
 exec ('CREATE TRIGGER nuevoViaje
 ON viajePlanificado
@@ -100,7 +100,7 @@ END')
 
 
 
-Con el siguiente script se valida que el vehiculo que se este modificando, pasando a estar en reparacion, no tenga asociado un viaje planificado que todavia no se haya realizado.
+Con el siguiente script se valida que el vehiculo que se esté modificando, pasando a estar en reparación, no tenga asociado un viaje planificado que todavía no se haya realizado.
 /*
 	Impide poner un auto en reparacion si tiene asociado un viaje planificado que todavía no se realizó
 */
@@ -117,7 +117,7 @@ if	exists (select * from inserted v where enUso=0 and
 				)
 	)
 BEGIN
-   RAISERROR (''No se puede modificar el viaje realizado.'', 16, 1)
+   RAISERROR (''No se puede configurar un vehiculo como en reparacion que está asignado a un viaje planificado.'', 16, 1)
    ROLLBACK TRANSACTION
 END')
 
@@ -136,7 +136,7 @@ on crxr.recorridoRutas = crraa.codRutaRecorrido
 where cantRutasRec = rutasRecorridasAnioAnt)')
 
 /*
-	Se crea la vista cantRutasXRecorrido devuelve el codigo de recorrido y la cantidad de rutas distintas que se utilizaron
+	Se crea la vista cantRutasXRecorrido devuelve el código de recorrido y la cantidad de rutas distintas que se utilizaron
 	en los viajes del año anterior.
 */
 exec ('create view cantRutasXRecorrido as 
@@ -158,13 +158,13 @@ as rutasTransitadasXRec  group by codRUtaRecorrido)')
 
 
 Además, se implementó la vista "promedioEstadoXVehiculo" para cumplir con el requerimiento de listar "El promedio de viajes realizados por vehículo por año y el estado en que éste se encuentra."
-Esta vista utiliza la vista auxiliare "cantViajesXVehiculoXAnio" que devuelve la cantidad de viajes de cada vehiculo por cada año de actividad. 
+Esta vista utiliza la vista auxiliar "cantViajesXVehiculoXAnio" que devuelve la cantidad de viajes de cada vehiculo por cada año de actividad. 
 Debajo se adjuntan las implementaciones de cada una de las vistas:
 
 exec ('create view promedioEstadoXVehiculo as (select auxQuery.nroPatente, auxQuery.promedioXAnio, estado.descripcion
 from (
 -- Este subquery devuelve el promedio de viajes x anio para cada vehiculo
-	select auxView.nroPatente, AVG(auxView.viajesXAnio) as promedioXAnio
+	select auxView.nroPatente, AVG(cast(auxView.viajesXAnio as money)) as promedioXAnio
 	from cantViajesXVehiculoXAnio as auxView
 	group by auxView.nroPatente
 ) as auxQuery
@@ -177,7 +177,7 @@ join estado on vehiculo.codEstado = estado.codEstado)')
 */
 exec ('
 CREATE view cantViajesXVehiculoXAnio as 
-(select vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida) as anio, count(vehiculo.nroPatente) as viajesXAnio
+(select vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida) as anio, count(vP.codViaje) as viajesXAnio
 	from viajeRealizado vR join viajePlanificado vP on vR.codViaje = vP.codViaje
 	join vehiculo on vP.nroPatente = vehiculo.nroPatente
 	group by vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida))')
