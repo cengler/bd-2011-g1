@@ -1,0 +1,79 @@
+\section{MER}
+
+\subsection{Decisiones de Diseño}
+
+\begin{enumerate}
+	\item Ruta es débil en relación a un recorrido porque sólo sirve como una forma de ir desde el origen del recorrido a su destino.
+	\item Contingencia es una entidad débil porque puede haber una cantidad arbitraria de ellas por cada viaje realizado (en contraposición a una lista de contingencias predefinidas ej:choque, bloqueo de ruta, control policial, etc.) y las mismas no tienen sentido sin su viaje relacionado.
+	\item La ruta tiene asociado un clima por cada periodo del año. Como se menciono en las hipótesis el periodo son las estaciones del año.\\ Para ello contamos con tres entidades: ruta, clima y estación. Estas tres siempre están vinculadas juntas. Es decir, para cada (ruta, clima) existe una instancia de estación, por cada (clima, estación) se vincula a una ruta y por cada par (ruta, estación) hay un clima asociado. Por tal motivo es que decidimos modelarlo como una ternaria.
+	\item Con lo que respecta al chofer y la licencia, nos pareció más acorde separarlas en dos entidades pese a que en los requerimientos no queda clara dicha separación. Lo realizamos así para mayor claridad.
+	\item Con respecto al diseño de la entidad \textbf{Dirección} primero se optó por hacerla débil de la ciudad.			
+	
+\begin{center}
+\includegraphics[scale=0.50]{img/RecorridoDirDebil.png}
+\end{center}
+
+Al poner como clave primaria de \textbf{Direccion} su altura y nombre junto a la clave primaria de la ciudad, propagábamos estas tres claves como foráneas en otras entidades vinculadas.
+
+Luego optamos por dejar \textbf{Dirección} como una entidad fuerte con una clave primaria \textbf{codDir} para así evitar la propagación de claves y obtener un diseño más sencillo.
+
+\begin{center}
+\includegraphics[scale=0.50]{img/RecorridoDirFuerte.png}
+\end{center}
+
+Vale aclarar que este diseño admite tuplas duplicados con el mismo codDir, altura, nombre y código de ciudad, sin embargo podemos impedir dicha situación agregando una restricción adicional al DER.
+  
+\item Decidimos no guardar la historia de las reparaciones. Hubiéramos podido hacerla de esta manera.
+
+\begin{center}
+\includegraphics[scale=0.50]{img/ReparacionConHistoria.png}
+\end{center}
+
+En este diseño hubiéramos necesitado agregar restricciones para asegurar que para toda fecha posterior a $Vehiculo.fechaAlta$ el $Vehiculo$ debe tener \textbf{solo y exactamente una} $Situacion$
+
+Pero como no hay requerimientos explícitos por los cuales necesitemos guardar la historia, decidimos simplificar el diseño de la siguiente manera:
+
+\begin{center}
+\includegraphics[scale=0.50]{img/ReparacionSinHistoria.png}
+\end{center}
+
+\item Consideramos originalmente particionar los viajes en planificados y realizados, como se muestra en el siguiente diagrama:
+
+\begin{center}
+\includegraphics[scale=0.50]{img/viajePlanificado-Realizado.png}
+\end{center}
+
+Nos pareció mejor considerar los viajes realizados como una especialización de los planificados (todos los viajes son planificados y algunos de ellos además pueden ser realizados). Esto lo diseñamos como una relación de overlapping con una sola entidad llamada \textbf{Viaje Realizado}, describiendo que todos los viajes realizados heredan los mismos atributos que un viaje planificado, pero solo algunos viajes planificados tienen su correspondiente realizado.
+
+\begin{center}
+\includegraphics[scale=0.55]{img/viaje-Planificado-Realizado.png}
+\end{center}
+
+\item $(Chofer/Viaje Planificado)/Control$ es una agregación pues no toda relación $Chofer/Viaje Planificado$ tiene controles asociados.
+Además $Control$ es una Entidad asociada a la interrelación entre $Vaje Planificado$ y $Control$ y no a una de ellas en particular.
+
+\end{enumerate}
+
+\subsection{DER}
+
+\begin{center}
+\includegraphics[height=0.95\textheight]{img/der.png}
+\end{center}
+
+\subsection{Restricciones}
+
+\begin{enumerate}
+	\item Dado 2 recorridos con distinto código, su origen y destino no pueden ser los mismos. Es decir, no puede haber dos recorridos ``iguales'' con distinto código. \label{MER1}
+	\item Para todo recorrido, el origen no puede ser igual al destino \label{MER2}
+	\item El recorrido de la ruta de todo viaje realizado debe ser igual al recorrido del viaje planificado.\label{MER3}
+	\item Para todo recorrido que tiene un viaje planificado asociado, existe una ruta.\label{MER4}
+	\item Para todo viaje la cantidad de conductores debe ser entre 1 y 3, y la fechaHoraLlegadaEst debe ser mayor a fechaHoraPartida.\label{MER5}
+	\item Para todo viaje realizado la fechaHoraLlegada debe ser mayor a fechaHoraPartida.\label{MER6}
+	\item Para todo viaje planificado que no está realizado el vehículo utilizado debe estar en uso.\label{MER7}	
+	\item Para todo vehículo en reparación la fecha de ingreso es mayor a la fecha de alta.\label{MER8}
+	\item Para toda licencia, la fecha de obtención es menor a la fecha de vencimiento \label{MER9}
+	\item Para todo chofer, la fecha de nacimiento es menor que la fecha de obtención de su licencia \label{MER10}
+	\item Para toda ruta, hay un único clima para todo período definido \label{MER11}
+	\item Para todo control, su fecha de realización debe ser anterior a la fecha de partida del viaje que se está controlando  \label{MER12}
+	\item La entidad Estación puede tomar los valores, \textit{verano}, \textit{invierno}, \textit{otoño} y \textit{primavera} \label{MER13}
+\end{enumerate}

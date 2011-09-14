@@ -1,0 +1,152 @@
+\section{MR}
+
+\subsection{Esquema Relación}
+
+\begin{mr}{Agencia de Viajes}
+
+\entidad{Licencia}{\pk{nroLicencia}, fechaObtencion, fechaVencimiento, observaciones}
+\entidadPK{nroLicencia}
+\entidadCK{nroLicencia}
+
+\entidad{Chofer}{\pk{nroDocumento}, fechaNac, nomApe, domicilio, telefono, \fk{nroLicencia}}
+\entidadPK{nroDocumento}
+\entidadCK{nroDocumento}
+\entidadFK{nroLicencia}
+
+\entidad{Conduce}{\pfk{nroDocumento}, \pfk{codViaje}}
+\entidadPK{(nroDocumento, codViaje)}
+\entidadCK{(nroDocumento, codViaje)}
+\entidadFK{nroDocumento, codViaje}
+
+\entidad{Control}{\pk{codControl}, \fk{nroDocumento}, \fk{codViaje}, \fk{codTipo}, resultadoTest, fechaControl}
+\entidadPK{codControl}
+\entidadCK{codControl}
+\entidadFK{(nroDocumento, codViaje), codTipo}
+
+\entidad{TipoTest}{\pk{codTipo}, descripcion}
+\entidadPK{codTipo}
+\entidadCK{codTipo}
+
+\entidad{Contingencia}{\pk{nroContingencia}, \pfk{codViaje}, descripcion}
+\entidadPK{(nroContingencia, codViaje)}
+\entidadCK{(nroContingencia, codViaje)}
+\entidadFK{codViaje}
+
+\entidad{Direccion}{\pk{codDir}, nombre, altura, \fk{codCiudad}}
+\entidadPK{codDir}
+\entidadCK{codDir}
+\entidadFK{codCiudad}
+
+\entidad{Ciudad}{\pk{codCiudad}, nombre}
+\entidadPK{codCiudad}
+\entidadCK{codCiudad}
+
+\entidad{Recorrido}{\pk{codRecorrido}, nombre, \fk{codDirOrigien}, \fk{codDirDestino}}
+\entidadPK{codRecorrido}
+\entidadCK{codRecorrido}
+\entidadFK{codDirOrigien, codDirDestino}
+
+\entidad{Ruta}{\pk{nroRuta}, \pfk{codRecorrido}, cantKm, condicionesCamino, cantPeajes, tiempoEstimado}
+\entidadPK{(nroRuta, codRecorrido)}
+\entidadCK{(nroRuta, codRecorrido)}
+\entidadFK{codRecorrido}
+
+\entidad{Estado}{\pk{codEstado}, descripcion}
+\entidadPK{codEstado}
+\entidadCK{codEstado}
+
+\entidad{Vehiculo}{\pk{nroPatente}, modelo, marca, capacidad, fechaAlta, \fk{codEstado}, enUso}
+\entidadPK{nroPatente}
+\entidadCK{nroPatente}
+\entidadFK{codEstado}
+
+\entidad{VehiculoEnReparacion}{\pfk{nroPatente}, fechaIngresoReparacion}
+\entidadPK{nroPatente}
+\entidadCK{nroPatente}
+\entidadFK{nroPatente}
+
+\entidad{ViajePlanificado}{\pk{codViaje}, fechaHoraPartida, fechaHoraLlegadaEst, \fk{nroPatente}, \fk{codRecorrido}}
+\entidadPK{codViaje}
+\entidadCK{codViaje}
+\entidadFK{nroPatente,codRecorrido}
+
+\entidad{ViajeRealizado}{\pk{codViaje}, fechaHoraLlegada, \fk{nroRuta}, \fk{codRutaRecorrido}}
+\entidadPK{codViaje}
+\entidadCK{codViaje}
+\entidadFK{codViaje, (nroRuta, codRutaRecorrido)}
+
+\entidad{Participa}{\pfk{codRecorrido}, \pfk{codRuta}, \pfk{nombreEstacion}, \fk{codClima}}
+\entidadPK{((codRecorrido, codRuta), nombreEstacion)}
+\entidadCK{((codRecorrido, codRuta), nombreEstacion)}
+\entidadFK{(codRecorrido, codRuta), nombreEstacion, codClima}
+
+\entidad{Estacion}{\pk{nombreEstacion}}
+\entidadPK{nombreEstacion}
+\entidadCK{nombreEstacion}
+
+\entidad{Clima}{\pk{codClima}, descripcion}
+\entidadPK{codClima}
+\entidadCK{codClima}
+
+\end{mr}
+
+\subsection{Restricciones}
+
+\paragraph{Nota: a menos que explícitamente se mencione que un valor debe estar en otra entidad y viceversa, no vale la vuelta}
+
+\begin{enumerate}
+	\item $Chofer.nroLicencia$ debe estar en $Licencia.nroLicencia$
+	\item $Conduce.codViaje$ debe estar en $ViajePlanificado.codViaje$ y viceversa
+	\item $Conduce.nroDocumento$ debe estar en $Chofer.nroDocumento$
+	\item $Control.nroDoumento$ debe estar en $Chofer.nroDocumento$
+	\item $Control.codViaje$ debe estar en $ViajePlanificado.codViaje$
+	\item $Control.codTipo$ debe estar en $TipoTest.codTipo$
+	\item $Contingencia.codViaje$ debe estar en $ViajeRealizado.codViaje$
+	\item $Direccion.codCiudad$ debe estar en $Ciudad.codCiudad$
+	\item $Recorrido.codDirOrigen$ debe estar en $Direccion.codDir$
+	\item $Recorrido.codDirDestino$ debe estar en $Direccion.codDir$
+	\item $Ruta.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $VehiculoEnReparacion.codVehiculo$ debe estar en $Vehiculo.codVehiculo$
+	\item $Vehiculo.codEstado$ debe estar en $Estado.codEstado$
+	\item $Viaje.nroPatente$ debe estar en $Vehiculo.nroPatente$
+	\item $Viaje.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $ViajeRealizado.codViaje$ debe estar en $ViajePlanificado.codViaje$
+	\item $ViajeRealizado.nroRuta$ debe estar en $Ruta.nroRuta$
+	\item $ViajeRealizado.codRutaRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $Participa.codRecorrido$ debe estar en $Recorrido.codRecorrido$
+	\item $Participa.nombreEstacion$ debe estar en $Estacion.nombreEstacion$
+	\item $Participa.codClima$ debe estar en $Clima.codClima$
+	\item $Licencia.fechaObtencion$ es anterior a $Licencia.fechaVencimiento$
+	\item Si $Vehiculo.enUso$ es false, entonces debe existir $VehiculoEnReparacion$
+	\item $Vehiculo.enUso$ toma valores booleanos ( $1=enUso$ o $0=noEnUso$ )
+	\item $\forall r1, r1 \in Recorrido (\not\exists r2, r2 \in Recorrido (r1.codRecorrido \neq r2.codRecorrido$  $\wedge$ \\
+	$r2.codDirDestino = r1.codDirDestino$ $\wedge$   \\
+	$r2.codDirOrigen = r1.codDirOrigen))$ \footnote{Se corresponde con restricción \ref{MER1} del MER} 
+	\item $Recorrido.codDirOrigen \neq Recorrido.codDirDestino$	
+	\footnote{Se corresponde con restricción \ref{MER2} del MER}
+	\item $\forall v1, v1 \in ViajeRealizado(\exists rut1, rut1 \in Ruta(rut1.codRuta = v1.codRuta \wedge v1.codRecorrido = rut1.codRecorrido))$ 
+	\footnote{Se corresponde con restricción \ref{MER3} del MER}
+	\item $\forall rec, vp( rec \in Recorrido \wedge vp \in ViajePlanificado \wedge vp.codRecorrido = rec.codRecorrido \Rightarrow \exists rut,rut \in Ruta \wedge rut.codRecorrido = rec.codRecorrido)$
+\footnote{Se corresponde con restricción \ref{MER4} del MER}	
+	% vincular los dos siguientes a la restrccion 5 del MER
+	\item 	$\not\exists c1,c2,c3,c4 (c1,c2,c3,c4 \in Conduce \wedge 	c1.codViaje = c2.codViaje = c3.codViaje = c4.codViaje )$
+	\footnote{Se corresponde con restricción \ref{MER5} del MER}
+	\item 	$\forall v ( v \in ViajePlanificado \wedge v.fechaHoraLlegadaEst > v.fechaHoraPartida )$
+	\footnote{Se corresponde con restricción \ref{MER5} del MER}
+	\item $\forall vr \in ViajeRealizado ( \exists vp \in ViajePlanificado (vr.codViaje = vp.codViaje \wedge vr.fechaHoraLlegada > vp.fechaHoraPartida))$
+	\footnote{Se corresponde con restricción \ref{MER6} del MER}
+	\item $(\forall vp \in ViajePlanificado \wedge $$\not\exists$$ vr \in ViajeRealizado vr.codViaje=vp.codViaje) \Rightarrow \exists veh \in Vehiculo \wedge veh.nroPatente = vp.nroPatente \wedge veh.enUso = true$ 
+	\footnote{Se corresponde con restricción \ref{MER7} del MER}
+	\item $\forall veh \in VehiculoEnReparacion \wedge veh.fechaIngresoReparacion > veh.fechaAlta$
+\footnote{Se corresponde con restricción \ref{MER8} del MER}
+	\item $\forall lic \in Licencia (lic.fechaObtencion < lic.fechaVencimiento)$
+	\footnote{Se corresponde con restricción \ref{MER9} del MER}
+	\item $\forall cho,lic ( cho \in Chofer \wedge lic \in Licencia \wedge cho.nroLicencia = lic.nroLicencia \wedge cho.fechaNac < lic.fechaObtencion)$
+	\footnote{Se corresponde con restricción \ref{MER10} del MER}
+	\item $\forall r1,est , r1 \in Ruta \wedge est \in Estacion (\exists p \in Participa \wedge p.nroRuta = r1.nroRuta \wedge p.codRecorrido = r1.codRecorrido \wedge est.nombreEstacion = p.nombreEstacion )$	
+	\footnote{Se corresponde con restricción \ref{MER11} del MER}
+	\item $\forall c \in Control \exists vp,cond  vp \in ViajePlanificado  \wedge cond \in Conduce \wedge cond.codViaje = vp.codViaje \wedge cond.codControl = c.codControl \wedge vp.fechaHoraPartida  < c.fechaControl$
+\footnote{Se corresponde con restricción \ref{MER12} del MER}
+\item $\forall est \in Estacion (est.nombreEstacion ='Verano' \vee est.nombreEstacion ='Invierno' \vee est.nombreEstacion ='Otonio' \vee est.nombreEstacion ='Primavera')$
+\footnote{Se corresponde con restricción \ref{MER13} del MER}
+\end{enumerate}

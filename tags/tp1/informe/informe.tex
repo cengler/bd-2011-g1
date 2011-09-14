@@ -1,0 +1,110 @@
+\documentclass[a4paper, 10pt, notitlepage]{article}
+
+\usepackage{moreverb} %para importar codigo
+
+\usepackage{pepotina} %paquete personal para la caratula del DC
+
+\usepackage[spanish,activeacute]{babel}
+\usepackage{babel} %paquete de idioma
+
+\usepackage[latin1]{inputenc}
+
+\usepackage[normalem]{ulem}
+\usepackage{ulem}
+
+%\usepackage{color}
+
+\usepackage{hyperref}
+%\usepackage[all]{hypcap}
+
+\usepackage{caeycaeBD}
+
+\usepackage{fancyhdr} %linea sup con comentarios
+
+\usepackage{lscape} %para hoja apaisada
+
+\usepackage{framed} %para crear cajas de texto
+
+\usepackage{lastpage} %ultima pagina
+
+%\usepackage{pstricks}
+%\usepackage{uml} %UML
+
+\usepackage{listings}
+%\lstset{
+%  breaklines=true,                                     % line wrapping on
+%  language=ocl,
+%  frame=ltrb,
+%  framesep=5pt,
+%  basicstyle=\normalsize,
+%  keywordstyle=\ttfamily\color{OliveGreen},
+%  identifierstyle=\ttfamily\color{CadetBlue}\bfseries,
+%  commentstyle=\color{Brown},
+%  stringstyle=\ttfamily,
+%  showstringspaces=ture
+%}
+
+\addtolength{\topmargin}{-50pt} 
+\addtolength{\textwidth}{145pt}
+\addtolength{\textheight}{120pt}
+\addtolength{\oddsidemargin}{-70pt}
+
+%\newcommand{\minix}{\textsl{minix }}
+
+%%% Encabezado y pie de p'agina
+\pagestyle{fancy}
+\fancyhead[LO]{Base de Datos}
+\fancyhead[C]{}
+\fancyhead[RO]{P\'agina \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot{}
+
+\newcommand{\FALTA}{{\bf FALTA FALTA FALTA FALTA FALTA FALTA FALTA FALTA }}
+\def\var#1{\textsl{#1}}
+
+
+\begin{document}
+
+\universidad{Universidad de Buenos Aires}
+\facultad{Facultad de Ciencias Exactas y Naturales}
+\departamento{Departamento de Computación}
+\materia{Base de Datos}
+\resumen{El presente trabajo práctico consiste en el desarrollo de una base de datos para una empresa de transporte. Se realizó un diagrama entidad relación de los requerimientos. A partir del MER se construyó el modelo relacional. Finalmente se llevó lo anterior a un diseño físico utilizando el motor de base de datos SQL server 2005.}
+\keys{MER, DER, MR, SQL, Base de Datos, Base de Datos Relacional}
+\titulo{Tp1}
+\subtitulo{Tp 1: Empresa de Transportes}
+\grupo{Número de Grupo: 1}
+\fecha{2do Cuatrimestre 2011}
+\footspace{1cm}
+\integrante{Piotrkowski, Kevin}{204/06}{marcoskevin@gmail.com}
+\integrante{Rugnone, Martín}{665/04}{mrugnone@hotmail.com}
+\integrante{Alvarez, María de los Angeles}{264/05}{mdelosaalvarez@hotmail.com}
+\integrante{Engler, Christian}{314/05}{caeycae@gmail.com}
+
+\maketitle{}
+
+\tableofcontents
+
+\newpage
+
+\input{introduccion.tex}
+
+\input{hipotesis.tex}
+
+\newpage
+
+\input{mer.tex}
+
+\newpage
+
+\input{mr.tex}
+
+\newpage
+
+\input{disenioFisico.tex}
+
+\end{document}
+
+
+
+
