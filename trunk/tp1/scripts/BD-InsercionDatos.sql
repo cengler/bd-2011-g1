@@ -66,8 +66,6 @@ insert into viajePlanificado values (3, '2010-05-10 10:00:000' , '2010-05-11 20:
 insert into viajePlanificado values (4, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
 insert into viajePlanificado values (5, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
 insert into viajePlanificado values (6, '2010-05-10 10:00:000' , '2010-05-11 20:00:000' , '555555' , 3 )
-insert into viajePlanificado values (7, '2011-09-08 10:00:000' , '2011-09-11 20:00:000' , '222222' , 3 )
-insert into viajePlanificado values (8, '2011-09-09 10:00:000' , '2011-09-10 20:00:000' , '222222' , 3 )
 
 
 -- Se insertan datos en la tabla Conduce
@@ -148,8 +146,9 @@ insert into participa values (2 , 1 , 'Verano' , 1)
 insert into participa values (2 , 1 , 'Otonio' , 4)
 insert into participa values (2 , 1 , 'Invierno' , 3)
 
-
-
+-- Se insertan estos datos al final porque dan error a causa de uno de los triggers restrictivos.
+insert into viajePlanificado values (7, '2011-09-08 10:00:000' , '2011-09-11 20:00:000' , '222222' , 3 )
+insert into viajePlanificado values (8, '2011-09-09 10:00:000' , '2011-09-10 20:00:000' , '222222' , 3 )
 
 
 
