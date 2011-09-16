@@ -43,15 +43,16 @@ recorrido rec join ruta on rec.codRecorrido = ruta.codRecorrido
 group by rec.codRecorrido,rec.nombre having count(*) > 1)')
 
 /*
-Se crea la vista cantViajesXVehiculoXAnio que devuelve para cada vehiculo, la cantidad de viajes ya realizados
-por cada año
+Se crea la vista cantViajesXVehiculo que devuelve para cada vehiculo, la cantidad de viajes ya realizados
 */
 exec ('
-CREATE view cantViajesXVehiculoXAnio as 
-(select vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida) as anio, count(vP.codViaje) as viajesXAnio
-	from viajeRealizado vR join viajePlanificado vP on vR.codViaje = vP.codViaje
-	right join vehiculo on vP.nroPatente = vehiculo.nroPatente
-	group by vehiculo.nroPatente, DATEPART(year, vP.fechaHoraPartida))')
+CREATE view cantViajesXVehiculo as 
+(select nroPatente, sum(viaje)as cantidad from
+	(select vehiculo.nroPatente, (case when( vR.codViaje is null )then 0 else 1 end) as viaje
+		from viajeRealizado vR join viajePlanificado vP on vR.codViaje = vP.codViaje
+		right join vehiculo on vP.nroPatente = vehiculo.nroPatente
+	) as auxQuery
+group by nroPatente)')
 
 
 
@@ -73,13 +74,15 @@ El promedio de viajes realizados por vehículo por año y el estado en que este se
 exec ('create view promedioEstadoXVehiculo as (select auxQuery.nroPatente, auxQuery.promedioXAnio, estado.descripcion
 from (
 	-- Este subquery devuelve el promedio de viajes x anio para cada vehiculo
-	select auxView.nroPatente, AVG(cast(auxView.viajesXAnio as money)) as promedioXAnio
-	from cantViajesXVehiculoXAnio as auxView
-	group by auxView.nroPatente
+	select auxView.nroPatente, (sum(cast(auxView.cantidad as money))/aV.antiguedad) as promedioXAnio
+	from cantViajesXVehiculo as auxView
+	inner join antiguedadXVehiculo aV on auxView.nroPatente=aV.nroPatente
+	group by auxView.nroPatente, aV.antiguedad
 ) as auxQuery
 -- Agrego la información del estado actual del vehiculo
 join vehiculo on auxQuery.nroPatente = vehiculo.nroPatente
-join estado on vehiculo.codEstado = estado.codEstado)')
+join estado on vehiculo.codEstado = estado.codEstado)
+')
 
 /*
 	Lista los choferes y cantidad de vehiculos distintos que manejó cada chofer en los ultimos 6 meses.
