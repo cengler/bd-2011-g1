@@ -31,7 +31,7 @@ insert into estado values (7 , 'Muy Malo')
 
 -- Se insertan datos de Vehiculos
 --			(nroPatente, modelo, marca, capacidad, fechaAlta, codEstado , enUso , fechaIngresoReparacion)
-insert into vehiculo values (222222 , 'Ka' , 'Ford' ,  4 , '2011-01-15' , 1 , 0 , '2011-09-11')
+insert into vehiculo values (222222 , 'Ka' , 'Ford' ,  4 , '2005-09-23'  , 1 , 0 , '2011-09-11')
 insert into vehiculo values (333333 , 'MB 1328' , 'Mercedes Benz' ,  80 , '2009-01-15' , 1 , 0 , '2011-06-10')
 insert into vehiculo values (555555 , '458' , 'Ferrari' ,  2 , '2011-01-15' , 1 , 1 , null)
 
@@ -76,10 +76,10 @@ insert into conduce values (30450670 ,3)
 insert into conduce values (30450670 ,4)
 insert into conduce values (30450670 ,5)
 insert into conduce values (30450670 ,6)
-insert into conduce values (30450671 ,8)
+--insert into conduce values (30450671 ,8)
 insert into conduce values (30450672 ,2)
 insert into conduce values (30450672 ,3)
-insert into conduce values (30450672 ,7)
+--insert into conduce values (30450672 ,7)
 
 
 -- Se insertan datos en la tabla ruta
@@ -97,8 +97,8 @@ insert into viajeRealizado values (3 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (4 , '2011-05-10 22:00:000' , 3, 2)
 insert into viajeRealizado values (5 , '2010-05-11 22:00:000' , 1, 3)
 insert into viajeRealizado values (6 , '2010-05-11 22:00:000' , 2, 3)
-insert into viajeRealizado values (7 , '2011-09-11 22:00:000' , 2, 3)
-insert into viajeRealizado values (8 , '2011-09-11 22:00:000' , 2, 3)
+--insert into viajeRealizado values (7 , '2011-09-11 22:00:000' , 2, 3)
+--insert into viajeRealizado values (8 , '2011-09-11 22:00:000' , 2, 3)
 
 
 
@@ -149,14 +149,3 @@ insert into participa values (2 , 1 , 'Invierno' , 3)
 -- Se insertan estos datos al final porque dan error a causa de uno de los triggers restrictivos.
 insert into viajePlanificado values (7, '2011-09-08 10:00:000' , '2011-09-11 20:00:000' , '222222' , 3 )
 insert into viajePlanificado values (8, '2011-09-09 10:00:000' , '2011-09-10 20:00:000' , '222222' , 3 )
-
-
-
-
-
-
-
-
-
-
-
