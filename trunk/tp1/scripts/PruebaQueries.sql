@@ -1,3 +1,5 @@
+use BDtp1Grupo1
+
 -- Muestra los recorridos que tuvieron todas las rutas usadas el anio anterior.
 Select * from recorridosConTodasRutasUsadasAnioanterior
 
