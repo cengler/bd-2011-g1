@@ -10,17 +10,22 @@ Select * from chofer6MVehiculo2A
 select * from promedioEstadoXVehiculo
 
 -- Muestra los recorridos para los cuales se hayan usado todas sus rutas asociadas en el último año
-select recorrido.codRecorrido, recorrido.nombre
-from recorrido
-where not exists
-(	select ruta.nroRuta
-	from ruta
-	where ruta.codRecorrido=recorrido.codRecorrido
-	and not exists
-	(	select nroRuta,codRecorrido,fechaHoraLlegada
-		from viajeRealizado vR
-		where vR.nroRuta=ruta.nroRuta and vR.codRutaRecorrido=ruta.codRecorrido
-		and (DATEDIFF(yy, fechaHoraLlegada, GETDATE())=1)
-	)
-) and exists
-(select 1 from ruta where ruta.codRecorrido=recorrido.codRecorrido)
+    -- Empezamos seleccionando todos los recorridos
+    SELECT recorrido.codRecorrido, recorrido.nombre
+    FROM recorrido INNER JOIN ruta r ON r.codRecorrido=recorrido.codRecorrido
+    WHERE NOT EXISTS
+    -- Tal que no exista una ruta asociada al mismo
+    (    SELECT ruta.nroRuta
+        FROM ruta
+        WHERE ruta.codRecorrido=recorrido.codRecorrido
+        AND NOT EXISTS
+       -- Tal que no exista un viaje realizado el año pasado con esa ruta y recorrido
+        (    SELECT nroRuta,codRecorrido,fechaHoraLlegada
+            FROM viajeRealizado vR
+            WHERE vR.nroRuta=ruta.nroRuta AND vR.codRutaRecorrido=ruta.codRecorrido
+            AND (DATEDIFF(yy, fechaHoraLlegada, GETDATE())=1)
+        )
+    )
+    GROUP BY recorrido.codRecorrido, recorrido.nombre
+    -- Pero exista más de una ruta asociada al recorrido(como pide el ejercicio)
+    HAVING count(*)>1
