@@ -22,4 +22,5 @@ where not exists
 		where vR.nroRuta=ruta.nroRuta and vR.codRutaRecorrido=ruta.codRecorrido
 		and (DATEDIFF(yy, fechaHoraLlegada, GETDATE())=1)
 	)
-)
+) and exists
+(select 1 from ruta where ruta.codRecorrido=recorrido.codRecorrido)
