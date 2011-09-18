@@ -15,13 +15,11 @@ from recorrido
 where not exists
 (	select ruta.nroRuta
 	from ruta
-	where not exists
+	where ruta.codRecorrido=recorrido.codRecorrido
+	and not exists
 	(	select nroRuta,codRecorrido,fechaHoraLlegada
-		from viajeRealizado vR inner join viajePlanificado vP
-		on vR.codViaje=vP.codViaje
-		where vR.nroRuta=ruta.nroRuta and vP.codRecorrido=recorrido.codRecorrido
-		--and (2010 = year(vR.fechaHoraLlegada))
-		--and (year(GETDATE()) - year(fechaHoraLlegada))<=1
-		and (DATEDIFF(yy, fechaHoraLlegada, GETDATE())<=1)
+		from viajeRealizado vR
+		where vR.nroRuta=ruta.nroRuta and vR.codRutaRecorrido=ruta.codRecorrido
+		and (DATEDIFF(yy, fechaHoraLlegada, GETDATE())=1)
 	)
 )
