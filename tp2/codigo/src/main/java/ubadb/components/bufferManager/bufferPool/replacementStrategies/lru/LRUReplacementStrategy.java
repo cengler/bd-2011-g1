@@ -9,7 +9,7 @@ import ubadb.exceptions.PageReplacementStrategyException;
 
 public class LRUReplacementStrategy implements PageReplacementStrategy
 {
-	@Override
+	
 	public BufferFrame findVictim(Collection<BufferFrame> bufferFrames)
 			throws PageReplacementStrategyException {
 		
@@ -32,7 +32,7 @@ public class LRUReplacementStrategy implements PageReplacementStrategy
 			return victim;
 	}
 
-	@Override
+	
 	public BufferFrame createNewFrame(Page page) {
 		LRUBufferFrame bufferFrame = new LRUBufferFrame(page);
 		return bufferFrame;
