@@ -1,4 +1,4 @@
-package ubadb.components.bufferManager.bufferPool.replacementStrategies.lru;
+package ubadb.components.bufferManager.bufferPool.replacementStrategies.mru;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,14 +7,14 @@ import org.junit.Test;
 import ubadb.mocks.MockObjectFactory;
 import ubadb.util.TestUtil;
 
-public class LRUBufferFrameTest
+public class MRUBufferFrameTest
 {
 	@Test
 	public void testAccessCounterVsPinCounter() throws Exception
 	{
-		LRUBufferFrame bufferFrame0 = new LRUBufferFrame(MockObjectFactory.PAGE);
+		MRUBufferFrame bufferFrame0 = new MRUBufferFrame(MockObjectFactory.PAGE);
 		Thread.sleep(TestUtil.PAUSE_INTERVAL); //Sleep to guarantee that the second frame is created some time after the first one
-		LRUBufferFrame bufferFrame1 = new LRUBufferFrame(MockObjectFactory.PAGE);
+		MRUBufferFrame bufferFrame1 = new MRUBufferFrame(MockObjectFactory.PAGE);
 		
 		bufferFrame0.pin();
 		bufferFrame1.pin();

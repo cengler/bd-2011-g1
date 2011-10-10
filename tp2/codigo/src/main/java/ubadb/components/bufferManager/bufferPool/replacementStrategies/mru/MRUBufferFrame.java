@@ -1,14 +1,14 @@
-package ubadb.components.bufferManager.bufferPool.replacementStrategies.lru;
+package ubadb.components.bufferManager.bufferPool.replacementStrategies.mru;
 
 import ubadb.common.Page;
 import ubadb.components.bufferManager.bufferPool.BufferFrame;
 
-public class LRUBufferFrame extends BufferFrame 
+public class MRUBufferFrame extends BufferFrame 
 {
 	private long accessCounter;
 	private static long maxAccessCounter = 0;
 	
-	public LRUBufferFrame(Page page) {
+	public MRUBufferFrame(Page page) {
 		super(page);
 		accessCounter = ++maxAccessCounter;
 	}
