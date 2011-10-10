@@ -1,0 +1,21 @@
+
+\section{Evaluación de estrategias}
+
+\subsection{File Scan}
+
+La traza del \fs no tendrá HITs para ningún tipo de algoritmo de reemplazo de páginas porque \fs pide UNA sola vez cada página.\\
+Por otro lado, se observaron resultados interesantes cuando hacíamos traces que leían 2 veces el mismo archivo y comparabámos los hit-rates de las diferentes estatregias, de estos resultados obtuvimos las siguientes conclusiones:
+
+\begin{itemize}
+\item LRU y FIFO tienen el mismo comportamiento durante un \fs porque lás páginas que se eligen para desalojar en ambos casos son las primeras en haber sido referidas.
+\item Si había igual o más cantidad de frames, el hit-rate pasaba a ser del 50\% para todas las estrategias, porque si bien en la primera pasada todas las referencias a páginas era misses, para la segunda estaban todos en memoria.
+\item Para una cantidad de páginas superior en una unidad a la cantidad de frames, LRU tenía 100\% de miss-rate(y por ende también la estrategia FIFO). Esto se debe a que necesita desalojar el primer frame para alojar la última página(en la primera pasada); luego, cuando necesitaba leer nuevamente la primera página(en la segunda pasada) tiene que desalojar el último frame en ser accedido(el segundo), para el segundo el tercero, y así sucesivamente.
+\item Las estrategias empiezan a convergen en torno a un hit-rate del 50\% cuando la cantidad de frames se acerca a la cantidad de páginas dado que es necesario desalojar menos frames.
+\item Entre las estrategias evaluadas, la única que mejora el hit-rate cuando la cantidad de frames es menor a la cantidad de páginas a ser leídas es MRU. 
+\end{itemize}
+
+
+\subsection{Index Scan Clustered}
+
+
+
