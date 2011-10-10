@@ -2,7 +2,6 @@ package ubadb.apps.bufferManagement;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -12,7 +11,6 @@ import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageRepla
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.fifo.FIFOReplacementStrategy;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.lru.LRUReplacementStrategy;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.mru.MRUReplacementStrategy;
-import ubadb.components.diskManager.DiskManager;
 import ubadb.exceptions.BufferManagerException;
 
 public class DemoStrategy {
