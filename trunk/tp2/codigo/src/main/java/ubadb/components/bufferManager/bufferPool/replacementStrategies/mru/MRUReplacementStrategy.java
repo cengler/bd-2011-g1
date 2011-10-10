@@ -1,4 +1,4 @@
-package ubadb.components.bufferManager.bufferPool.replacementStrategies.lru;
+package ubadb.components.bufferManager.bufferPool.replacementStrategies.mru;
 
 import java.util.Collection;
 
@@ -7,22 +7,22 @@ import ubadb.components.bufferManager.bufferPool.BufferFrame;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageReplacementStrategy;
 import ubadb.exceptions.PageReplacementStrategyException;
 
-public class LRUReplacementStrategy implements PageReplacementStrategy
+public class MRUReplacementStrategy implements PageReplacementStrategy
 {
 	@Override
 	public BufferFrame findVictim(Collection<BufferFrame> bufferFrames)
 			throws PageReplacementStrategyException {
 		
-		LRUBufferFrame victim = null;
-		long oldestAccessCounter = Long.MAX_VALUE;
+		MRUBufferFrame victim = null;
+		long newestAccessCounter = 0;
 		
 		for(BufferFrame bufferFrame : bufferFrames)
 		{
-			LRUBufferFrame lruBufferFrame = (LRUBufferFrame) bufferFrame; //safe cast as we know all frames are of this type
-			if(lruBufferFrame.canBeReplaced() && lruBufferFrame.getAccessCounter() < oldestAccessCounter )
+			MRUBufferFrame mruBufferFrame = (MRUBufferFrame) bufferFrame; //safe cast as we know all frames are of this type
+			if(mruBufferFrame.canBeReplaced() && mruBufferFrame.getAccessCounter() > newestAccessCounter )
 			{
-				victim = lruBufferFrame;
-				oldestAccessCounter = lruBufferFrame.getAccessCounter();
+				victim = mruBufferFrame;
+				newestAccessCounter = mruBufferFrame.getAccessCounter();
 			}
 		}
 		
@@ -34,7 +34,7 @@ public class LRUReplacementStrategy implements PageReplacementStrategy
 
 	@Override
 	public BufferFrame createNewFrame(Page page) {
-		LRUBufferFrame bufferFrame = new LRUBufferFrame(page);
+		MRUBufferFrame bufferFrame = new MRUBufferFrame(page);
 		return bufferFrame;
 	}
 }
