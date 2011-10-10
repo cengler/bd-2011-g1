@@ -8,11 +8,13 @@ import ubadb.components.bufferManager.bufferPool.BufferPool;
 import ubadb.components.bufferManager.bufferPool.SingleBufferPool;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageReplacementStrategy;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.fifo.FIFOReplacementStrategy;
+import ubadb.components.bufferManager.bufferPool.replacementStrategies.lru.LRUReplacementStrategy;
+import ubadb.components.bufferManager.bufferPool.replacementStrategies.mru.MRUReplacementStrategy;
 import ubadb.components.diskManager.DiskManager;
 
 public class BufferManagementEvaluator
 {
-	private static final int MAX_BUFFER_POOL_SIZE = 4;
+	private static final int MAX_BUFFER_POOL_SIZE = 1;
 	private static final int PAUSE_BETWEEN_REFERENCES	= 50;
 	
 	public static void main(String[] args) throws Exception
@@ -69,7 +71,7 @@ public class BufferManagementEvaluator
 
 	private static BufferManager createBufferManager(DiskManager diskManager)
 	{
-		PageReplacementStrategy pageReplacementStrategy = new FIFOReplacementStrategy();
+		PageReplacementStrategy pageReplacementStrategy = new LRUReplacementStrategy();
 		BufferPool basicBufferPool = new SingleBufferPool(MAX_BUFFER_POOL_SIZE, pageReplacementStrategy);
 		
 		BufferManager bufferManager = new BufferManagerImpl(diskManager, basicBufferPool);
