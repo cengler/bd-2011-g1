@@ -14,8 +14,8 @@ public class MRUBufferFrame extends BufferFrame
 	}
 
 	@Override
-	public void pin() {
-		super.pin();
+	public void unpin() {
+		super.unpin();
 		accessCounter = ++maxAccessCounter;
 	}
 
