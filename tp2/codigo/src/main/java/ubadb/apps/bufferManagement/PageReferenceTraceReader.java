@@ -20,6 +20,8 @@ public class PageReferenceTraceReader
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		while( (line = reader.readLine()) != null )
 		{
+			if(line.isEmpty() || line.startsWith("--"))
+				continue;
 			StringTokenizer st = new StringTokenizer(line, "([, ])");
 			PageReferenceType refType = PageReferenceType.valueOf(st.nextToken().toUpperCase());
 			TableId tableId = new TableId(st.nextToken());

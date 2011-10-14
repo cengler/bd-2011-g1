@@ -67,8 +67,14 @@ public class DemoStrategy {
 			{
 			case REQUEST:
 			{
+				if (basicBufferPool.isPageInPool(pageReference.getPageId()))
+					System.out.print(">> HIT  : ");
+				else
+					System.out.print(">> MISS : ");
+					
 				bufferManager.readPage(pageReference.getPageId());
 				requestsCount++;
+				System.out.println(basicBufferPool.toString());
 				break;
 			}
 			case RELEASE:
