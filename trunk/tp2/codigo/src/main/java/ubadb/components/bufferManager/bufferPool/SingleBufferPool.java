@@ -85,4 +85,20 @@ public class SingleBufferPool implements BufferPool
 	{
 		return framesMap.size();
 	}
+
+	public String toString() {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for (PageId page : framesMap.keySet()) {
+			sb.append("[");
+			BufferFrame frame = framesMap.get(page);
+			sb.append(frame.getPage().getPageId());
+			sb.append("]");
+		}
+		sb.append("}");
+		return sb.toString();
+	}
+	
+	
 }

@@ -2,6 +2,7 @@ package ubadb.components.bufferManager.bufferPool.replacementStrategies.lru;
 
 import ubadb.common.Page;
 import ubadb.components.bufferManager.bufferPool.BufferFrame;
+import ubadb.exceptions.BufferFrameException;
 
 public class LRUBufferFrame extends BufferFrame 
 {
@@ -13,8 +14,8 @@ public class LRUBufferFrame extends BufferFrame
 		accessCounter = ++maxAccessCounter;
 	}
 
-	@Override
-	public void unpin() {
+	public void unpin() throws BufferFrameException
+	{
 		super.unpin();
 		accessCounter = ++maxAccessCounter;
 	}
