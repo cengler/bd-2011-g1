@@ -3,7 +3,7 @@
 
 \subsection{File Scan}
 
-La traza del \fs no tendrá HITs para ningún tipo de algoritmo de reemplazo de páginas porque \fs pide UNA sola vez cada página.\\
+La traza del \fs no tendrá Hs para ningún tipo de algoritmo de reemplazo de páginas porque \fs pide UNA sola vez cada página.\\
 Por otro lado, se observaron resultados interesantes cuando hacíamos traces que leían 2 veces el mismo archivo y comparabámos los hit-rates de las diferentes estatregias, de estos resultados obtuvimos las siguientes conclusiones:
 
 \begin{itemize}
@@ -19,7 +19,316 @@ Por otro lado, se observaron resultados interesantes cuando hacíamos traces que 
 \includegraphics[scale=0.75]{img/fileScan2Times.png}
 \end{center}
 
+\newpage
+
 \subsection{Index Scan Clustered}
 
-El ejemplo dado por la catedra no reutiliza ninguna pagina, por lo que estudiar 
+En index scan clustered no afecta para nada la estrategia de reemplazo de páginas pues una vez encontrada la hoja del índice del primer registro a devolver, se recorren las paginas necesarias secuencialmente(dado que están ordenadas) hasta llegar al registro que no cumple con el filtro(o al fin de archivo).
 
+Ningún algoritmo de reemplazo de páginas va a hacer diferencia alguna ya que NINGUNA página es pedida más de una vez(esto se observa en la traza evaluada a continuación).
+
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- TRAZA
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 3])
+Release([A, 3])
+Request([A, 4])
+Release([A, 4])
+Request([A, 5])
+Release([A, 5])
+\end{verbatim}
+\end{framed}
+Traza utilizada para analizar las diferentes estategias de reemplazo para una memoria de 4 bloques y 10 bloques.
+\vskip1cm
+\end{center}
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]][[A, 5]]}
+
+-- MRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]][[A, 5]]}
+
+-- FIFO
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]]}
+>> M : {[[A, 3]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]][[A, 5]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es superior a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\newpage
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A, 3]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A, 3]][[A_index, 2]][[A, 4]]}
+>> M : {[[A, 3]][[A_index, 2]][[A, 4]][[A, 5]]}
+
+-- MRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A, 3]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 4]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 5]]}
+
+-- FIFO
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A, 3]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A, 3]][[A_index, 2]][[A, 4]]}
+>> M : {[[A, 3]][[A_index, 2]][[A, 4]][[A, 5]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es menor a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\newpage
+
+\subsection{Index Scan Unclustered}
+Luego de las pruebas realizadas, observamos que a diferencia del Index Scan Clustered, la estrategia de reemplazo utilizada en el algoritmo Index Scan Unclustered incide en el hit rate. En las pruebas efectuadas se vio una mejor perfomance de las estrategias FIFO y LRU(con un hit rate del 18\%) en comparación con MRU(con un hit rate del 9\%). Esta diferencia solo se observó cuando la cantidad de bloques en memoria era menor a la cantidad de páginas requeridas y la mejoría provino de reutilizar las páginas de índice que solo son requeridas la primera vez.
+
+De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador de antemano no puede decidir que estrategia ofrecerá la mejor perfomance para una consulta dada.
+
+La traza elegida para realizar pruebas se hizo pensando en requerir páginas más de una vez, dado que el Index Scan Unclestered puede tener una traza de este estilo(a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el hit rate obtenido. A continuación exhibimos las pruebas realizadas para este análisis sobre una traza con las carecterísticas mencionadas anteriormente, considerando casos con 4 y 10 bloques de memoria disponibles.
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- TRAZA
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 7])
+Release([A, 7])
+Request([A, 2])
+Release([A, 2])
+Request([A, 2])
+Release([A, 2])
+Request([A, 3])
+Release([A, 3])
+Request([A, 5])
+Release([A, 5])
+Request([A, 9])
+Release([A, 9])
+Request([A, 7])
+Release([A, 7])
+Request([A, 3])
+Release([A, 3])
+\end{verbatim}
+\end{framed}
+Traza utilizada para analizar las diferentes estategias de reemplazo para una memoria de 4 bloques y 10 bloques.
+\vskip1cm
+\end{center}
+
+\newpage
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+-- Hit Rate: 0,18
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> H : {[[A_index, 1]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A, 7]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 2]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 7]][[A, 5]]}
+
+
+-- MRU
+-- Hit Rate: 0,09
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A, 2]][[A_index, 2]]}
+>> H : {[[A_index, 1]][[A_index, 0]][[A, 2]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A, 3]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 5]]}
+>> M : {[[A_index, 1]][[A, 9]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A, 3]][[A_index, 0]][[A_index, 2]]}
+
+-- FIFO
+-- Hit Rate: 0,18
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> H : {[[A_index, 1]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A, 7]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 2]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 7]][[A, 5]]}
+
+
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es superior a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\newpage
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+-- Hit Rate: 0,27
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> H : {[[A_index, 1]][[A_index, 0]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A_index, 1]][[A, 3]][[A, 2]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A, 7]][[A, 5]]}
+
+
+-- MRU
+-- Hit Rate: 0,27
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> H : {[[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+
+
+-- FIFO
+-- Hit Rate: 0,27
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]]}
+>> M : {[[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> H : {[[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]]}
+>> M : {[[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> M : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+>> H : {[[A, 9]][[A, 3]][[A, 2]][[A_index, 1]][[A_index, 0]][[A_index, 2]][[A, 7]][[A, 5]]}
+
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es superior a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\subsection{Block Nested Loop Join}
+El algoritmo BNLJ en su versión tradicional utiliza B-2 bloques(donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar BNLJ, empezamos considerando B-1 bloques para R y el restante para S.
+Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.
+La primera traza que analizamos considera 2 relaciones R y S con 5 bloques en disco cada una y un Buffer Manager con 4 bloques en memoria. La primera pasada trae 3 bloques(B=4 bloques y 3 bloques = B-1) de R y uno de S. Cuando termina de recorrer todos los bloques de S, trae los restantes bloques de R(que son 2, por ser 5 en total y haber traído 3 al principio), esto implica que hay un bloque adicional de memoria que según la estrategia a utilizar puede permitir reutilizar bloques cacheados de S.
+Los resultados muestran que efectivamente el hit rate varía en esta situación y la estrategia que mejora la performance es MRU.
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+-- Hit Rate: 0
+>> M : {[[R, 0]]}
+>> M : {[[R, 1]][[R, 0]]}
+>> M : {[[R, 1]][[R, 0]][[R, 2]]}
+>> M : {[[S, 0]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 2]][[R, 2]]}
+>> M : {[[S, 3]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[S, 4]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 3]][[R, 2]]}
+>> M : {[[R, 1]][[R, 4]][[R, 3]][[R, 2]]}
+>> M : {[[S, 0]][[R, 4]][[R, 3]][[R, 2]]}
+>> M : {[[S, 0]][[R, 4]][[R, 3]][[S, 1]]}
+>> M : {[[R, 4]][[S, 2]][[R, 3]][[S, 1]]}
+>> M : {[[S, 3]][[R, 4]][[S, 2]][[R, 3]]}
+>> M : {[[S, 3]][[S, 4]][[R, 4]][[R, 3]]}
+
+-- MRU
+-- Hit Rate: 0,06
+>> M : {[[R, 0]]}
+>> M : {[[R, 1]][[R, 0]]}
+>> M : {[[R, 1]][[R, 0]][[R, 2]]}
+>> M : {[[S, 0]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 2]][[R, 2]]}
+>> M : {[[S, 3]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[S, 4]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[S, 4]][[R, 1]][[R, 3]]}
+>> M : {[[R, 0]][[S, 4]][[R, 4]][[R, 3]]}
+>> M : {[[S, 0]][[S, 4]][[R, 4]][[R, 3]]}
+>> M : {[[S, 4]][[R, 4]][[R, 3]][[S, 1]]}
+>> M : {[[S, 4]][[R, 4]][[S, 2]][[R, 3]]}
+>> M : {[[S, 3]][[S, 4]][[R, 4]][[R, 3]]}
+>> H : {[[S, 3]][[S, 4]][[R, 4]][[R, 3]]}
+
+-- FIFO
+-- Hit Rate: 0
+>> M : {[[R, 0]]}
+>> M : {[[R, 1]][[R, 0]]}
+>> M : {[[R, 1]][[R, 0]][[R, 2]]}
+>> M : {[[S, 0]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[S, 2]][[R, 2]]}
+>> M : {[[S, 3]][[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[S, 4]][[R, 1]][[R, 2]]}
+>> M : {[[S, 4]][[R, 1]][[R, 3]][[R, 2]]}
+>> M : {[[S, 4]][[R, 4]][[R, 3]][[R, 2]]}
+>> M : {[[S, 0]][[S, 4]][[R, 4]][[R, 3]]}
+>> M : {[[S, 0]][[R, 4]][[R, 3]][[S, 1]]}
+>> M : {[[R, 4]][[S, 2]][[R, 3]][[S, 1]]}
+>> M : {[[S, 3]][[R, 4]][[S, 2]][[R, 3]]}
+>> M : {[[S, 3]][[S, 4]][[R, 4]][[R, 3]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es 4.
+\vskip1cm
+\end{center}
