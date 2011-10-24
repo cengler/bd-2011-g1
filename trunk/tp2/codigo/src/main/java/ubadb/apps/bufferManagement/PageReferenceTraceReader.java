@@ -20,16 +20,16 @@ public class PageReferenceTraceReader
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		while( (line = reader.readLine()) != null )
 		{
-			if(line.isEmpty() || line.startsWith("--"))
-				continue;
-			StringTokenizer st = new StringTokenizer(line, "([, ])");
-			PageReferenceType refType = PageReferenceType.valueOf(st.nextToken().toUpperCase());
-			TableId tableId = new TableId(st.nextToken());
-			int number = Integer.valueOf(st.nextToken());
-			PageId pageId = new PageId(number, tableId);
-			PageReference pageRef = new PageReference(pageId, refType);
-			
-			trace.addPageReference(pageRef);
+			if(!(line.isEmpty() || line.startsWith("--"))){
+				StringTokenizer st = new StringTokenizer(line, "([, ])");
+				PageReferenceType refType = PageReferenceType.valueOf(st.nextToken().toUpperCase());
+				TableId tableId = new TableId(st.nextToken());
+				int number = Integer.valueOf(st.nextToken());
+				PageId pageId = new PageId(number, tableId);
+				PageReference pageRef = new PageReference(pageId, refType);
+				
+				trace.addPageReference(pageRef);	
+			}
 		}
 		return trace;
 	}

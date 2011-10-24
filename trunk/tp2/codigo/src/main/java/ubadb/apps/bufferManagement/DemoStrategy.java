@@ -1,7 +1,12 @@
 package ubadb.apps.bufferManagement;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -14,13 +19,14 @@ import ubadb.components.bufferManager.bufferPool.replacementStrategies.mru.MRURe
 import ubadb.exceptions.BufferManagerException;
 
 public class DemoStrategy {
-
-	private static final long PAUSE_BETWEEN_REFERENCES = 10;
+	
+	private static final long PAUSE_BETWEEN_REFERENCES = 0;
 	private static final String TRACES_PATH = "./traces/";
 	private static final PageReplacementStrategy[] STRATEGIES = {new LRUReplacementStrategy(), new MRUReplacementStrategy(), new FIFOReplacementStrategy()};
 	
 	public static void main(String[] args) throws IOException, InterruptedException, BufferManagerException {
-		new DemoStrategy().demo();
+		//new DemoStrategy().demo();
+		new DemoStrategy().demoBNLJ();
 	}
 
 
@@ -29,25 +35,57 @@ public class DemoStrategy {
 
 		File tracesDir = new File(TRACES_PATH);
 
-		File[] tracesList = tracesDir.listFiles();
+		File[] tracesList = tracesDir.listFiles(new FileFilter() {
+			
+			public boolean accept(File pathname) {
+				return pathname.getAbsolutePath().endsWith("BNLJ-5R-2S-4B.txt");
+			}
+		});
 
 		for (File file : tracesList) 
 		{
 			System.out.println("File: " + file);
-			for (int bufferSize = 4; bufferSize <= 10; bufferSize++)
+			for (int bufferSize = 4; bufferSize <= 4; bufferSize++)
 			{
 				PageReferenceTrace trace = reader.read(file);
 	
 				for(PageReplacementStrategy straregy : STRATEGIES)
 				{
-					testTrace(trace, bufferSize, straregy);
+					testTrace(file.getName(), trace, bufferSize, straregy);
 				}
 			}
 		}
 	}
 
 
-	private void testTrace(PageReferenceTrace trace, int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy) 
+	
+	
+	private void demoBNLJ() throws IOException, InterruptedException, BufferManagerException {
+
+
+		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
+		
+		for (int b=2; b<=40; b++){
+			PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateBNLJ("R", 1000, "S", 10, b);	
+			traces.add(lrt);
+		}
+		
+		int traceIndex = 2;
+		for (PageReferenceTrace trace : traces) 
+		{
+			for (int bufferSize=41; bufferSize <=41; bufferSize++)
+			{
+	
+				for(PageReplacementStrategy straregy : STRATEGIES)
+				{
+					testTrace(Integer.toString(traceIndex), trace, bufferSize, straregy);
+				}
+			}
+			traceIndex++;
+		}
+	}
+
+	private void testTrace(String idTrace, PageReferenceTrace trace, int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy) 
 			throws InterruptedException, BufferManagerException {
 		
 		DiskManagerFaultCounterMock diskManagerFaultCounterMock = new DiskManagerFaultCounterMock();
@@ -67,14 +105,15 @@ public class DemoStrategy {
 			{
 			case REQUEST:
 			{
-				if (basicBufferPool.isPageInPool(pageReference.getPageId()))
-					System.out.print(">> HIT  : ");
+				/*if (basicBufferPool.isPageInPool(pageReference.getPageId()))
+					System.out.print(">> H : ");
 				else
-					System.out.print(">> MISS : ");
-					
+					System.out.print(">> M : ");
+				*/
+				
 				bufferManager.readPage(pageReference.getPageId());
 				requestsCount++;
-				System.out.println(basicBufferPool.toString());
+				//System.out.println(basicBufferPool.toString());
 				break;
 			}
 			case RELEASE:
@@ -86,10 +125,22 @@ public class DemoStrategy {
 		}
 
 		int faultsCount = diskManagerFaultCounterMock.getFaultsCount();
-		System.out.println(maxBufferPoolSize+","+pageReplacementStrategy.getClass().getSimpleName()+"," + calculateHitRate(faultsCount, requestsCount));
+		double hitRate = calculateHitRate(faultsCount, requestsCount);
+		
+		
+		//System.out.println(idTrace+"|"+maxBufferPoolSize+"|"+pageReplacementStrategy.getClass().getSimpleName()+"|"+format(hitRate));
+		System.out.println(idTrace+"\t"+maxBufferPoolSize+"\t"+pageReplacementStrategy.getClass().getSimpleName()+"\t"+format(hitRate));
 
 	}
 	
+	private String format(double hitRate) 
+	{	
+		String hitRateString = Double.toString(hitRate); 
+		//DecimalFormat df = new DecimalFormat("##\,##");
+		return hitRateString.replace('.',',').replaceAll("(,\\d\\d).+","$1");
+	}
+
+
 	private static double calculateHitRate(int faults, int requests)
 	{
 		return (double)(requests - faults)/(double)requests;

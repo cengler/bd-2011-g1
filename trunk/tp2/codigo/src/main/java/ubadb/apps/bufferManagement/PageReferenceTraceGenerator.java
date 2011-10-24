@@ -93,7 +93,6 @@ public class PageReferenceTraceGenerator
 	{
 		PageReferenceTrace ret = new PageReferenceTrace();
 		int blocks = (int)Math.ceil((double)pageCountOuter/(double)blockSize);
-		System.out.println(blocks);
 		int offset = 0;
 		for(int i=0; i < blocks; i++)
 		{
@@ -113,6 +112,6 @@ public class PageReferenceTraceGenerator
 //		System.out.println(gen.generateFileScan("A",0,5));
 //		System.out.println(gen.generateIndexScanClustered("A", 3, 3, 3));
 //		System.out.println(gen.generateIndexScanUnclustered("A", 3, 3, 10));
-		System.out.println(gen.generateBNLJ("R", 10, "S", 3, 3));
+		System.out.println(gen.generateBNLJ("R", 5, "S", 2, 3));
 	}
 }
