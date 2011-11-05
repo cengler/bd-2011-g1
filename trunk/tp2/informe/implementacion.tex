@@ -5,22 +5,22 @@
 
 En el paquete \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.lru} creamos las clases: 
 \begin{itemize}
-	\item LRUBufferFrame \\ Esta clase extiende BufferFrame para manener para cada frame un nroAcceso secuencial, para luego poder en el strategy decidir el mas antiguo.
+	\item LRUBufferFrame \\ Esta clase extiende BufferFrame para mantener para cada frame un nroAcceso secuencial, para luego poder en el strategy decidir el más antiguo.
 	\item LRUReplacementStrategy \\ Implementación del algoritmo LRU
 \end{itemize}
 
-El el paquete \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.lru} del directorio src/test creamos los siguientes test de unidad: 
+En el paquete \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.lru} del directorio src/test creamos los siguientes test de unidad: 
 \begin{itemize}
-	\item LRUBufferFrameTest \\ Verifica dado una secuencia de creaciones, pin y unpin, los contadores queden setados correctamente.
-	\item LRUReplacementStrategyTest \\ Verifica que los frames seleccionados por el algoritmo se den segun lo esperado por distintas trazas determinadas.
+	\item LRUBufferFrameTest \\ Verifica dada una secuencia de creaciones, pins y unpins, que los contadores queden seteados correctamente.
+	\item LRUReplacementStrategyTest \\ Verifica que los frames seleccionados por el algoritmo se den según lo esperado por distintas trazas determinadas.
 \end{itemize}
 
-Todo lo comenzado se hace también para la politica de reemplazo MRU en el paquete \\ \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.mru}
+Todo lo comentado se hace también para la política de reemplazo MRU en el paquete \\ \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.mru}
 
 \subsection{Implementación extras}
 
 \begin{itemize}
 	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.PageReferenceTraceReader} para poder parsear trazas como las dadas de ejemplo por la cátedra.
-	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.DemoStrategy} para ejecutar todas las trazas de un directorio variando la politica de reemplazo de paginas y el tamaño del SingleBuffer.
-	\item Sobreescribimos el método \verb|toString()| de \textsl{SingleBufferPool} para poder imprimirlo por pantalla y estudiar la disposición del buffer.
+	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.DemoStrategy} para ejecutar todas las trazas de un directorio variando la política de reemplazo de páginas y el tamaño del SingleBuffer.
+	\item Sobrescribimos el método \verb|toString()| de \textsl{SingleBufferPool} para poder imprimirlo por pantalla y estudiar la disposición del buffer.
 \end{itemize}
