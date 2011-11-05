@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -66,7 +67,7 @@ public class DemoStrategy {
 		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
 		
 		for (int b=2; b<=40; b++){
-			PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateBNLJ("R", 1000, "S", 10, b);	
+			PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateBNLJ("R", 10, "S", 50, b);	
 			traces.add(lrt);
 		}
 		
@@ -135,9 +136,9 @@ public class DemoStrategy {
 	
 	private String format(double hitRate) 
 	{	
-		String hitRateString = Double.toString(hitRate); 
-		//DecimalFormat df = new DecimalFormat("##\,##");
-		return hitRateString.replace('.',',').replaceAll("(,\\d\\d).+","$1");
+		//String hitRateString = Double.toString(hitRate);
+		String hitRateString = (new BigDecimal(hitRate)).toString();
+		return hitRateString.replace('.',',').replaceAll("(,\\d\\d).+","$1").replaceAll(",0+$","");
 	}
 
 
