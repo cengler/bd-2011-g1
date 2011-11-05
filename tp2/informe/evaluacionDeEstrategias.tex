@@ -298,8 +298,8 @@ La cantidad de bloques en memoria es superior a la cantidad de páginas solicitad
 \vskip1cm
 \end{center}
 
-\subsection{Block Nested Loop Join}
-El algoritmo BNLJ en su versión tradicional utiliza B-2 bloques(donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar BNLJ, empezamos considerando B-1 bloques para R y el restante para S.
+\subsection{Block Nested Loops Join}
+El algoritmo BNLJ en su versión tradicional utiliza B-2 bloques(donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos con uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar BNLJ, empezamos considerando B-1 bloques para R y el restante para S.
 Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.
 La primera traza que analizamos considera 2 relaciones R y S con 5 bloques en disco cada una y un Buffer Manager con 4 bloques en memoria. La primera pasada trae 3 bloques(B=4 bloques y 3 bloques = B-1) de R y uno de S. Cuando termina de recorrer todos los bloques de S, trae los restantes bloques de R(que son 2, por ser 5 en total y haber traído 3 al principio), esto implica que hay un bloque adicional de memoria que según la estrategia a utilizar puede permitir reutilizar bloques cacheados de S.
 Los resultados muestran que efectivamente el hit rate varía en esta situación y la estrategia que mejora la performance es MRU.
@@ -365,3 +365,32 @@ Los resultados muestran que efectivamente el hit rate varía en esta situación y 
 La cantidad de bloques en memoria es 4.
 \vskip1cm
 \end{center}
+
+\section{Conclusiones}
+\begin{itemize}
+\item Con respecto al algoritmo de \fs, vemos que cualquiera de las estrategias de reemplazo de páginas no es mejor que otra. 
+Lo único interesante que se puede concluir es que si necesitamos hacer dos veces un \fs sobre el mismo archivo la única que mejora el hit-rate cuando la cantidad de frames es menor a la cantidad de páginas a ser leídas es MRU. En caso contrario, cuando la cantidad de frames es mayor a la cantidad de páginas a ser leídas, LRU y MRU son mejores y el hit-rate converge al 50\% cuando la cantidad de frames se acerca a la cantidad de páginas dado que es necesario desalojar menos frames.
+
+\item En cuanto al algoritmo BNLJ, tenemos varios casos a considerar:
+\begin{itemize}
+\item Las páginas de R pueden ser cacheadas en memoria en su totalidad dejando por lo menos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el hit-rate es cero. Esto se da porque tengemos cacheado R completo y lo que necesitamos ir iterando es el bloque de S contra el cuál cruzamos los bloques de R. Es decir, en la primer iteración cruzamos todos los bloques de R contra el primero de S y obtenemos un miss, luego paso a cargar en memoria en segundo bloque de S y en caso de tener que reemplazar el único bloque que hizo release fue el bloque anterior de S y volvemos a obtener otro miss, y así sucesivamente hasta iterar sobre todo S.
+
+\item La totalidad de las páginas de R no pueden ser cacheadas en memoria y además tenemos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN. 
+
+TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+
+\end{itemize}
+
+\item En cuanto al INLJ con un índice B+ Clustered,
+
+
+				TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+
+
+\item En cuanto al INLJ con un índice B+ UnClustered, 
+
+
+				TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+
+
+\end{itemize}
