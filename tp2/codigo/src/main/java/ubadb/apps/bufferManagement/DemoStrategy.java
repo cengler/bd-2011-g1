@@ -5,13 +5,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
-
-import org.apache.log4j.jmx.Agent;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -25,7 +21,7 @@ import ubadb.exceptions.BufferManagerException;
 
 public class DemoStrategy {
 
-	private static final long PAUSE_BETWEEN_REFERENCES = 0;
+	private static final long PAUSE_BETWEEN_REFERENCES = 1;
 	private static final String TRACES_PATH = "./traces/";
 	private static final PageReplacementStrategy[] STRATEGIES = {new LRUReplacementStrategy(), new MRUReplacementStrategy(), new FIFOReplacementStrategy()};
 	private static boolean printBuffer = false;
@@ -202,9 +198,17 @@ public class DemoStrategy {
 
 	private String format(double hitRate) 
 	{	
-		//String hitRateString = Double.toString(hitRate);
-		String hitRateString = (new BigDecimal(hitRate)).toString();
-		return hitRateString.replace('.',',').replaceAll("(,\\d\\d).+","$1").replaceAll(",0+$","");
+		BigDecimal BigHitRate = new BigDecimal(hitRate);
+		// No queremos utilizar notación decimal que aparece en números menores a 10^-6
+		BigDecimal workingMin = new BigDecimal(1.0E-6);
+		BigHitRate = BigHitRate.min(workingMin)==workingMin ? BigHitRate : new BigDecimal(0);
+
+		String hitRateString = BigHitRate.toString();
+		return hitRateString
+				.replace('.',',')// Queremos mostrar una coma como separador decimal
+				.replaceAll("(,\\d\\d).+","$1")// Solo queremos presicion de 2 digitos decimales
+				.replaceAll(",0+$",",")// No queremos 0's al final de la representación decimal
+				.replaceAll(",$","");// No queremos "," sin representación decimal
 	}
 
 
