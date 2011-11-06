@@ -1,7 +1,10 @@
 package ubadb.components.bufferManager.bufferPool;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeMap;
 
 import ubadb.common.Page;
 import ubadb.common.PageId;
@@ -14,17 +17,40 @@ import ubadb.exceptions.BufferPoolException;
  */
 public class SingleBufferPool implements BufferPool
 {
-	private Map<PageId, BufferFrame> framesMap;
+	private class InternalFrame {
+		public BufferFrame bufferFrame;
+		public Integer bufferInternalId;
+
+		public InternalFrame(BufferFrame bufferFrame, Integer bufferInternalId){
+			this.bufferFrame		= bufferFrame;
+			this.bufferInternalId	= bufferInternalId;
+		}
+	}
+
+	private Map<PageId, InternalFrame> framesMap;
+	private LinkedList<Integer> availableIds;
 	private PageReplacementStrategy pageReplacementStrategy;
 	private final int maxBufferPoolSize;
 	
 	public SingleBufferPool(int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy)
 	{
-		this.maxBufferPoolSize = maxBufferPoolSize;
-		this.pageReplacementStrategy = pageReplacementStrategy;
-		this.framesMap = new HashMap<PageId, BufferFrame>(maxBufferPoolSize);
+		this.maxBufferPoolSize		= maxBufferPoolSize;
+		this.pageReplacementStrategy= pageReplacementStrategy;
+		this.framesMap				= new HashMap<PageId, InternalFrame>(maxBufferPoolSize);
+		this.availableIds			= new LinkedList<Integer>();
+		for(int i=0; i<maxBufferPoolSize; i++){
+			this.availableIds.addLast(i);
+		}
 	}
 
+	private Collection<BufferFrame> getFrames(){
+		Collection<BufferFrame> frames = new LinkedList<BufferFrame>();
+		for(InternalFrame internalFrame: framesMap.values()){
+			frames.add(internalFrame.bufferFrame);
+		}
+		return frames;
+	}
+	
 	public boolean isPageInPool(PageId pageId)
 	{
 		return framesMap.containsKey(pageId);
@@ -33,7 +59,7 @@ public class SingleBufferPool implements BufferPool
 	public BufferFrame getBufferFrame(PageId pageId) throws BufferPoolException
 	{
 		if(isPageInPool(pageId))
-			return framesMap.get(pageId);
+			return framesMap.get(pageId).bufferFrame;
 		else
 			throw new BufferPoolException("The requested page is not in the pool");
 	}
@@ -52,8 +78,9 @@ public class SingleBufferPool implements BufferPool
 		else
 		{
 			//Add it to pool
+			
 			BufferFrame bufferFrame = pageReplacementStrategy.createNewFrame(page);
-			framesMap.put(page.getPageId(),bufferFrame);
+			framesMap.put(page.getPageId(), new InternalFrame(bufferFrame, availableIds.pop()));
 			
 			return bufferFrame;
 		}
@@ -63,6 +90,7 @@ public class SingleBufferPool implements BufferPool
 	{
 		if(isPageInPool(pageId))
 		{
+			availableIds.addLast(framesMap.get(pageId).bufferInternalId);
 			framesMap.remove(pageId);
 		}
 		else
@@ -73,7 +101,7 @@ public class SingleBufferPool implements BufferPool
 	{
 		try
 		{
-			return pageReplacementStrategy.findVictim(framesMap.values());
+			return pageReplacementStrategy.findVictim(getFrames());
 		}
 		catch(Exception e)
 		{
@@ -87,12 +115,15 @@ public class SingleBufferPool implements BufferPool
 	}
 
 	public String toString() {
-		
+		Map<Integer, BufferFrame> orderedFrames = new TreeMap<Integer, BufferFrame>();
+		for(InternalFrame internalFrame: framesMap.values()){
+			orderedFrames.put(internalFrame.bufferInternalId, internalFrame.bufferFrame);
+		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
-		for (PageId page : framesMap.keySet()) {
+		for (BufferFrame frame: orderedFrames.values()) {
 			sb.append("[");
-			BufferFrame frame = framesMap.get(page);
 			sb.append(frame.getPage().getPageId());
 			sb.append("]");
 		}
