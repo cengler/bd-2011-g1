@@ -24,3 +24,9 @@ Todo lo comentado se hace también para la política de reemplazo MRU en el paquet
 	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.DemoStrategy} para ejecutar todas las trazas de un directorio variando la política de reemplazo de páginas y el tamaño del SingleBuffer.
 	\item Sobrescribimos el método \verb|toString()| de \textsl{SingleBufferPool} para poder imprimirlo por pantalla y estudiar la disposición del buffer.
 \end{itemize}
+
+\subsection{Modificaciones en SingleBufferPool}
+\begin{itemize}
+	\item Implementamos el método toString() para imprimir el estado del buffer con las páginas actualmente almacenadas en el mismo.
+	\item Asociamos un orden a cada frame almacenado para poder imprimir el buffer con los frames según el orden en que fueron siendo agregados.
+\end{itemize}
