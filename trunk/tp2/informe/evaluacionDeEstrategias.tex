@@ -331,32 +331,3 @@ Los resultados muestran que efectivamente el hit rate varía en esta situación y 
 La cantidad de bloques en memoria es 4.
 \vskip1cm
 \end{center}
-
-\section{Conclusiones}
-\begin{itemize}
-\item Con respecto al algoritmo de \fs, vemos que cualquiera de las estrategias de reemplazo de páginas no es mejor que otra. 
-Lo único interesante que se puede concluir es que si necesitamos hacer dos veces un \fs sobre el mismo archivo la única que mejora el hit-rate cuando la cantidad de frames es menor a la cantidad de páginas a ser leídas es MRU. En caso contrario, cuando la cantidad de frames es mayor a la cantidad de páginas a ser leídas, LRU y MRU son mejores y el hit-rate converge al 50\% cuando la cantidad de frames se acerca a la cantidad de páginas dado que es necesario desalojar menos frames.
-
-\item En cuanto al algoritmo BNLJ, tenemos varios casos a considerar:
-\begin{itemize}
-\item Las páginas de R pueden ser cacheadas en memoria en su totalidad dejando por lo menos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el hit-rate es cero. Esto se da porque tengemos cacheado R completo y lo que necesitamos ir iterando es el bloque de S contra el cuál cruzamos los bloques de R. Es decir, en la primer iteración cruzamos todos los bloques de R contra el primero de S y obtenemos un miss, luego paso a cargar en memoria en segundo bloque de S y en caso de tener que reemplazar el único bloque que hizo release fue el bloque anterior de S y volvemos a obtener otro miss, y así sucesivamente hasta iterar sobre todo S.
-
-\item La totalidad de las páginas de R no pueden ser cacheadas en memoria y además tenemos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN. 
-
-TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-
-\end{itemize}
-
-\item En cuanto al INLJ con un índice B+ Clustered,
-
-
-				TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-
-
-\item En cuanto al INLJ con un índice B+ UnClustered, 
-
-
-				TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-
-
-\end{itemize}

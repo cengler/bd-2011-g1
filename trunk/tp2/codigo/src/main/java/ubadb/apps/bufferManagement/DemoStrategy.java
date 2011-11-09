@@ -35,21 +35,23 @@ public class DemoStrategy {
 	private void execTest(){
 
 		System.out.print(
-			"Elija que opción correr:\n" +
-			"[0] Test File Scan\n" +
-			"[1] Test Index Clustered\n" +
-			"[2] Test Index Unclustered\n" +
-			"[3] Test BNLJ\n" +
-			"[7] "+(printHitRate ? "Desactivar" : "Activar")+" impresión del Hit-Rate\n" +
-			"[8] "+(printBuffer ? "Desactivar" : "Activar")+" impresión del estado del Buffer\n" +
-			"[9] Exit\n" +
-			"> "
-		);
+				"Elija que opción correr:\n" +
+						"[0] Test File Scan\n" +
+						"[1] Test Index Clustered\n" +
+						"[2] Test Index Unclustered\n" +
+						"[3] Test BNLJ\n" +
+						"[4] Test BNLJ (Br < Bs)\n" +
+						"[5] Test BNLJ (Br > Bs)\n" +
+						"[7] "+(printHitRate ? "Desactivar" : "Activar")+" impresión del Hit-Rate\n" +
+						"[8] "+(printBuffer ? "Desactivar" : "Activar")+" impresión del estado del Buffer\n" +
+						"[9] Exit\n" +
+						"> "
+				);
 
 		BufferedReader reader	= new BufferedReader(new InputStreamReader(System.in));
 		String response			= null;
 		try {
-			response = reader.readLine();
+			response = reader.readLine().trim();
 		} catch (IOException e) {
 			System.out.println("Error inesperado!");
 			System.exit(-1);
@@ -59,24 +61,40 @@ public class DemoStrategy {
 			Integer option = Integer.valueOf(response); 
 
 			switch(option){
-				case 0: 
-					runFileTest("fileScan2Times.txt",4,10);
-					break;
-				case 7:
-					printHitRate = !printHitRate;
-					break;
-				case 8:
-					printBuffer = !printBuffer;
-					break;
-				default:
-					System.out.println("Chaucito!");
-					System.exit(0);
+			case 0: 
+				runFileTest("fileScan2Times.txt",4,10);
+				break;
+			case 1: 
+				runFileTest("indexScanClustered.txt",4,4);
+				runFileTest("indexScanClustered.txt",10,10);
+				break;
+			case 2: 
+				runFileTest("indexScanUnclustered.txt",4,4);
+				runFileTest("indexScanUnclustered.txt",10,10);
+				break;
+			case 3: 
+				runFileTest("BNLJ-5R-5S-4B.txt",4,4);
+				break;
+			case 4: 
+				demoBNLJ(20, 20, 50, 50, 1, 19, 40, 40);
+				break;
+			case 5: 
+				demoBNLJ(50, 50, 20, 20, 1, 19, 40, 40);
+				break;
+			case 7:
+				printHitRate = !printHitRate;
+				break;
+			case 8:
+				printBuffer = !printBuffer;
+				break;
+			case 9:
+				System.out.println("Chaucito!");
+				System.exit(0);
+			default:
+				System.out.println("La opción elegida no está disponible actualmente, por favor intente en unos minutos");
 			}
-
-			//new DemoStrategy().demo();
-			//new DemoStrategy().demoBNLJ();
-			
-		}else{
+		}
+		else{
 			System.out.println("Usted debe escribir una opción válida");
 		}		
 
@@ -112,39 +130,59 @@ public class DemoStrategy {
 		}catch(Exception e){
 			System.out.println(e.toString());
 			System.out.println(	"Ocurrió un error inesperado, ¿puede fijarse si el archivo " + fileFilter +
-								" existe en el sistema y ningún otro programa está utilizandolo?");
+					" existe en el sistema y ningún otro programa está utilizandolo?");
 		}
-		
+
 	}
 
 
+	private void demoBNLJ(int minR, int maxR, 
+			int minS, int maxS,
+			int minB, int maxB,
+			int maxBuffSize, int minBuffSize) {
 
+		try{
 
-	private void demoBNLJ() throws IOException, InterruptedException, BufferManagerException {
+			List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
 
-
-		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
-
-		for (int b=2; b<=40; b++){
-			PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateBNLJ("R", 100, "S", 500, b);	
-			traces.add(lrt);
-		}
-
-		int traceIndex = 2;
-		for (PageReferenceTrace trace : traces) 
-		{
-			for (int bufferSize=41; bufferSize <=41; bufferSize++)
-			{
-
-				for(PageReplacementStrategy straregy : STRATEGIES)
-				{
-					testTrace(Integer.toString(traceIndex), trace, bufferSize, straregy);
+			for (int b=minB; b<=maxB; b++){
+				for (int rSize=minR; rSize<=maxR; rSize++){
+					for (int sSize=minS; sSize<=maxS; sSize++)
+					{
+						PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateBNLJ("R", rSize, "S", sSize, b);
+						lrt.setId("R"+rSize+"-S"+sSize+"-b"+b);
+						traces.add(lrt);
+					}
 				}
 			}
-			traceIndex++;
+
+			for (PageReferenceTrace trace : traces) 
+			{
+				for (int bufferSize=minBuffSize; bufferSize <=maxBuffSize; bufferSize++)
+				{
+
+					for(PageReplacementStrategy strategy : STRATEGIES)
+					{
+						testTrace(trace.getId()+"-BuffSize"+bufferSize, trace, bufferSize, strategy);
+					}
+				}
+			}
+		}catch(Exception e){
+			System.out.println(e.toString());
+			System.out.println(	"Ocurrió un error inesperado!");
 		}
 	}
 
+	/**
+	 * Testea un trace imprimiendo por la salida standard el hit-rate y el estado del buffer para cada request.
+	 * 
+	 * @param idTrace identificador del trace
+	 * @param trace trace de pedidos de paginas
+	 * @param maxBufferPoolSize tamaño del buffer
+	 * @param pageReplacementStrategy estrategia de remplazo de paginas
+	 * @throws InterruptedException en caso de no poder hacer el sleep entre requests.
+	 * @throws BufferManagerException en caso de pedir mas paginas que las que entran en el buffer.
+	 */
 	private void testTrace(String idTrace, PageReferenceTrace trace, int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy) 
 			throws InterruptedException, BufferManagerException {
 
@@ -175,7 +213,7 @@ public class DemoStrategy {
 
 				bufferManager.readPage(pageReference.getPageId());
 				requestsCount++;
-				
+
 				if(printBuffer)
 					System.out.println(basicBufferPool.toString());
 				break;
@@ -196,6 +234,12 @@ public class DemoStrategy {
 
 	}
 
+	/**
+	 * Retorna el hit-rate en formato excel compatible.
+	 * 
+	 * @param hitRate hit-rate
+	 * @return el hit-rate en formato excel compatible
+	 */
 	private String format(double hitRate) 
 	{	
 		BigDecimal BigHitRate = new BigDecimal(hitRate);
@@ -211,7 +255,13 @@ public class DemoStrategy {
 				.replaceAll(",$","");// No queremos "," sin representación decimal
 	}
 
-
+	/**
+	 * Calcula el hit-rate dado la cantidad de faults y requests.
+	 * 
+	 * @param faults fallas de paginas
+	 * @param requests pedidos de paginas
+	 * @return el hit-rate
+	 */
 	private static double calculateHitRate(int faults, int requests)
 	{
 		return (double)(requests - faults)/(double)requests;

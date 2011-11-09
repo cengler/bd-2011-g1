@@ -1,32 +1,39 @@
 \section{Conclusiones}
 
-Con respecto al algoritmo de \fs, vemos que ninguna de las estrategias de reemplazo de p√°ginas es mejor a otra.
+\subsection{\fs}
+Vemos que ninguna de las estrategias de reemplazo de p·ginas es mejor a otra.
 \newline
-Pero uno puede observar resultados interesantes cuando se necesita recorrer m√°s de una vez la traza, dado que ahora hay oportunidad de cachear p√°ginas pedidas anteriormente.
+Pero uno puede observar resultados interesantes cuando se necesita recorrer m·s de una vez la traza, dado que ahora hay oportunidad de cachear p ·ginas pedidas anteriormente.
 \newline
 Para el caso de dos lecturas sucesivas sobre la misma traza podemos considerar dos escenarios:
 \begin{itemize}
- \item    \textbf{La cantidad de frames en buffer es menor a la cantidad de p√°ginas pedidas}: la √∫nica estrategia que tiene Hit-Rate mayor a 0 es MRU. FIFO y LRU cuando necesitan alojar una nueva p√°gina empiezan desalojando la primera en ser almacenada y este comportamiento impide reaprovechar esas p√°ginas en la segunda lectura de la traza.
- \item    \textbf{La cantidad de frames en buffer en mayor o igual a la cantidad de p√°ginas pedidas}: en este escenario las tres estrategias muestran un HitRate del 50\% dado que si bien en la primera lectura no tienen ninguna p√°gina en buffer, para la segunda no tuvieron que desalojar ninguna(son todos hits).
+ \item    \textbf{La cantidad de frames en buffer es menor a la cantidad de p·ginas pedidas}: la ˙nica estrategia que tiene Hit-Rate mayor a 0 es MRU. FIFO y LRU cuando necesitan alojar una nueva p·gina empiezan desalojando la primera en ser almacenada y este comportamiento impide reaprovechar esas p·ginas en la segunda lectura de la traza.
+ \item    \textbf{La cantidad de frames en buffer en mayor o igual a la cantidad de p·ginas pedidas}: en este escenario las tres estrategias muestran un HitRate del 50\% dado que si bien en la primera lectura no tienen ninguna p·gina en buffer, para la segunda no tuvieron que desalojar ninguna(son todos hits).
 \end{itemize}
 
-En cuanto al INLJ con un √≠ndice B+ Clustered,
-TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO.\newline
+\subsection{Index Scan Clustered}
+Si suponemos que hay un Ìndice clustered sobre un atributo $a$ de una relaciÛn $A$ y la solicitud que se hizo es para un rango $c<a<b$. En este caso, el HitRate es igual a 0 dado que accedo por el Ìndice al bloque donde se encuentra $c$ y recorro todos los bloques hasta que encuentro $d$, por lo tanto no hay posibilidad de tener cacheado bloques previamente solicitados.\newline
+Hay casos particulares donde el uso repetido de Index Scan Clustered implica un HitRate mayor a 0. Ejemplos de estos casos son:
+\begin{itemize}
+	\item Dos lecturas sucesivas sobre el mismo rango. El HitRate de esta operaciÛn darÌa resultados an·logos a los obtenidos con \fs cuando hicimos dos lecturas seguidas sobre el mismo archivo.
+	\item Casos donde se realizan lecturas de rangos con intersecciÛn distinta a vacÌo, lo cual puede permitir la reutilizaciÛn de bloques pertenecientes a la intersecciÛn de estos rangos si los mismos se encuentran en el Buffer.
+\end{itemize}
 
-En cuanto al INLJ con un √≠ndice B+ UnClustered, 
+\subsection{Index Scan Unclustered}
   TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO\newline
 
-En cuanto al algoritmo BNLJ, podemos considerar los siguientes escenarios:
+\subsection{BNLJ}
+Podemos considerar los siguientes escenarios:
 \begin{itemize}
-  \item \textbf{Las p√°ginas de R pueden ser cacheadas en memoria en su totalidad} dejando por lo menos dos frames de memoria libres, uno para S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el Hit-Rate es cero. La explicaci√≥n es la siguiente: tenemos cacheado R completamente y lo que necesitamos ir iterando es el bloque de S contra el cu√°l cruzamos los bloques de R. \newline
+  \item \textbf{Las p·ginas de R pueden ser cacheadas en memoria en su totalidad} dejando por lo menos dos frames de memoria libres, uno para S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el Hit-Rate es cero. La explicaciÛn es la siguiente: tenemos cacheado R completamente y lo que necesitamos ir iterando es el bloque de S contra el cu·l cruzamos los bloques de R. \newline
   Es decir:
   \begin{itemize}
-    \item En la primera iteraci√≥n cruzamos todos los bloques de R contra el primero de S y obtenemos un Miss(ninguno estaba cargado previamente)
+    \item En la primera iteraciÛn cruzamos todos los bloques de R contra el primero de S y obtenemos un Miss(ninguno estaba cargado previamente)
     \item Cargamos en memoria el segundo bloque de S
-    \item De ser necesario reemplazar una p√°gina, hay que tener en cuenta que el √∫nico frame que hizo release fue el anterior de S y volvemos a obtener otro Miss correspondiente al nuevo bloque de S reci√©n cargado
-    \item Terminamos de iterar sobre S sin haber reutilizado ning√∫n frame(todos Misses).
+    \item De ser necesario reemplazar una p·gina, hay que tener en cuenta que el ˙nico frame que hizo release fue el anterior de S y volvemos a obtener otro Miss correspondiente al nuevo bloque de S reciÈn cargado
+    \item Terminamos de iterar sobre S sin haber reutilizado ning˙n frame(todos Misses).
   \end{itemize}
-  \item \textbf{La totalidad de las p√°ginas de R no pueden ser cacheadas en memoria} y adem√°s tenemos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN.\newline
+  \item \textbf{La totalidad de las p·ginas de R no pueden ser cacheadas en memoria} y adem·s tenemos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN.\newline
   En este caso se pueden 
   \item TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 \end{itemize}
