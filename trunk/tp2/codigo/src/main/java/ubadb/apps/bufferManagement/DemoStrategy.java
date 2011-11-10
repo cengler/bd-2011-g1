@@ -22,16 +22,26 @@ import ubadb.exceptions.BufferManagerException;
 public class DemoStrategy {
 
 	private static final long PAUSE_BETWEEN_REFERENCES = 1;
-	private static final String TRACES_PATH = "./traces/";
+	private static final String TRACES_PATH = "./classes/traces/";
 	private static final PageReplacementStrategy[] STRATEGIES = {new LRUReplacementStrategy(), new MRUReplacementStrategy(), new FIFOReplacementStrategy()};
 	private static boolean printBuffer = false;
 	private static boolean printHitRate = true;
 
-	public static void main(String[] args) throws IOException, InterruptedException, BufferManagerException {
+	/**
+	 * Main. Ejecuta el selector interactivo de tests.
+	 * 
+	 * @param args argumenos (no se esperan)
+	 * @throws Exception ante errores al ejecutar los test.
+	 */
+	public static void main(String[] args) throws Exception
+	{
 		DemoStrategy instance = new DemoStrategy();
 		instance.execTest();
 	}
 
+	/**
+	 * Selector interactivo del test a correr.
+	 */
 	private void execTest(){
 
 		System.out.print(
@@ -101,6 +111,14 @@ public class DemoStrategy {
 		execTest();
 	}
 
+	/**
+	 * Ejecuta los traces de la carpeta traces que correspondan con el filtro dado.
+	 * Permite variar la cantidad de memoria disponible.
+	 * 
+	 * @param fileFilter filtro que debe coincidir con el fin del nombre de los archivos a correr
+	 * @param minBSize minima cantidad de memoria
+	 * @param maxBSize maxima cantidad de memoria
+	 */
 	private void runFileTest(final String fileFilter, int minBSize, int maxBSize) {
 		try {
 			PageReferenceTraceReader reader = new PageReferenceTraceReader();
@@ -136,6 +154,22 @@ public class DemoStrategy {
 	}
 
 
+	/**
+	 * Test parametrico de BNLJ. 
+	 * 
+	 * Permite calcular los hit-rates de cada estrategia de reemplazo para el algoritmo BNLJ. 
+	 * Es posible variar el tamaño de R y de S, la cantidad de bloques asociados a R en el algoritmo
+	 * y el tamalo del buffer.
+	 * 
+	 * @param minR minima cant de bloques de R
+	 * @param maxR maximo cant de bloques de R
+	 * @param minS minima cant de bloques de S
+	 * @param maxS maxima cant de bloques de S
+	 * @param minB minima cant de bloques para R en BNLJ
+	 * @param maxB maxima cant de bloques para R en BNLJ
+	 * @param maxBuffSize minima cant de bloques de memoria
+	 * @param minBuffSize maxima cant de bloques de memoria
+	 */
 	private void demoBNLJ(int minR, int maxR, 
 			int minS, int maxS,
 			int minB, int maxB,
