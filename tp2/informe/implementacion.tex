@@ -30,3 +30,27 @@ Todo lo comentado se hace también para la política de reemplazo MRU en el paquet
 	\item Implementamos el método toString() para imprimir el estado del buffer con las páginas actualmente almacenadas en el mismo.
 	\item Asociamos un orden a cada frame almacenado para poder imprimir el buffer con los frames según el orden en que fueron siendo agregados.
 \end{itemize}
+
+\subsection{Ejecución del código}
+Pasos para la correcta ejecución del programa desde eclipse:
+\begin{itemize}
+	\item Configurar en Run $>$ Run Configurations $>$ Arguments $>$ Working Directory: la carpeta TARGET correspondiente al código.
+	\item Ir a la clase ubadb $>$  apps $>$  bufferManagement $>$ DemoStrategy y correr el proyecto desde esta clase.
+\end{itemize}	
+
+
+Pasos para la correcta ejecución del programa desde consola. Ejecutar los siguientes comandos:
+\begin{itemize}
+	\item 
+			\begin{verbatim}
+				mvn install
+			\end{verbatim}
+		\item 
+			\begin{verbatim}
+				cd target
+			\end{verbatim}
+		\item 
+			\begin{verbatim}
+				java -jar ubadb-1-0.jar
+			\end{verbatim}
+\end{itemize}	
