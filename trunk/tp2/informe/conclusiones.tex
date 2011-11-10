@@ -33,8 +33,17 @@ Podemos considerar los siguientes escenarios:
     \item De ser necesario reemplazar una página, hay que tener en cuenta que el único frame que hizo release fue el anterior de S y volvemos a obtener otro Miss correspondiente al nuevo bloque de S recién cargado
     \item Terminamos de iterar sobre S sin haber reutilizado ningún frame(todos Misses).
   \end{itemize}
-  \item \textbf{La totalidad de las páginas de R no pueden ser cacheadas en memoria} y además tenemos dos frames de memoria libres, uno para un bloque de S y otro para el resultado del JOIN.\newline
-  En este caso se pueden 
-  \item TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+  \item \textbf{La totalidad de las páginas de R no pueden ser cacheadas en memoria} y se cuenta con un buffer de tamaño fijo.\\
+Para este escenario se corrieron pruebas donde se var\'ia la cantidad de bloques dedicados a R \footnote{Ver subsecci\'on BNLJ en sección Evaluación de Estrategias} 
+    \begin{itemize}
+     \item De las pruebas se pueda observar lo siguiente: 
+	\begin{itemize}
+	 \item Sean $B_{MR}$ los bloques disponibles para cahear R,
+	 \item \# $hits = B_{S} \times (B_{R}-1)$ y
+         \item \# $miss = B_{S} + B_{R}$
+	 \item Luego $HitRate = \frac{B_{S} \times (B_{R}-1)}{B_{S} \times (B_{R}-1)+B_{S}+B_{R}}$
+	\end{itemize}
+    \end{itemize}
+
 \end{itemize}
 
