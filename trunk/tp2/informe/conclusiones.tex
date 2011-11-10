@@ -11,18 +11,18 @@ Para el caso de dos lecturas sucesivas sobre la misma traza podemos considerar d
  \item    \textbf{La cantidad de frames en buffer en mayor o igual a la cantidad de páginas pedidas}: en este escenario las tres estrategias muestran un HitRate del 50\% dado que si bien en la primera lectura no tienen ninguna página en buffer, para la segunda no tuvieron que desalojar ninguna(son todos hits).
 \end{itemize}
 
-\subsection{Index Scan Clustered}
+\subsection{\isc}
 Si suponemos que hay un índice clustered sobre un atributo $a$ de una relación $A$ y la solicitud que se hizo es para un rango $c<a<b$. En este caso, el HitRate es igual a 0 dado que accedo por el índice al bloque donde se encuentra $c$ y recorro todos los bloques hasta que encuentro $d$, por lo tanto no hay posibilidad de tener cacheado bloques previamente solicitados.\newline
-Hay casos particulares donde el uso repetido de Index Scan Clustered implica un HitRate mayor a 0. Ejemplos de estos casos son:
+Hay casos particulares donde el uso repetido de \isc implica un HitRate mayor a 0. Ejemplos de estos casos son:
 \begin{itemize}
 	\item Dos lecturas sucesivas sobre el mismo rango. El HitRate de esta operación daría resultados análogos a los obtenidos con \fs cuando hicimos dos lecturas seguidas sobre el mismo archivo.
 	\item Casos donde se realizan lecturas de rangos con intersección distinta a vacío, lo cual puede permitir la reutilización de bloques pertenecientes a la intersección de estos rangos si los mismos se encuentran en el Buffer.
 \end{itemize}
 
-\subsection{Index Scan Unclustered}
-  TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO\newline
+\subsection{\isu}
+  En este algoritmo no se puede predecir qué estrategia de reemplazo de frames es conveniente, pero a diferencia del \isc se puede observar que es posible que se resoliciten bloques ya cacheados anteriormente. Es decir,la coincidencia de que una página ya esté en memoria depende de la traza y de la estrategia de reeamplazo que se esté utilizando. \newline
 
-\subsection{BNLJ}
+\subsection{\bnlj}
 Podemos considerar los siguientes escenarios:
 \begin{itemize}
   \item \textbf{Las páginas de R pueden ser cacheadas en memoria en su totalidad} dejando por lo menos dos frames de memoria libres, uno para S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el Hit-Rate es cero. La explicación es la siguiente: tenemos cacheado R completamente y lo que necesitamos ir iterando es el bloque de S contra el cuál cruzamos los bloques de R. \newline
@@ -34,16 +34,13 @@ Podemos considerar los siguientes escenarios:
     \item Terminamos de iterar sobre S sin haber reutilizado ningún frame(todos Misses).
   \end{itemize}
   \item \textbf{La totalidad de las páginas de R no pueden ser cacheadas en memoria} y se cuenta con un buffer de tamaño fijo.\\
-Para este escenario se corrieron pruebas donde se var\'ia la cantidad de bloques dedicados a R \footnote{Ver subsecci\'on BNLJ en sección Evaluación de Estrategias} 
-    \begin{itemize}
-     \item De las pruebas se pueda observar lo siguiente: 
-	\begin{itemize}
-	 \item Sean $B_{MR}$ los bloques disponibles para cahear R,
-	 \item \# $hits = B_{S} \times (B_{R}-1)$ y
-         \item \# $miss = B_{S} + B_{R}$
-	 \item Luego $HitRate = \frac{B_{S} \times (B_{R}-1)}{B_{S} \times (B_{R}-1)+B_{S}+B_{R}}$
-	\end{itemize}
-    \end{itemize}
+La idea de las pruebas realizadas fue variar los bloques asignados a R de tal forma que sobren bloques de memoria y de esta manera ver que ocurre cuando se tiene más de un bloque libre de memoria para cachear bloques de S. Esto no sucede en el algoritmo tradicional de \bnlj ya que en éste solo se le dedica un bloque de memoria a S. \newline
+Como resultado de las pruebas obtuvimos que, en esta variación de \bnlj, se pueden llegar a tener cacheados, dependiendo de las estrategias de reemplazo, algunos bloques de S que son solicitados nuevamente y obtener así un hit rate mayor a cero. \newline
+Se puede concluir que MRU es la estrategia de reemplazo que mejor trabaja en \bnlj, tal como se ve en las Figuras 2 y 3 de la sección 4.4.
+
+
+
+
 
 \end{itemize}
 

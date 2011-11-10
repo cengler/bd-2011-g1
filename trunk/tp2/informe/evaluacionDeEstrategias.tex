@@ -49,9 +49,9 @@ Por otro lado, se observan resultados interesantes cuando hacemos traces que leí
 
 \newpage
 
-\subsection{Index Scan Clustered}
+\subsection{\isc}
 
-En index scan clustered no influye en las estrategias de reemplazo de páginas, pues una vez encontrada la hoja del índice del primer registro a devolver, se recorren las páginas necesarias secuencialmente(dado que están ordenadas) hasta llegar al registro que no cumple con el filtro(o al fin del archivo).
+En \isc no influye en las estrategias de reemplazo de páginas, pues una vez encontrada la hoja del índice del primer registro a devolver, se recorren las páginas necesarias secuencialmente(dado que están ordenadas) hasta llegar al registro que no cumple con el filtro(o al fin del archivo).
 
 Entonces, ningún algoritmo de reemplazo de páginas va a hacer diferencia alguna ya que NINGUNA página es pedida más de una vez(esto se observa en la traza evaluada a continuación).
 
@@ -147,12 +147,12 @@ La cantidad de bloques en memoria es superior a la cantidad de páginas solicitad
 
 \newpage
 
-\subsection{Index Scan Unclustered}
-Luego de las pruebas realizadas, observamos que a diferencia del Index Scan Clustered, la estrategia de reemplazo utilizada en el algoritmo Index Scan Unclustered incide en el hit rate. En las pruebas efectuadas se vio una mejor perfomance de las estrategias FIFO y LRU(con un hit rate del 18\%) en comparación con MRU(con un hit rate del 9\%). Esta diferencia solo se observó cuando la cantidad de bloques en memoria era menor a la cantidad de páginas requeridas y la mejoría provino de reutilizar las páginas de índice que solo son requeridas la primera vez.
+\subsection{\isu}
+Luego de las pruebas realizadas, observamos que a diferencia del \isc, la estrategia de reemplazo utilizada en el algoritmo \isu incide en el hit rate. En las pruebas efectuadas se vio una mejor perfomance de las estrategias FIFO y LRU(con un hit rate del 18\%) en comparación con MRU(con un hit rate del 9\%). Esta diferencia solo se observó cuando la cantidad de bloques en memoria era menor a la cantidad de páginas requeridas y la mejoría provino de reutilizar las páginas de índice que solo son requeridas la primera vez.
 
-De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador de antemano no puede decidir que estrategia ofrecerá la mejor perfomance para una consulta dada.
+De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador no puede decidir de antemano que estrategia ofrecerá la mejor perfomance para una consulta dada.
 
-La traza elegida para realizar pruebas se hizo pensando en requerir páginas más de una vez, dado que el Index Scan Unclestered puede tener una traza de este estilo(a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el hit rate obtenido.
+La traza elegida para realizar pruebas se hizo pensando en requerir páginas más de una vez, dado que el \isu puede tener una traza de este estilo(a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el hit rate obtenido.
 
 \begin{center}
 \begin{framed}
@@ -186,7 +186,7 @@ Traza utilizada para analizar las diferentes estategias de reemplazo.
 \vskip1cm
 \end{center}
 
-Para evaluar la traza anterior consideramos 2 casos posibles: uno en el que contásemos con una cantidad de páginas en buffer menor a las requeridas en la traza y otra en la contásemos con una cantidad superior. Dado que la traza presentada requiere 8 páginas distintas, hicimos pruebas con buffers que contasen con 10 y 4 páginas de capacacidad.
+Para evaluar la traza anterior consideramos 2 casos posibles: uno en el que contásemos con una cantidad de páginas en buffer menor a las requeridas en la traza y otra en la contásemos con una cantidad superior. Dado que la traza presentada requiere 8 páginas distintas, hicimos pruebas con buffers que contasen con 4 y 10 páginas de capacacidad.
 
 \newpage
 
@@ -264,9 +264,9 @@ La cantidad de bloques en memoria es superior a la cantidad de páginas solicitad
 \vskip1cm
 \end{center}
 
-\subsection{Block Nested Loops Join}
-El algoritmo BNLJ en su versión tradicional utiliza B-2 bloques(donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos con uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar BNLJ, empezamos considerando B-1 bloques para R y el restante para S.
-Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.
+\subsection{\bnlj}
+El algoritmo \bnlj en su versión tradicional utiliza B-2 bloques(donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos con uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar \bnlj, empezamos considerando B-1 bloques para R y el restante para S.\newline
+Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.\newline
 La primera traza que analizamos considera 2 relaciones R y S con 5 bloques en disco cada una y un Buffer Manager con 4 bloques(B=4) en memoria. La primera pasada trae 3 bloques(B-1 bloques) de R y uno de S. Cuando termina de recorrer todos los bloques de S, trae los restantes bloques de R(que son 2, por ser 5 en total y haber traído 3 al principio), esto implica que hay un bloque adicional de memoria que según la estrategia a utilizar puede permitir reutilizar bloques cacheados de S.
 Los resultados muestran que efectivamente el hit rate varía en esta situación y la estrategia que mejora la performance es MRU.
 
@@ -332,18 +332,20 @@ La cantidad de bloques en memoria es 4.
 \vskip1cm
 \end{center}
 
-Apreciamos resultados interesantes cuando analizamos dos relaciones R y S con tamaño fijo así como un buffer de tamaño fijo también, y variamos la cantidad de bloques que dedicamos para R. Para hacer este tipo de pruebas consideramos el caso donde R tiene más bloques que S en disco(50 y 20 respectivamente) y el caso inverso; en ambos casos consideramos un Buffer con capacidad para 20 frames.
-
 \newpage
+\textbf{Pruebas adicionales variando la cantidad de bloques dedicados a R}\newline
+Apreciamos resultados interesantes cuando analizamos dos relaciones R y S con tamaño fijo así como un buffer de tamaño fijo también, y variamos la cantidad de bloques que dedicamos para R. Para hacer este tipo de pruebas consideramos el caso donde R tiene más bloques que S en disco(50 y 20 respectivamente) y el caso inverso; en ambos casos consideramos un Buffer con capacidad para 20 frames.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.75]{img/BNLJ_R_menor_a_S.png}
-\caption{BNLJ considerando una relación R con menor cantidad de bloques que S}
+\caption{\bnlj considerando una relación R con menor cantidad de bloques que S}
 \end{figure}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.75]{img/BNLJ_R_mayor_a_S.png}
-\caption{BNLJ considerando una relación R con mayor cantidad de bloques que S}
+\caption{\bnlj considerando una relación R con mayor cantidad de bloques que S}
 \end{figure}
+
+\newpage
