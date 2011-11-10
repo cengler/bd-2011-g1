@@ -331,3 +331,19 @@ Los resultados muestran que efectivamente el hit rate varía en esta situación y 
 La cantidad de bloques en memoria es 4.
 \vskip1cm
 \end{center}
+
+Apreciamos resultados interesantes cuando analizamos dos relaciones R y S con tamaño fijo así como un buffer de tamaño fijo también, y variamos la cantidad de bloques que dedicamos para R. Para hacer este tipo de pruebas consideramos el caso donde R tiene más bloques que S en disco(50 y 20 respectivamente) y el caso inverso; en ambos casos consideramos un Buffer con capacidad para 20 frames.
+
+\newpage
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.75]{img/BNLJ_R_menor_a_S.png}
+\caption{BNLJ considerando una relación R con menor cantidad de bloques que S}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.75]{img/BNLJ_R_mayor_a_S.png}
+\caption{BNLJ considerando una relación R con mayor cantidad de bloques que S}
+\end{figure}
