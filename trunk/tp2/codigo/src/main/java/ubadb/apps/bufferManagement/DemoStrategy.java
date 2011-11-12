@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigDecimal;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -52,6 +52,7 @@ public class DemoStrategy {
 						"[3] Test BNLJ\n" +
 						"[4] Test BNLJ (Br < Bs)\n" +
 						"[5] Test BNLJ (Br > Bs)\n" +
+						"[6] Test Custom File\n" +
 						"[7] "+(printHitRate ? "Desactivar" : "Activar")+" impresión del Hit-Rate\n" +
 						"[8] "+(printBuffer ? "Desactivar" : "Activar")+" impresión del estado del Buffer\n" +
 						"[9] Exit\n" +
@@ -79,8 +80,9 @@ public class DemoStrategy {
 				runFileTest("indexScanClustered.txt",10,10);
 				break;
 			case 2: 
-				runFileTest("indexScanUnclustered.txt",4,4);
-				runFileTest("indexScanUnclustered.txt",10,10);
+				//runFileTest("indexScanUnclustered.txt",4,4);
+				//runFileTest("indexScanUnclustered.txt",10,10);
+				runScanUnClusteredTest();
 				break;
 			case 3: 
 				runFileTest("BNLJ-5R-5S-4B.txt",4,4);
@@ -91,6 +93,8 @@ public class DemoStrategy {
 			case 5: 
 				demoBNLJ(50, 50, 20, 20, 1, 19, 40, 40);
 				break;
+			case 6:
+				runCustomFile();
 			case 7:
 				printHitRate = !printHitRate;
 				break;
@@ -109,6 +113,60 @@ public class DemoStrategy {
 		}		
 
 		execTest();
+	}
+
+	private void runScanUnClusteredTest() {
+		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
+
+		int bufferSize = 20;
+		int indexHeight = 3;
+
+		for (int pageCount = 2; pageCount < 10; pageCount++) {
+			for (int referenceCount = 2; referenceCount < 10; referenceCount++) {
+				PageReferenceTrace lrt = new PageReferenceTraceGenerator().generateIndexScanUnclustered("A", indexHeight, referenceCount, pageCount);
+				lrt.setId("PC"+pageCount+"-RC"+referenceCount);
+				traces.add(lrt);
+			}
+		}
+		
+		try{
+			for (PageReferenceTrace trace : traces) 
+			{
+				for(PageReplacementStrategy strategy : STRATEGIES)
+				{
+					testTrace(trace.getId(), trace, bufferSize, strategy);
+				}
+	
+			}
+		}catch(Exception e)
+		{
+			System.out.println("Ocurrió un error el ejecutar el test "+ e.getMessage());
+		}
+	}
+
+	private void runCustomFile() {
+		System.out.print("Ingrese <archivo a correr> <tamaño del buffer>\n" +
+				"(El Archivo a corrrer debe encontrarse en /traces)\n" +
+				">");
+		try{
+			BufferedReader reader	= new BufferedReader(new InputStreamReader(System.in));
+			String[] response = reader.readLine().trim().split(" ");
+			if(response.length == 2)
+			{
+				int bufferSize = Integer.valueOf(response[1]);
+				runFileTest(response[0], bufferSize, bufferSize);
+			}
+			else
+			{
+				System.out.println("Debe ingresar <archivo a correr> <tamaño del buffer>\n" +
+						"Ejemplo: archivo.txt 6");
+			}
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("Ocurrió un error el ejecutar el test "+ e.getMessage());
+		}
 	}
 
 	/**
