@@ -3,12 +3,12 @@
 \subsection{\fs}
 Vemos que ninguna de las estrategias de reemplazo de páginas es mejor a otra.
 \newline
-Pero uno puede observar resultados interesantes cuando se necesita recorrer más de una vez la traza, dado que ahora hay oportunidad de cachear p áginas pedidas anteriormente.
+Pero uno puede observar resultados interesantes cuando se necesita recorrer más de una vez la traza, dado que ahora hay oportunidad de cachear páginas pedidas anteriormente.
 \newline
 Para el caso de dos lecturas sucesivas sobre la misma traza podemos considerar dos escenarios:
 \begin{itemize}
  \item    \textbf{La cantidad de frames en buffer es menor a la cantidad de páginas pedidas}: la única estrategia que tiene Hit-Rate mayor a 0 es MRU. FIFO y LRU cuando necesitan alojar una nueva página empiezan desalojando la primera en ser almacenada y este comportamiento impide reaprovechar esas páginas en la segunda lectura de la traza.
- \item    \textbf{La cantidad de frames en buffer en mayor o igual a la cantidad de páginas pedidas}: en este escenario las tres estrategias muestran un HitRate del 50\% dado que si bien en la primera lectura no tienen ninguna página en buffer, para la segunda no tuvieron que desalojar ninguna(son todos hits).
+ \item    \textbf{La cantidad de frames en buffer en mayor o igual a la cantidad de páginas pedidas}: en este escenario las tres estrategias muestran un HitRate del 50\% dado que si bien en la primera lectura no tienen ninguna página en buffer, para la segunda no tuvieron que desalojar ninguna (son todos hits).
 \end{itemize}
 
 \subsection{\isc}
@@ -28,10 +28,10 @@ Podemos considerar los siguientes escenarios:
   \item \textbf{Las páginas de R pueden ser cacheadas en memoria en su totalidad} dejando por lo menos dos frames de memoria libres, uno para S y otro para el resultado del JOIN. Este caso no es muy interesante, ya que con cualquier algoritmo de reemplazo el Hit-Rate es cero. La explicación es la siguiente: tenemos cacheado R completamente y lo que necesitamos ir iterando es el bloque de S contra el cuál cruzamos los bloques de R. \newline
   Es decir:
   \begin{itemize}
-    \item En la primera iteración cruzamos todos los bloques de R contra el primero de S y obtenemos un Miss(ninguno estaba cargado previamente)
+    \item En la primera iteración cruzamos todos los bloques de R contra el primero de S y obtenemos un Miss (ninguno estaba cargado previamente)
     \item Cargamos en memoria el segundo bloque de S
     \item De ser necesario reemplazar una página, hay que tener en cuenta que el único frame que hizo release fue el anterior de S y volvemos a obtener otro Miss correspondiente al nuevo bloque de S recién cargado
-    \item Terminamos de iterar sobre S sin haber reutilizado ningún frame(todos Misses).
+    \item Terminamos de iterar sobre S sin haber reutilizado ningún frame (todos Misses).
   \end{itemize}
   \item \textbf{La totalidad de las páginas de R no pueden ser cacheadas en memoria} y se cuenta con un buffer de tamaño fijo.\\
 La idea de las pruebas realizadas fue variar los bloques asignados a R de tal forma que sobren bloques de memoria y de esta manera ver que ocurre cuando se tiene más de un bloque libre de memoria para cachear bloques de S. Esto no sucede en el algoritmo tradicional de \bnlj ya que en éste solo se le dedica un bloque de memoria a S. \newline
