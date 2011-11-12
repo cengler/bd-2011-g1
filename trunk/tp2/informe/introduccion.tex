@@ -5,7 +5,7 @@
 \textit{``El Buffer Manager es uno de los componentes más importantes dentro de un motor de BD. Su principal función es administrar un espacio de memoria de la BD, utilizado como una especie de memoria caché. El objetivo es que las diferentes aplicaciones que usan la BD y requieren páginas de disco, puedan recuperar la página de este espacio de memoria y accedan lo menos posible al disco.''}
 \end{quotation}
 
-En este informe analizaremos el tipo de trazas definidas por distintos algoritmos(NBLJ, File Scan, Index Scan, etc) y las diferencias de permonance(medida según el hit-rate) que se obtienen al probar las estrategias de reemplazo MRU, LRU y FIFO. Los resultados obtenidos por las diferentes estrategias de reemplazo nos permitirán sacar conclusiones y definir heurísticas sobre la mejor estrategia a usar para cada algoritmo.
+En este informe analizaremos el tipo de trazas definidas por distintos algoritmos (NBLJ, File Scan, Index Scan, etc) y las diferencias de permonance(medida según el hit-rate) que se obtienen al probar las estrategias de reemplazo MRU, LRU y FIFO. Los resultados obtenidos por las diferentes estrategias de reemplazo nos permitirán sacar conclusiones y definir heurísticas sobre la mejor estrategia a usar para cada algoritmo.
 
 En el desarrollo de este trabajo práctico empezamos por realizar la implementación de las estrategias LRU y MRU con sus respectivos casos de test, desarrollamos un parser de trazas almacenadas en archivos de texto plano, definimos trazas representativas de los algorimos a evaluar, luego analizamos las trazas definidas con las 3 estrategias de reemplazo mencionadas anteriormente, para finalmente expresar las conclusiones obtenidas durante la realización del trabajo práctico.
 
@@ -13,14 +13,15 @@ En el desarrollo de este trabajo práctico empezamos por realizar la implementaci
 \begin{itemize}
  \item Consideramos los RELEASE de los bloques como una referencia al mismo por lo cuál inciden en las distintas estrategias de reemplazo.
 Ejemplo de traza:
+\begin{verbatim}
 REQUEST [R,1]
 REQUEST [R,2]
 RELEASE [R,2]
 RELEASE [R,1]
-
+\end{verbatim}
 Si se utilizara una estrategia de reemplazo MRU, el primero en ser desalojado sería el bloque 1 de R. 
 En cambio, si la estrategia de reemplazo es LRU, el bloque que se desaloja es el 2.
 
 \item Al momento de evaluar juntas usando algoritmo \bnlj asumimos que contamos con un bloque extra para guardar el resultado de la misma. Esto se debe a que el BufferManager reserva bloques de memoria solo cuando una transaccion hace un request de una página en disco.
-Ejemplo: si queremos hacer un join entre dos relaciones A y C y contamos con 100 bloques en memoria, el algoritmo indica que tenemos que dedicar 1 bloque para A y (100-2) para C dejando uno libre para el resultado. Como asumimos que tenemos un bloque extra de memoria para el resultado necesitaríamos dedicar 1 bloque para A y (101-2) para C.
+Ejemplo: si queremos hacer un join entre dos relaciones $A$ y $C$, y contamos con 100 bloques en memoria, el algoritmo indica que tenemos que dedicar (100-2) bloques para $A$ y 1 bloque para $C$ dejando uno libre para el resultado.\\ Como asumimos que tenemos un bloque extra de memoria para el resultado necesitaríamos dedicar 1 bloque para $C$ y (101-2) para $A$.
 \end{itemize}
