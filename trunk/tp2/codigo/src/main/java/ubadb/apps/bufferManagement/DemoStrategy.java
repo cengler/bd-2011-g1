@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ubadb.components.bufferManager.BufferManager;
 import ubadb.components.bufferManager.BufferManagerImpl;
@@ -118,7 +120,7 @@ public class DemoStrategy {
 	private void runScanUnClusteredTest() {
 		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
 
-		int bufferSize = 20;
+		int bufferSize = 5;
 		int indexHeight = 3;
 
 		for (int pageCount = 2; pageCount < 10; pageCount++) {
@@ -130,14 +132,21 @@ public class DemoStrategy {
 		}
 		
 		try{
+			Map<PageReplacementStrategy, Double> hits = new HashMap<PageReplacementStrategy, Double>();
+			for(PageReplacementStrategy strategy : STRATEGIES)
+				hits.put(strategy, 0d);
+			
 			for (PageReferenceTrace trace : traces) 
 			{
 				for(PageReplacementStrategy strategy : STRATEGIES)
 				{
-					testTrace(trace.getId(), trace, bufferSize, strategy);
+					double d = testTrace(trace.getId(), trace, bufferSize, strategy);
+					hits.put(strategy, hits.get(strategy)+d);
 				}
-	
 			}
+			
+			for(PageReplacementStrategy strategy : STRATEGIES)
+				System.out.println(strategy.getClass().getSimpleName() + " - " + hits.get(strategy)/(8*8));
 		}catch(Exception e)
 		{
 			System.out.println("Ocurrió un error el ejecutar el test "+ e.getMessage());
@@ -275,7 +284,7 @@ public class DemoStrategy {
 	 * @throws InterruptedException en caso de no poder hacer el sleep entre requests.
 	 * @throws BufferManagerException en caso de pedir mas paginas que las que entran en el buffer.
 	 */
-	private void testTrace(String idTrace, PageReferenceTrace trace, int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy) 
+	private double testTrace(String idTrace, PageReferenceTrace trace, int maxBufferPoolSize, PageReplacementStrategy pageReplacementStrategy) 
 			throws InterruptedException, BufferManagerException {
 
 		DiskManagerFaultCounterMock diskManagerFaultCounterMock = new DiskManagerFaultCounterMock();
@@ -324,6 +333,7 @@ public class DemoStrategy {
 		if(printHitRate)
 			System.out.println(idTrace+"\t"+maxBufferPoolSize+"\t"+pageReplacementStrategy.getClass().getSimpleName()+"\t"+format(hitRate));
 
+		return hitRate;
 	}
 
 	/**
