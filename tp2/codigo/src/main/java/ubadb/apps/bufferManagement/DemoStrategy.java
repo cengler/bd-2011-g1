@@ -117,6 +117,15 @@ public class DemoStrategy {
 		execTest();
 	}
 
+	/**
+	 * Corre el test de indexScanUnClustered.
+	 * 
+	 * Toma como tamano de buffer = 5
+	 * Altura del arbol = 3
+	 * Cantidad de request de 2 a 10
+	 * Contidad de paginas de la tabla de 2 a 10.
+	 * 
+	 */
 	private void runScanUnClusteredTest() {
 		List<PageReferenceTrace> traces = new ArrayList<PageReferenceTrace>();
 
@@ -153,6 +162,11 @@ public class DemoStrategy {
 		}
 	}
 
+	/**
+	 * Ejecuta un trace custom.
+	 * 
+	 * Se le solicita al usuario que ingrese el nombre del trace a ejecutar (debe estar en la carpeta treces)
+	 */
 	private void runCustomFile() {
 		System.out.print("Ingrese <archivo a correr> <tamaño del buffer>\n" +
 				"(El Archivo a corrrer debe encontrarse en /traces)\n" +
