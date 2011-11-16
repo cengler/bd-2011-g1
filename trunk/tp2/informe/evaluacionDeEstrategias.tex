@@ -152,14 +152,14 @@ Luego de las pruebas realizadas, observamos que a diferencia del \isc, la estrat
 
 De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador no puede decidir de antemano que estrategia ofrecerá la mejor perfomance para una consulta dada.
 
-Las trazas elegidas para realizar pruebas se hizo pensando en requerir páginas más de una vez, dado que el \isu puede tener una traza de este estilo (a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el hit rate obtenido.
+Las trazas elegidas para realizar pruebas se hicieron pensando en requerir páginas más de una vez, dado que el \isu puede tener una traza de este estilo (a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el $hit rate$ obtenido.
 
-El test que consideramos mas representativo, fue un promedio del $hit-rate$ de una gran cantidad de trazas random del tipo \isu. En particular variamos la cantidad de request de 2 a 10 y variamos la cantidad de paginas de las tablas a ``indexar'' tambien de 2 a 10.
+El test que consideramos más representativo, fue un promedio del $hit rate$ de una gran cantidad de trazas random del tipo \isu. En particular variamos la cantidad de request de 2 a 10 y variamos la cantidad de páginas de las tablas a ``indexar'' también de 2 a 10.
 
 \begin{center}
 \begin{framed}
 \begin{verbatim}
--- TRAZA REQUEST 2 PAGINAS 2 
+-- TRAZA REQUEST TUPLAS 2 PAGINAS DISTINTAS 2 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -171,7 +171,7 @@ Release([A, 0])
 Request([A, 1])
 Release([A, 1])
 
--- TRAZA REQUEST 4 PAGINAS 2 
+-- TRAZA REQUEST TUPLAS 4 PAGINAS DISTINTAS 2 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -187,7 +187,7 @@ Release([A, 0])
 Request([A, 0])
 Release([A, 0])
 
--- TRAZA REQUEST 4 PAGINAS 10 
+-- TRAZA REQUEST TUPLAS 4 PAGINAS DISTINTAS 10 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -212,10 +212,12 @@ Ejemplos de trazas utilizadas para analizar las diferentes estategias de reempla
 \centering
 \huge Index Scan UnClustered\\
 \includegraphics[scale=0.60]{img/indexScanUnclustered.png}
-\caption{Comparación del distintos casos de \isu}
+\caption{Comparación de distintos casos de \isu}
 \end{figure}
 
-Se puede ver en este grafico, que el $hit-rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado. Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que en gral es mas posible que se repita una de las ultimas paginas referenciadas.
+\textbf{PC: cantidad de páginas} y \textbf{RC: Cantidad de request}
+\\\\
+Se puede ver en este gráfico, que el $hit-rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado. Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que en general es más esperable en este tipo de pruebas que se repita una de las últimas páginas referenciadas.
 
 
 \subsection{\bnlj}
