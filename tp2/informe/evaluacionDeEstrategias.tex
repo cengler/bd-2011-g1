@@ -147,7 +147,7 @@ La cantidad de bloques en memoria es superior a la cantidad de páginas solicitad
 
 \newpage
 
-\subsection{\isu}
+\subsection{\isu} \label{sec:isu}
 Luego de las pruebas realizadas, observamos que a diferencia del \isc, la estrategia de reemplazo utilizada en el algoritmo \isu incide en el hit rate. Esto se debe a que durante un \isu es posible que algunas tuplas ``caigan'' en los mismos bloques.
 
 De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador no puede decidir de antemano que estrategia ofrecerá la mejor perfomance para una consulta dada.
@@ -159,7 +159,8 @@ El test que consideramos más representativo, fue un promedio del $hit rate$ de u
 \begin{center}
 \begin{framed}
 \begin{verbatim}
--- TRAZA REQUEST TUPLAS 2 PAGINAS DISTINTAS 2 
+-- TRAZA
+-- Requests: 2 Tuplas - Páginas Distintas: 2 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -171,7 +172,8 @@ Release([A, 0])
 Request([A, 1])
 Release([A, 1])
 
--- TRAZA REQUEST TUPLAS 4 PAGINAS DISTINTAS 2 
+-- TRAZA
+-- Requests: 4 Tuplas - Páginas Distintas: 2 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -187,7 +189,8 @@ Release([A, 0])
 Request([A, 0])
 Release([A, 0])
 
--- TRAZA REQUEST TUPLAS 4 PAGINAS DISTINTAS 10 
+-- TRAZA
+-- Requests: 4 Tuplas - Páginas Distintas: 10 
 Request([A_index, 0])
 Release([A_index, 0])
 Request([A_index, 1])
@@ -214,10 +217,12 @@ Ejemplos de trazas utilizadas para analizar las diferentes estategias de reempla
 \includegraphics[scale=0.60]{img/indexScanUnclustered.png}
 \caption{Comparación de distintos casos de \isu}
 \end{figure}
-
-\textbf{PC: cantidad de páginas} y \textbf{RC: Cantidad de request}
+\noindent
+\textbf{PC}: cantidad de páginas que contienen tuplas\\
+\textbf{RC}: requests a páginas con tuplas específicas a la consulta
 \\\\
-Se puede ver en este gráfico, que el $hit-rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado. Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que en general es más esperable en este tipo de pruebas que se repita una de las últimas páginas referenciadas.
+Se puede ver en este gráfico, que el $hit rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado.\newline
+Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que FIFO y LRU desalojan primero las páginas correspondientes al árbol de índices(que luego de ser leídas por primera vez pueden ser liberadas) y en cambio MRU desaloja primero las más recientes que pueden ser páginas que necesiten ser reutilizadas posteriormente.
 
 
 \subsection{\bnlj}
