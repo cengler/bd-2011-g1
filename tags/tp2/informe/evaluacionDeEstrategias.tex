@@ -1,0 +1,315 @@
+
+\section{Evaluación de estrategias}
+
+En esta sección presentaremos la evaluación de estrategias de reemplazo para los distintos algoritmos presentes en este trabajo. Para cada uno de ellos daremos una traza posible que sea interesante de evaluar y a continuación exhibiremos los resultados obtenidos utilizando MRU, LRU y FIFO.
+
+Ejemplo, si una traza posible es:
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- TRAZA
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A, 1])
+Release([A, 1])
+\end{verbatim}
+\end{framed}
+\end{center}
+Y la presentación de los resultados obtenidos es la siguiente:
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A, 1]]}
+\end{verbatim}
+\end{framed}
+\end{center}
+Quiere indicar que el algoritmo de reemplazo LRU no mantuvo en cache ninguna página ($M$ de miss) y que el estado de páginas en el buffer contenía a $[A\_index, 0]$ luego del primer request y para el segundo mantenía tanto $[A\_index, 0]$ como $[A, 1]$.
+
+\subsection{File Scan}
+
+La traza del \fs no tendrá Hits para ningún tipo de algoritmo de reemplazo de páginas porque \fs pide UNA sola vez cada página.\\
+Por otro lado, se observan resultados interesantes cuando hacemos traces que leen 2 veces el mismo archivo y comparamos los hit-rates de las diferentes estrategias. De estos resultados obtuvimos las siguientes conclusiones:
+
+\begin{itemize}
+\item LRU y FIFO tienen el mismo comportamiento durante un \fs porque las páginas que se eligen para desalojar en ambos casos son las primeras en haber sido referidas.
+\item En caso de haber igual o más cantidad de frames que de páginas, el hit-rate pasaba a ser del 50\% para todas las estrategias, porque si bien en la primera pasada todas las referencias a páginas era misses, para la segunda estaban todos en memoria.
+\item Para una cantidad de páginas superior en una unidad a la cantidad de frames, LRU tenía 100\% de miss-rate (y por ende también la estrategia FIFO). Esto se debe a que necesita desalojar el primer frame para alojar la última página (en la primera pasada); luego, cuando necesitaba leer nuevamente la primera página (en la segunda pasada) tiene que desalojar el último frame en ser accedido (el segundo), para el segundo el tercero, y así sucesivamente.
+\item Las estrategias empiezan a converger en torno a un hit-rate del 50\% cuando la cantidad de frames se acerca a la cantidad de páginas dado que es necesario desalojar menos frames.
+\item Entre las estrategias evaluadas, la única que mejora el hit-rate cuando la cantidad de frames es menor a la cantidad de páginas a ser leídas es MRU.
+\end{itemize}
+
+\begin{figure}[ht]
+\centering
+\huge File Scan\\
+\includegraphics[scale=0.60]{img/fileScan2Times.png}
+\caption{Después de haber ejecutado 2 veces FileScan}
+\end{figure}
+
+\newpage
+
+\subsection{\isc}
+
+En \isc no influye en las estrategias de reemplazo de páginas, pues una vez encontrada la hoja del índice del primer registro a devolver, se recorren las páginas necesarias secuencialmente (dado que están ordenadas) hasta llegar al registro que no cumple con el filtro (o al fin del archivo).
+
+Entonces, ningún algoritmo de reemplazo de páginas va a hacer diferencia alguna ya que NINGUNA página es pedida más de una vez (esto se observa en la traza evaluada a continuación).
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- TRAZA
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 3])
+Release([A, 3])
+Request([A, 4])
+Release([A, 4])
+Request([A, 5])
+Release([A, 5])
+\end{verbatim}
+\end{framed}
+Traza utilizada para analizar las diferentes estategias de reemplazo.
+\vskip1cm
+\end{center}
+
+Para evaluar la traza anterior consideramos 2 casos posibles: uno en el que contásemos con una cantidad de páginas en buffer menor a las requeridas en la traza y otra en la contásemos con una cantidad superior. Dado que la traza presentada requiere 6 páginas distintas, hicimos pruebas con buffers que contasen con 4 y 10 páginas de capacacidad.
+
+\newpage
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A, 4]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A, 4]][[A, 5]][[A_index, 2]][[A, 3]]}
+
+-- MRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 4]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 5]]}
+
+-- FIFO
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A, 4]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A, 4]][[A, 5]][[A_index, 2]][[A, 3]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es menor a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]][[A, 5]]}
+
+-- MRU
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]][[A, 5]]}
+
+-- FIFO
+>> M : {[[A_index, 0]]}
+>> M : {[[A_index, 0]][[A_index, 1]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]]}
+>> M : {[[A_index, 0]][[A_index, 1]][[A_index, 2]][[A, 3]][[A, 4]][[A, 5]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es superior a la cantidad de páginas solicitadas.
+\vskip1cm
+\end{center}
+
+\newpage
+
+\subsection{\isu} \label{sec:isu}
+Luego de las pruebas realizadas, observamos que a diferencia del \isc, la estrategia de reemplazo utilizada en el algoritmo \isu incide en el hit rate. Esto se debe a que durante un \isu es posible que algunas tuplas ``caigan'' en los mismos bloques.
+
+De todas formas, al ser un índice unclustered y los punteros del mismo apuntar a páginas ordenadas arbitrariamente, implica que el planificador no puede decidir de antemano que estrategia ofrecerá la mejor perfomance para una consulta dada.
+
+Las trazas elegidas para realizar pruebas se hicieron pensando en requerir páginas más de una vez, dado que el \isu puede tener una traza de este estilo (a diferencia del Clustered). Si una página es requerida más de una vez, es interesante analizar si distintas estrategias de reemplazo ofrecen variaciones en el $hit rate$ obtenido.
+
+El test que consideramos más representativo, fue un promedio del $hit rate$ de una gran cantidad de trazas random del tipo \isu. En particular variamos la cantidad de request de 2 a 10 y variamos la cantidad de páginas de las tablas a ``indexar'' también de 2 a 10.
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- TRAZA
+-- Requests: 2 Tuplas - Páginas Distintas: 2 
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 0])
+Release([A, 0])
+Request([A, 1])
+Release([A, 1])
+
+-- TRAZA
+-- Requests: 4 Tuplas - Páginas Distintas: 2 
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 0])
+Release([A, 0])
+Request([A, 1])
+Release([A, 1])
+Request([A, 0])
+Release([A, 0])
+Request([A, 0])
+Release([A, 0])
+\end{verbatim}
+\newpage
+\begin{verbatim}
+-- TRAZA
+-- Requests: 4 Tuplas - Páginas Distintas: 10 
+Request([A_index, 0])
+Release([A_index, 0])
+Request([A_index, 1])
+Release([A_index, 1])
+Request([A_index, 2])
+Release([A_index, 2])
+Request([A, 0])
+Release([A, 0])
+Request([A, 3])
+Release([A, 3])
+Request([A, 6])
+Release([A, 6])
+Request([A, 0])
+Release([A, 0])
+\end{verbatim}
+\end{framed}
+Ejemplos de trazas utilizadas para analizar las diferentes estategias de reemplazo.
+\vskip1cm
+\end{center}
+
+\begin{figure}[ht]
+\centering
+\huge Index Scan UnClustered\\
+\includegraphics[scale=0.60]{img/indexScanUnclustered.png}
+\caption{Comparación de distintos casos de \isu}
+\end{figure}
+\noindent
+\textbf{PC}: cantidad de páginas que contienen tuplas\\
+\textbf{RC}: requests a páginas con tuplas específicas a la consulta
+\\\\
+Se puede ver en este gráfico, que el $hit rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado.\newline
+Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que FIFO y LRU desalojan primero las páginas correspondientes al árbol de índices (que luego de ser leídas por primera vez pueden ser liberadas) y en cambio MRU desaloja primero las más recientes que pueden ser páginas que necesiten ser reutilizadas posteriormente.
+
+\newpage
+\subsection{\bnlj}
+El algoritmo \bnlj en su versión tradicional utiliza B-2 bloques (donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos con uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar \bnlj, empezamos considerando B-1 bloques para R y el restante para S.\newline
+Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.\newline
+La primera traza que analizamos considera 2 relaciones R y S con 5 bloques en disco cada una y un Buffer Manager con 4 bloques (B=4) en memoria. La primera pasada trae 3 bloques (B-1 bloques) de R y uno de S. Cuando termina de recorrer todos los bloques de S, trae los restantes bloques de R (que son 2, por ser 5 en total y haber traído 3 al principio), esto implica que hay un bloque adicional de memoria que según la estrategia a utilizar puede permitir reutilizar bloques cacheados de S.
+Los resultados muestran que efectivamente el hit rate varía en esta situación y la estrategia que mejora la performance es MRU.
+
+\begin{center}
+\begin{framed}
+\begin{verbatim}
+-- LRU
+-- Hit Rate: 0
+>> M : {[[R, 0]]}
+>> M : {[[R, 0]][[R, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 0]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 3]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 4]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[R, 3]]}
+>> M : {[[R, 4]][[R, 1]][[R, 2]][[R, 3]]}
+>> M : {[[R, 4]][[S, 0]][[R, 2]][[R, 3]]}
+>> M : {[[R, 4]][[S, 0]][[S, 1]][[R, 3]]}
+>> M : {[[R, 4]][[S, 2]][[S, 1]][[R, 3]]}
+>> M : {[[R, 4]][[S, 2]][[S, 3]][[R, 3]]}
+>> M : {[[R, 4]][[S, 4]][[S, 3]][[R, 3]]}
+
+-- MRU
+-- Hit Rate: 0,06
+>> M : {[[R, 0]]}
+>> M : {[[R, 0]][[R, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 0]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 3]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 4]]}
+>> M : {[[R, 0]][[R, 1]][[R, 3]][[S, 4]]}
+>> M : {[[R, 0]][[R, 4]][[R, 3]][[S, 4]]}
+>> M : {[[S, 0]][[R, 4]][[R, 3]][[S, 4]]}
+>> M : {[[S, 1]][[R, 4]][[R, 3]][[S, 4]]}
+>> M : {[[S, 2]][[R, 4]][[R, 3]][[S, 4]]}
+>> M : {[[S, 3]][[R, 4]][[R, 3]][[S, 4]]}
+>> H : {[[S, 3]][[R, 4]][[R, 3]][[S, 4]]}
+\end{verbatim}
+\newpage
+\begin{verbatim}
+-- FIFO
+-- Hit Rate: 0
+>> M : {[[R, 0]]}
+>> M : {[[R, 0]][[R, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 0]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 1]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 2]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 3]]}
+>> M : {[[R, 0]][[R, 1]][[R, 2]][[S, 4]]}
+>> M : {[[R, 3]][[R, 1]][[R, 2]][[S, 4]]}
+>> M : {[[R, 3]][[R, 4]][[R, 2]][[S, 4]]}
+>> M : {[[R, 3]][[R, 4]][[S, 0]][[S, 4]]}
+>> M : {[[R, 3]][[R, 4]][[S, 0]][[S, 1]]}
+>> M : {[[R, 3]][[R, 4]][[S, 2]][[S, 1]]}
+>> M : {[[R, 3]][[R, 4]][[S, 2]][[S, 3]]}
+>> M : {[[R, 3]][[R, 4]][[S, 4]][[S, 3]]}
+\end{verbatim}
+\end{framed}
+La cantidad de bloques en memoria es 4.
+\vskip1cm
+\end{center}
+
+\textbf{Pruebas adicionales variando la cantidad de bloques dedicados a R}\newline
+Apreciamos resultados interesantes cuando analizamos dos relaciones R y S con tamaño fijo así como un buffer de tamaño fijo también, y variamos la cantidad de bloques que dedicamos para R. Para hacer este tipo de pruebas consideramos el caso donde R tiene más bloques que S en disco (50 y 20 respectivamente) y el caso inverso; en ambos casos consideramos un Buffer con capacidad para 20 frames.
+\\\\
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.75]{img/BNLJ_R_menor_a_S.png}
+\caption{\bnlj considerando una relación R con menor cantidad de bloques que S}
+\end{figure}
+\newpage
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.75]{img/BNLJ_R_mayor_a_S.png}
+\caption{\bnlj considerando una relación R con mayor cantidad de bloques que S}
+\end{figure}
+
+\newpage

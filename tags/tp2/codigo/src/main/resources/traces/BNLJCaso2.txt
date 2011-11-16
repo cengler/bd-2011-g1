@@ -1,0 +1,11 @@
+-- BNLJ con 2 pagina para R, 3 para S y 4 bloques de memoria.
+REQUEST([R, 0])
+REQUEST([R, 1])
+REQUEST([S, 0])
+RELEASE([S, 0])
+REQUEST([S, 1])
+RELEASE([S, 1])
+REQUEST([S, 2])
+RELEASE([S, 2])
+RELEASE([R, 0])
+RELEASE([R, 1])

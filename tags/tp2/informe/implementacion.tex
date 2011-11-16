@@ -1,0 +1,60 @@
+
+\section{Implementación de estrategias}
+
+\subsection{Implementación de LRU y MRU}
+
+En el paquete \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.lru} creamos las \\clases: 
+\begin{itemize}
+	\item LRUBufferFrame \\ Esta clase extiende BufferFrame para mantener para cada frame un nroAcceso secuencial, para luego poder en el strategy decidir el más antiguo.
+	\item LRUReplacementStrategy \\ Implementación del algoritmo LRU
+\end{itemize}
+
+En el paquete \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.lru} del directorio src/test creamos los siguientes test de unidad: 
+\begin{itemize}
+	\item LRUBufferFrameTest \\ Verifica dada una secuencia de creaciones, pins y unpins, que los contadores queden seteados correctamente.
+	\item LRUReplacementStrategyTest \\ Verifica que los frames seleccionados por el algoritmo se den según lo esperado por distintas trazas determinadas.
+\end{itemize}
+
+Todo lo comentado se hace también para la política de reemplazo MRU en el paquete \\ \textbf{ubadb.components.bufferManager.bufferPool.replacementStrategies.mru}
+
+\subsection{Implementación extras}
+
+\begin{itemize}
+	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.PageReferenceTraceReader} para poder parsear trazas como las dadas de ejemplo por la cátedra.
+	\item Creamos la clase \textbf{ubadb.apps.bufferManagement.DemoStrategy} para ejecutar todas las trazas de un directorio variando la política de reemplazo de páginas y el tamaño del SingleBuffer.
+	\item Sobrescribimos el método \verb|toString()| de \textsl{SingleBufferPool} para poder imprimirlo por pantalla y estudiar la disposición del buffer.
+\end{itemize}
+
+\subsection{Modificaciones en SingleBufferPool}
+\begin{itemize}
+	\item Implementamos el método toString() para imprimir el estado del buffer con las páginas actualmente almacenadas en el mismo.
+	\item Asociamos un orden a cada frame almacenado para poder imprimir el buffer con los frames según el orden en que fueron siendo agregados.
+\end{itemize}
+
+\subsection{Ejecución del código}
+Pasos para la correcta ejecución del programa desde eclipse:
+\begin{itemize}
+	\item Configurar en Run $>$ Run Configurations $>$ Arguments $>$ Working Directory: la carpeta TARGET correspondiente al código.
+	\item Ir a la clase ubadb $>$  apps $>$  bufferManagement $>$ DemoStrategy y correr el proyecto desde esta clase.
+\end{itemize}	
+
+
+Pasos para la correcta ejecución del programa desde consola. Ejecutar los siguientes comandos:
+\begin{itemize}
+	\item 
+			\begin{verbatim}
+				mvn clean
+			\end{verbatim}
+	\item 
+			\begin{verbatim}
+				mvn install
+			\end{verbatim}
+		\item 
+			\begin{verbatim}
+				cd target
+			\end{verbatim}
+		\item 
+			\begin{verbatim}
+				java -jar ubadb-1.0.jar
+			\end{verbatim}
+\end{itemize}	
