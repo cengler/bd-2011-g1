@@ -188,7 +188,9 @@ Request([A, 0])
 Release([A, 0])
 Request([A, 0])
 Release([A, 0])
-
+\end{verbatim}
+\newpage
+\begin{verbatim}
 -- TRAZA
 -- Requests: 4 Tuplas - Páginas Distintas: 10 
 Request([A_index, 0])
@@ -222,15 +224,15 @@ Ejemplos de trazas utilizadas para analizar las diferentes estategias de reempla
 \textbf{RC}: requests a páginas con tuplas específicas a la consulta
 \\\\
 Se puede ver en este gráfico, que el $hit rate$ depende más del caso testeado que del algoritmo de reemplazo utilizado.\newline
-Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que FIFO y LRU desalojan primero las páginas correspondientes al árbol de índices(que luego de ser leídas por primera vez pueden ser liberadas) y en cambio MRU desaloja primero las más recientes que pueden ser páginas que necesiten ser reutilizadas posteriormente.
+Se nota que MRU es un poco menos performante que FIFO o LRU. Esto se debe a que FIFO y LRU desalojan primero las páginas correspondientes al árbol de índices (que luego de ser leídas por primera vez pueden ser liberadas) y en cambio MRU desaloja primero las más recientes que pueden ser páginas que necesiten ser reutilizadas posteriormente.
 
-
+\newpage
 \subsection{\bnlj}
 El algoritmo \bnlj en su versión tradicional utiliza B-2 bloques (donde B es el tamaño de bloques en memoria) para la relación R, 1 para S y otro para el resultado. Nosotros asumimos para cada tamaño del buffer, que en realidad contamos con uno adicional para almacenar el resultado del join entre las relaciones R y S. Con lo cual, para evaluar \bnlj, empezamos considerando B-1 bloques para R y el restante para S.\newline
 Se observa que las páginas que son requeridas más de una vez son las de S, pero al tomar B-1 bloques para R no hay espacio para cachear páginas de S pedidas anteriormente. La única vez que uno puede cachear páginas anteriores es cuando la cantidad de bloques en R no es múltiplo de B-1, ya que al pedir los últimos bloques de R quedarán bloques libres adicionales para que no sea necesario desalojar páginas cacheadas de S.\newline
 La primera traza que analizamos considera 2 relaciones R y S con 5 bloques en disco cada una y un Buffer Manager con 4 bloques (B=4) en memoria. La primera pasada trae 3 bloques (B-1 bloques) de R y uno de S. Cuando termina de recorrer todos los bloques de S, trae los restantes bloques de R (que son 2, por ser 5 en total y haber traído 3 al principio), esto implica que hay un bloque adicional de memoria que según la estrategia a utilizar puede permitir reutilizar bloques cacheados de S.
 Los resultados muestran que efectivamente el hit rate varía en esta situación y la estrategia que mejora la performance es MRU.
-\newpage
+
 \begin{center}
 \begin{framed}
 \begin{verbatim}
@@ -269,7 +271,9 @@ Los resultados muestran que efectivamente el hit rate varía en esta situación y 
 >> M : {[[S, 2]][[R, 4]][[R, 3]][[S, 4]]}
 >> M : {[[S, 3]][[R, 4]][[R, 3]][[S, 4]]}
 >> H : {[[S, 3]][[R, 4]][[R, 3]][[S, 4]]}
-
+\end{verbatim}
+\newpage
+\begin{verbatim}
 -- FIFO
 -- Hit Rate: 0
 >> M : {[[R, 0]]}
@@ -293,16 +297,15 @@ La cantidad de bloques en memoria es 4.
 \vskip1cm
 \end{center}
 
-\newpage
 \textbf{Pruebas adicionales variando la cantidad de bloques dedicados a R}\newline
 Apreciamos resultados interesantes cuando analizamos dos relaciones R y S con tamaño fijo así como un buffer de tamaño fijo también, y variamos la cantidad de bloques que dedicamos para R. Para hacer este tipo de pruebas consideramos el caso donde R tiene más bloques que S en disco (50 y 20 respectivamente) y el caso inverso; en ambos casos consideramos un Buffer con capacidad para 20 frames.
-
+\\\\
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.75]{img/BNLJ_R_menor_a_S.png}
 \caption{\bnlj considerando una relación R con menor cantidad de bloques que S}
 \end{figure}
-
+\newpage
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.75]{img/BNLJ_R_mayor_a_S.png}
