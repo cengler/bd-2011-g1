@@ -1,1 +1,0 @@
-create database BDtp1Grupo1
