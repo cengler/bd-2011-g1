@@ -21,8 +21,8 @@ Hay casos particulares donde el uso repetido de \isc implica un HitRate mayor a 
 
 \subsection{\isu}
   En este algoritmo no se puede predecir qué estrategia de reemplazo de frames es conveniente, pero a diferencia del \isc se puede observar que es posible que se resoliciten bloques ya cacheados anteriormente. Es decir, la coincidencia de que una página ya esté en memoria depende de la traza y de la estrategia de reeamplazo que se esté utilizando.\newline
-De los casos evaluados anteriormente ( en la sección Evaluación de Estrategias/Index Scan Unclustered), los cuales se tomaron al azar, se observó que MRU es el que da un poco peor de los tres. 
-Tanto en FIFO como en LRU se liberaban las páginas de los índices, cosa que no ocurre con MRU. Es decir, que este útimo no las desalojaba.\\
+De los casos evaluados anteriormente (en la sección \nameref{sec:isu}), los cuales se tomaron al azar, se observó que MRU es el que da un poco peor de los tres. 
+Tanto en FIFO como en LRU se liberaban las páginas de los índices, cosa que no ocurre con MRU.\\
 Cuando la cantidad de páginas dedicadas a devolver tuplas es pequeña, en comparación a las páginas del índice, se convierte en una desventaja para MRU.
 \subsection{\bnlj}
 Podemos considerar los siguientes escenarios:
